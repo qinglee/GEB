@@ -1,0 +1,30 @@
+
+\cleardoublepage
+
+\null
+
+\thispagestyle{empty}
+\pagemark{封底}
+
+\makeatletter
+\ExplSyntaxOn
+
+\background
+  {
+    \put
+      (
+        \dim_to_decimal:n { \Gm@layouthoffset } ,
+        \dim_to_decimal:n { -\Gm@layoutheight - \Gm@layoutvoffset }
+      )
+      {
+        \includegraphics
+          [
+            keepaspectratio = false ,
+            width  = \Gm@layoutwidth ,
+            height = \Gm@layoutheight
+          ] { backcover.jpg }
+      }
+  }
+
+\ExplSyntaxOff
+\makeatother

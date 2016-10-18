@@ -276,52 +276,61 @@
     \tikzxtestresult { -- } { -| }
     (\tikzchildnode\tikzchildanchor)}}}
 \floatsetup{heightadjust=none}
-\figurebox[\linewidth]{%
-\begin{subfloatrow}
-  \figurebox{%
-    \begin{tikzpicture}[RE]
-    \node (a) {}
+\begin{lrbox}{\TEMPBOX}
+\begin{tikzpicture}[RE]
+\node (a) {}
+  child [end] { node {G} }
+  child { node {}
+    child [end] { node {G} }
+  };
+\draw (a) -- +(0,-3mm);
+\end{tikzpicture}
+\end{lrbox}
+\begin{lrbox}{4}
+\begin{tikzpicture}[RE]
+\node (a) {}
+  child [end] { node {H} }
+  child { node {}
+    child { node {}
+      child [end] { node {H} }
+    }
+  };
+\draw (a) -- +(0,-3mm);
+\end{tikzpicture}
+\end{lrbox}
+\begin{lrbox}{6}
+\begin{tikzpicture}[RE]
+\node (a) {}
+  child { node {}
+    child [end] { node {G} }
+    child { node {}
+      child [end] { node {G} }
+    }
+  }
+  child { node {}
+    child { node {}
       child [end] { node {G} }
       child { node {}
         child [end] { node {G} }
-      };
-    \draw (a) -- +(0,-3mm);
-    \end{tikzpicture}}{\caption{图案G，未扩展。}}
-  \figurebox{%
-    \begin{tikzpicture}[RE]
-    \node (a) {}
-      child [end] { node {H} }
-      child { node {}
-        child { node {}
-          child [end] { node {H} }
-        }
-      };
-    \draw (a) -- +(0,-3mm);
-    \end{tikzpicture}}{\caption{图案H，未扩展。}}
-\end{subfloatrow}\par
-\begin{subfloatrow}
-  \figurebox{%
-    \begin{tikzpicture}[RE]
-    \node (a) {}
-      child { node {}
-        child [end] { node {G} }
-        child { node {}
-          child [end] { node {G} }
-        }
       }
+    }
+  };
+\draw (a) -- +(0,-3mm);
+\end{tikzpicture}
+\end{lrbox}
+\begin{lrbox}{8}
+\begin{tikzpicture}[RE]
+\node (a) {}
+  child { node {}
+    child [end] { node {H} }
+    child { node {}
       child { node {}
-        child { node {}
-          child [end] { node {G} }
-          child { node {}
-            child [end] { node {G} }
-          }
-        }
-      };
-    \draw (a) -- +(0,-3mm);
-    \end{tikzpicture}}{\caption{图案G，扩展一次。}}
-  \figurebox{%
-    \begin{tikzpicture}[RE]
-    \node (a) {}
+        child [end] { node {H} }
+      }
+    }
+  }
+  child { node {}
+    child { node {}
       child { node {}
         child [end] { node {H} }
         child { node {}
@@ -330,20 +339,19 @@
           }
         }
       }
-      child { node {}
-        child { node {}
-          child { node {}
-            child [end] { node {H} }
-            child { node {}
-              child { node {}
-                child [end] { node {H} }
-              }
-            }
-          }
-        }
-      };
-    \draw (a) -- +(0,-3mm);
-    \end{tikzpicture}}{\caption{图案H，扩展一次。}}
+    }
+  };
+\draw (a) -- +(0,-3mm);
+\end{tikzpicture}
+\end{lrbox}
+\figurebox[\textwidth]{%
+  \begin{subfloatrow}
+    \figurebox{\usebox\TEMPBOX}{\caption{图案G，未扩展。}}
+    \figurebox{\usebox4}{\caption{图案H，未扩展。}}
+  \end{subfloatrow}\par
+  \begin{subfloatrow}
+    \figurebox{\usebox6}{\caption{图案G，扩展一次。}}
+    \figurebox{\usebox8}{\caption{图案H，扩展一次。}}
   \end{subfloatrow}}
 {\caption{隐含表示的图案G和图案H。}}
 \end{figure}

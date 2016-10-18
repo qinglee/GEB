@@ -269,8 +269,6 @@
 \setmonofont { TeX ~ Gyre ~ Cursor }
 \setmathfont { TeX ~ Gyre ~ Termes ~ Math }
 \newfontfamily \Palatino  [ Ligatures = TeX ] { TeX ~ Gyre ~ Pagella }
-\newfontfamily \Biolinum  [ Ligatures = TeX ] { Linux ~ Biolinum ~ O }
-\newfontfamily \Chaparral [ Ligatures = TeX ] { Chaparral ~ Pro ~ Light }
 \newfontfamily \Cyrillic  [ Ligatures = TeX ] { FreeSerif }
 
 \DeclareTextFontCommand { \textcyr } { \Cyrillic }
@@ -551,7 +549,7 @@
       {
         \sffamily
         \int_if_odd:nF { \g_@@_speculation_int }
-          { \tex_kern:D \ccwd }
+          { \tex_kern:D 2\ccwd }
         #1
         \hbox_overlap_right:n { ： }
       }
@@ -825,23 +823,6 @@
     \tex_ignorespaces:D
   }
 
-\NewDocumentEnvironment { qquote } { }
-  {
-    \list { }
-      {
-        \skip_zero:N \partopsep
-        \skip_zero:N \parsep
-        \skip_set_eq:NN \topsep \smallskipamount
-        \dim_set:Nn \listparindent { -\parindent }
-        \dim_set_eq:NN \itemindent \listparindent
-        \dim_set:Nn \leftmargin { 3\parindent }
-        \dim_zero:N \rightmargin
-      }
-    \cs_set_eq:NN \\ \par
-    \item \scan_stop:
-  }
-  { \endlist }
-
 \NewDocumentEnvironment { zenkoan } { }
   { \quote \xobeylines }
   { \endquote }
@@ -1089,10 +1070,11 @@
 
 \NewDocumentCommand \fig { s m }
   {
+    \xeCJK_leave_vmode:
     \prop_get:NnNTF \g_@@_figure_dest_prop {#2} \l_tmpa_tl
       {
         \@@_save_node:
-        \@@_hyper_link:nn
+        \exp_args:No \@@_hyper_link:nn
           { \l_tmpa_tl }
           {
             \@@_restore_node:
@@ -1582,7 +1564,7 @@
   { \item \alignbox { \l_@@_alignbox_width_tl } { #1 } }
 \NewDocumentCommand \alignbox { m m }
   {
-    \mode_if_horizontal:F { \tex_indent:D }
+    \xeCJK_leave_vmode:
     \hbox_to_wd:nn {#1} { #2 \tex_unskip:D \tex_hfill:D }
     \tex_ignorespaces:D
   }

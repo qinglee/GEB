@@ -54,6 +54,7 @@
       }
     }
   };
+\path (A51) edge (A6);
 \node (B) [right= 25mm of A2] {}
   child { node {}
     child { node (B2) {}
@@ -71,23 +72,26 @@
     child { node (C2) {} edge from parent[->] }
   };
 \node (D) [right= 25mm of C-1] {};
-\begin{scope}[every node/.style={inner sep=1mm}]
-\node[inner sep=-1mm,yscale=.9,fit=(A4) (A51) (A52) (A6) (A7)] {};
-\node[rotate fit=10,yscale=.75,xshift=1mm,
-  fit=(B-1) (B2) (B3) (B4)] {};
-\node[yscale=.9,fit=(C) (C-1) (C2)] {};
-\end{scope}
-\begin{scope}[<-,dashed]
-\draw (B4)  -- +(-20mm,0);
-\draw (C-1) -- +(-20mm,0);
-\draw (D)   -- +(-25mm,0);
-\end{scope}
-\path (A51) edge (A6);
 \path[->]
-      (A3) edge[bend right] (A8)
-      (A7) edge[bend right=65] (A-1)
-      (B3) edge (B5)
-      (B4) edge[bend right] (B-1);
+  (A3) edge[bend right] (A8)
+  (A7) edge[bend right=65] (A-1)
+  (B3) edge (B5)
+  (B4) edge[bend right] (B-1);
+\tikzstyle{every node}=[inner sep=1mm]
+\node[name path=E1,inner sep=-1mm,yscale=.9,
+  fit=(A4) (A51) (A52) (A6) (A7)] {};
+\node[name path=E2,rotate fit=15,yscale=.75,xshift=1mm,
+  fit=(B-1) (B2) (B3) (B4)] {};
+\node[name path=E3,inner xsep=2mm,yscale=.9,fit=(C) (C-1) (C2)] {};
+\path[name path=LB4] (B4)  -- +(-3cm,0);
+\path[name path=LC1] (C-1) -- +(-3cm,0);
+\path[name path=LD]  (D)   -- +(-3cm,0);
+\draw[dashed,->,name intersections={of=E1 and LB4}]
+  (intersection-1) -- (B4);
+\draw[dashed,->,name intersections={of=E2 and LC1}]
+  (intersection-1) -- (C-1);
+\draw[dashed,->,name intersections={of=E3 and LD}]
+  (intersection-1) -- (D);
 \end{tikzpicture}
 \caption[“组块化”的想法。]
   {“组块化”的想法：一组对象被当作一个“块”而重新看成是一个单位。其边界有点象细胞膜或国境线：它使得其内部的那一组对象构成一个独立的单位。根据不同的需要，可以考虑组块的内部结构，也可以不考虑。}

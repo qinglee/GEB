@@ -1,16 +1,14 @@
 
+\let \pdfmdfivesum \mdfivesum
+
 \NeedsTeXFormat{LaTeX2e}[2016/01/01]
 \RequirePackage{expl3}[2016/01/01]
-\ProvidesExplClass{GEB}{2016/10/01}{v0}{GEB}
-
-\cs_set_eq:NN \pdfmdfivesum \mdfivesum
+\ProvidesExplClass{GEB}{2016/10/01}{0}{GEB}
 
 \DeclareOption * { \PassOptionsToClass { \CurrentOption } { ctexbook } }
 \PassOptionsToClass { linespread = 4/3 , fontset = none } { ctexbook }
 \ProcessOptions \scan_stop:
-\LoadClass { ctexbook } [ 2016/01/01 ]
-
-\cs_set_eq:NN \pdfmdfivesum \mdfivesum
+\LoadClass { ctexbook } [ 2016/10/01 ]
 
 \raggedbottom
 
@@ -263,6 +261,7 @@
     CheckFullRight          = true ,
     PunctStyle              = kaiming ,
     KaiMingPunct+           = ：； ,
+    NewLineCS+              = \item
   }
 \setmainfont { TeX ~ Gyre ~ Termes }
 \setsansfont { TeX ~ Gyre ~ Heros }
@@ -1213,6 +1212,9 @@
 \DeclareCaptionFont { kaishu } { \kaishu }
 \DeclareCaptionLabelFormat { plain } { \bothIfFirst {#1} { \, } #2 }
 \DeclareCaptionLabelSeparator { en } { \enspace }
+\DeclareCaptionTextFormat { nostrut } { \@@_caption_nostrut:w #1 }
+\cs_new:Npn \@@_caption_nostrut:w #1 \caption@ifstrut #2 \par
+  { #1 \par }
 \captionsetup
   {
     format      = hang ,
@@ -1220,6 +1222,7 @@
     labelfont   = sf ,
     labelformat = plain ,
     labelsep    = en ,
+    textformat  = nostrut ,
     hypcap      = true ,
     strut       = off ,
   }

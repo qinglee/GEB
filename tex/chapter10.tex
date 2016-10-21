@@ -44,7 +44,7 @@
           child { node (A52) {}
             child { node (A6) {}
               child { node (A7) {}
-                child { node (A8) {} edge from parent[draw=none] }
+                child { node (A8) {} edge from parent[draw=none]}
                 child[missing]
               }
             }
@@ -61,7 +61,7 @@
       child { node (B3) {}
         child [missing]
         child { node (B4) {}
-          child { node (B5) {} edge from parent[draw=none] }
+          child { node (B5) {} edge from parent[draw=none]}
           child[missing]
         }
       }
@@ -69,7 +69,7 @@
   };
 \node (C) [right= 25mm of B-1] {}
   child { node {}
-    child { node (C2) {} edge from parent[->] }
+    child { node (C2) {} edge from parent[->]}
   };
 \node (D) [right= 25mm of C-1] {};
 \path[->]
@@ -287,7 +287,7 @@ X&X&X&X&X&O&X&X&O&O&X&X&X&O&O&O&O&O\\
 \end{lrbox}
 \fcapside[\FBwidth]{\usebox\TEMPBOX}{%
 \caption[智能是个层次结构。]
-  {为了构造智能程序，需要建造一个硬件和软件的层次结构，以解除在最低层观察一切所带来的痛苦。对同一个过程，不同层次的描述会是很不一样的，只有顶层是充分地组块化了，因此容易被人所理解。[摘自帕·亨·温斯顿，《人工智能》] }}
+  {为了构造智能程序，需要建造一个硬件和软件的层次结构，以解除在最低层观察一切所带来的痛苦。对同一个过程，不同层次的描述会是很不一样的，只有顶层是充分地组块化了，因此容易被人所理解。[摘自帕·亨·温斯顿，《人工智能》]}}
 \end{figure}
 
 \fig{59}显示了一幅人工智能的“分层”图景，以机器元件（如晶体管）为底，以“智能程序”为顶。该图摘自帕特里克·亨利·温斯顿所著的《人工智能》一书，它代表了几乎为所有人工智能工作者所共有的关于人工智能的构想。虽然我同意人工智能应当以某种方式分层，但我并不认为通过这样少的几层就能达到智能程序。在机器语言层和真正达到智能的层次之间，我认为可能还需有十几层（甚至几十层）。每一个新的层次都基于下面一层，同时也扩展了下一层提供的灵活性。它们将是什么样的，我们现在做梦也想不出……

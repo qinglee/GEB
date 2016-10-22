@@ -1182,7 +1182,7 @@
   { \ExplSyntaxOff }
   { \ignorespaces }
   { }
-  { \ctex_patch_failure:N \floatrow }
+  { \exp_args:Nc \ctex_patch_failure:N { subfloatrow* } }
 \floatsetup
   {
     style  = plain ,

@@ -1168,8 +1168,6 @@
 \counterwithout { figure } { chapter }
 \counterwithout { table }  { chapter }
 
-\def\SHOWTABLE{\int_show:n { \value { table } }}
-
 \graphicspath { { figures/ } }
 \setkeys { Gin }
   {
@@ -1180,34 +1178,28 @@
 \ctex_patch_cmd:Nnn \captionlabel
   { \caption@setsubtype * { \FR@tmp } }
   { \caption@setsubtype * }
+\exp_args:Nc \ctex_appto_cmd:NnnTF { subfloatrow* }
+  { \ExplSyntaxOff }
+  { \ignorespaces }
+  { }
+  { \ctex_patch_failure:N \floatrow }
 \floatsetup
   {
     style  = plain ,
     valign = c ,
-    heightadjust = object ,
+    heightadjust = none ,
     captionskip  = \abovecaptionskip ,
-    floatrowsep  = none ,
-    capbesidesep = quad ,
+    floatrowsep     = quad ,
+    subfloatrowsep  = quad ,
+    capbesidesep    = quad ,
     capbesideposition = { right , bottom }
   }
 \floatsetup [ figure ] { capposition  = bottom }
 \floatsetup [ table ]  { capposition  = top }
 \floatsetup [ rotfloat ]
   { captionskip = \intextsep }
-\ctex_appto_cmd:NnnTF \floatrow { \ExplSyntaxOff }
-  { \SetFloatBoxWidth }
-  { }
-  { \ctex_patch_failure:N \floatrow }
-\cs_new_protected_nopar:Npn \SetFloatBoxWidth
-  { \dim_gset_eq:NN \g_@@_floatbox_width_dim \hsize }
-\dim_new:N \g_@@_floatbox_width_dim
-
-\newfloatcommand { figurebox } { figure }
-  [ \nocapbeside ]
-  [ \g_@@_floatbox_width_dim ]
-\newfloatcommand { tablebox }  { table }
-  [ \nocapbeside ]
-  [ \g_@@_floatbox_width_dim ]
+\newfloatcommand { figurebox } { figure } [ \nocapbeside \capbot ]
+\newfloatcommand { tablebox }  { table }  [ \nocapbeside \captop ] [ \FBwidth ]
 
 \DeclareCaptionFont { kaishu } { \kaishu }
 \DeclareCaptionLabelFormat { plain } { \bothIfFirst {#1} { \, } #2 }

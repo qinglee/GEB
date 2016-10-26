@@ -8,7 +8,7 @@
 \DeclareOption * { \PassOptionsToClass { \CurrentOption } { ctexbook } }
 \PassOptionsToClass { linespread = 4/3 , fontset = none } { ctexbook }
 \ProcessOptions \scan_stop:
-\LoadClass { ctexbook } [ 2016/10/01 ]
+\LoadClass { ctexbook } [ 2016/10/25 ]
 
 \raggedbottom
 
@@ -41,7 +41,6 @@
     vcentering    = true
   }
 
-\PassOptionsToPackage { shortlabels } { enumitem }
 \PassOptionsToPackage { mainaux , starttoc } { rerunfilecheck }
 \RequirePackage
   {
@@ -59,8 +58,8 @@
     booktabs ,
     xcolor ,
     rotating ,
-    floatrow ,
     subcaption ,
+    floatrow ,
     hyperref ,
     bookmark ,
     rerunfilecheck ,
@@ -122,9 +121,6 @@
     shapes.multipart ,
     decorations.markings ,
     decorations.pathreplacing ,
-%    automata ,
-%    scopes ,
-%    graphs ,
   }
 
 \tikzset
@@ -263,6 +259,7 @@
     KaiMingPunct+           = ：； ,
     NewLineCS+              = \item
   }
+
 \setmainfont { TeX ~ Gyre ~ Termes }
 \setsansfont { TeX ~ Gyre ~ Heros }
 \setmonofont { TeX ~ Gyre ~ Cursor }
@@ -397,6 +394,7 @@
       fixskip     = true ,
       format      = \centering \bfseries \LARGE
                     \@@_endnote_chapter: ,
+      tocline     = \CTEXnumberline {#1} #2 ,
       beforeskip  = \bigskipamount * 2 ,
       afterskip   = \bigskipamount * 2 ,
       lofskip     = \c_zero_skip ,
@@ -1047,6 +1045,12 @@
 \box_new:N \l_@@_cdot_box
 \hbox_set_to_wd:Nnn \l_@@_cdot_box { 8pt }
   { \tex_hss:D \textcdot \tex_hss:D }
+\NewDocumentCommand \cdotfill { }
+  {
+    \tex_leaders:D
+      \hbox_to_wd:nn { .44em } { \tex_hss:D \textcdot \tex_hss:D }
+      \tex_hfill:D
+  }
 \cs_new_protected:Npn \@@_toc_label:nnn #1#2
   {
     \dim_set:Nn \l_tmpa_dim
@@ -1228,7 +1232,9 @@
 \captionsetup [ capbesidefloat ]
   { format = plain }
 \captionsetup [ rotfloat ]
-  { margin = 2\ccwd }
+  { margin = 4\ccwd }
+\captionsetup [ floatrow ]
+  { margin = \c_zero_dim }
 
 \tl_gput_right:Nn \caption@prepareslc
   { \cs_set_eq:NN \note \use_none:n }
@@ -1554,6 +1560,11 @@
   { \tl_clear:N " }
 \AtBeginDocument { \char_set_catcode_active:N \" }
 \group_end:
+
+\DeclareExpandableDocumentCommand \@@_pdfstring_cr:w { s o m }
+  { #3 }
+\pdfstringdefDisableCommands
+  { \cs_set_eq:NN \\ \@@_pdfstring_cr:w }
 
 \NewDocumentCommand \aitem { u \> }
   { \item \alignbox { \l_@@_alignbox_width_tl } { #1 } }

@@ -72,7 +72,7 @@
 %  { \input #1 \relax }
 %  {
 %    \@pushfilename
-%    \xdef \@currname {#2}
+%    \xdef \@currname {#1}
 %    \input #1 \relax
 %    \@popfilename
 %  }
@@ -271,6 +271,13 @@
         Keywords = { 哥德尔 , ~ 艾舍尔 , ~ 巴赫 } ,
         Creator = XeLaTeX ~ + ~ xeCJK ~ + ~ CTeX ,
       } ,
+  }
+
+\use:x
+  {
+    \ctex_patch_cmd:Nnn \exp_not:N \hyxmp@text@resource
+      { \c_right_brace_str \c_space_tl }
+      { \c_right_brace_str }
   }
 
 \bookmarksetup
@@ -1198,6 +1205,12 @@
       \@starttoc { toc }
     \group_end:
   }
+
+\ctex_appto_cmd:NnnTF \window
+  { \ExplSyntaxOff }
+  { \if@nobreak \@nobreakfalse \fi }
+  { }
+  { \ctex_patch_failure:N \window }
 
 \cs_set_protected:Npn \caption@@@addcontentsline #1#2#3#4
   { \addcontentsline {#1} {#2} { {#3} {#4} } }

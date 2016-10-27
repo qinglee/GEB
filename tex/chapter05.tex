@@ -95,7 +95,7 @@
 
 \begin{figure}
 %\includegraphics{img_027.png}
-\tikzset{RE/.style={  arrow decoration,
+\tikzset{RE/.style={arrow decoration,
   node distance=8mm and 8mm,
   every node/.style={draw, font=\small, inner sep=2pt}}}
 \begin{subfigure}{\linewidth}\centering
@@ -106,13 +106,13 @@
 \node (D) [right= of C]{形容词};
 \node (E) [right= of D]{名词};
 \node[circle, inner sep=1pt] (F) [right= of E]{结束};
-\path (A) edge[postaction=decorate] (B)
-      (B) edge[postaction=decorate] (C)
-      (C) edge[postaction=decorate] (D)
-      (D) edge[postaction=decorate] (E)
-      (E) edge[postaction=decorate] (F)
-      (D) edge[postaction=decorate,
-                below, out=320, in=215, loop, distance=5mm, ] (D);
+\path[every edge/.style={draw,postaction=decorate}]
+  (A) edge (B)
+  (B) edge (C)
+  (C) edge (D)
+  (D) edge (E)
+  (E) edge (F)
+  (D) edge[below, out=320, in=215, loop, distance=5mm, ] (D);
 \draw[rounded corners=10pt, postaction=decorate]
   (A) -- ($(A) + (5mm, 7mm)$) -- ($(D) + (-5mm, 7mm)$) -- (D.north);
 \draw[rounded corners=10pt, postaction=decorate]
@@ -134,16 +134,17 @@
 \node (H) [below right = of A, yshift=-5mm, xshift=2mm] {介词};
 \node (I) at ({$(G)!.5!(H)$} -| C) {豪华名词};
 \node (J) at (I -| D) {\hbox{“的”\unskip}};
-\path (A) edge[postaction=decorate, bend left] (B.west)
-          edge[postaction=decorate, bend right=15] (G.west)
-          edge[postaction=decorate, bend right] (H.west)
-          edge[postaction=decorate] (E)
-      (B) edge[postaction=decorate] (C)
-      (C) edge[postaction=decorate] (D)
-      (D.east) edge[postaction=decorate, bend left] (E.north)
-      (E) edge[postaction=decorate] (F)
-      (I) edge[postaction=decorate] (J)
-      (J) edge[postaction=decorate, bend right] (E.south);
+\path[every edge/.style={draw,postaction=decorate}]
+  (A) edge[bend left] (B.west)
+      edge[bend right=15] (G.west)
+      edge[bend right] (H.west)
+      edge (E)
+  (B) edge (C)
+  (C) edge (D)
+  (D.east) edge[bend left] (E.north)
+  (E) edge (F)
+  (I) edge (J)
+  (J) edge[bend right] (E.south);
 \draw[rounded corners=5pt, postaction=decorate]
   (G) -| (I.north);
 \draw[rounded corners=5pt, postaction=decorate]
@@ -188,7 +189,7 @@
 
 \begin{figure}
 %\includegraphics{img_028.png}
-\tikzset{RE/.style={  arrow decoration,
+\tikzset{RE/.style={arrow decoration,
   node distance=8mm and 8mm,
   every node/.style={draw, font=\small, inner sep=2pt}}}
 \sbox8{%
@@ -203,16 +204,17 @@
 \node (H) [below right = of A, yshift=-5mm, xshift=2mm] {\phantom{介词}};
 \node (I) at ({$(G)!.5!(H)$} -| C) {\phantom{豪华名词}};
 \node (J) at (I -| D) {\phantom{\hbox{“的”\unskip}}};
-\path (A) edge[postaction=decorate, bend left] (B.west)
-          edge[postaction=decorate, bend right=15] (G.west)
-          edge[postaction=decorate, bend right] (H.west)
-          edge[postaction=decorate] (E)
-      (B) edge[postaction=decorate] (C)
-      (C) edge[postaction=decorate] (D)
-      (D.east) edge[postaction=decorate, bend left] (E.north)
-      (E) edge[postaction=decorate] (F)
-      (I) edge[postaction=decorate] (J)
-      (J) edge[postaction=decorate, bend right] (E.south);
+\path[every edge/.style={draw,postaction=decorate}]
+  (A) edge[bend left] (B.west)
+      edge[bend right=15] (G.west)
+      edge[bend right] (H.west)
+      edge (E)
+  (B) edge (C)
+  (C) edge (D)
+  (D.east) edge[bend left] (E.north)
+  (E) edge (F)
+  (I) edge (J)
+  (J) edge[bend right] (E.south);
 \draw[rounded corners=5pt, postaction=decorate]
   (G) -| (I.north);
 \draw[rounded corners=5pt, postaction=decorate]
@@ -233,16 +235,17 @@
 \node (H) [below right = of A, xshift=2mm, yshift=-5mm] {介词};
 \node (I) at ({$(G)!.5!(H)$} -| C) {豪华名词};
 \node (J) at (I -| D) {\hbox{“的”\unskip}};
-\path (A) edge[postaction=decorate, bend left] (B.west)
-          edge[postaction=decorate, bend right=15] (G.west)
-          edge[postaction=decorate, bend right] (H.west)
-          edge[postaction=decorate] (E)
-      (B) edge[postaction=decorate] (C)
-      (C) edge[postaction=decorate] (D)
-      (D.east) edge[postaction=decorate, bend left] (E.north)
-      (E) edge[postaction=decorate] (F)
-      (I) edge[postaction=decorate] (J)
-      (J) edge[postaction=decorate, bend right] (E.south);
+\path[every edge/.style={draw,postaction=decorate}]
+  (A) edge[bend left] (B.west)
+      edge[bend right=15] (G.west)
+      edge[bend right] (H.west)
+      edge (E)
+  (B) edge (C)
+  (C) edge (D)
+  (D.east) edge[bend left] (E.north)
+  (E) edge (F)
+  (I) edge (J)
+  (J) edge[bend right] (E.south);
 \draw[rounded corners=5pt, postaction=decorate]
   (G) -| (I.north);
 \draw[rounded corners=5pt, postaction=decorate]
@@ -619,16 +622,11 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
 让我们更具体一点。我们只限于讨论两种粒子：电子和光子。不过还要附带上电子的反粒子——正电子（光子的反粒子是它自己）。首先，设想一下在一个乏味的世界中裸电子要从A点传到B点，就像芝诺在我那《三部创意曲》里所做的那样。一个物理学家会画出这样一个图：
 \begin{center}
 %\includegraphics{img_035-1.png}
-\begin{tikzpicture}
-\begin{feynman}
-\vertex (a);
-\vertex[right=5cm of a] (b);
-\diagram* {
-  (a) --[fermion] (b)
-};
-\fill (a) circle (.5mm);
-\fill (b) circle (.5mm);
-\end{feynman}
+\begin{tikzpicture}[radius=.05]
+\fill (0,0) circle coordinate(a)
+      (5,0) circle coordinate(b);
+\path[fermion edge]
+  (a) edge[draw] (b);
 \end{tikzpicture}
 \end{center}
 
@@ -637,62 +635,50 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
 现在让我们“打开”电磁相互作用的开关，让电子和光子相互作用。虽然光子没出现，还是有一些很有价值的结果，即使是在这么简单的轨道上。特别是，我们的电子现在变得能够放射、吸收“虚光子”——出现之后还未被看到就消失掉的光子。我们这样表示这个过程：
 \begin{center}
 %\includegraphics{img_035-2.png}
-\begin{tikzpicture}
-\begin{feynman}
-\vertex (a);
-\vertex[right=5cm of a] (b);
-\vertex[right=1cm of a] (c);
-\vertex[left=1cm of b] (d);
-\diagram* {
-  {[edges=fermion]
-    (a) -- (c) -- (d) -- (b)
-  },
-  (c) --[photon, half left] (d)
-};
-\fill (a) circle (.5mm);
-\fill (b) circle (.5mm);
-\end{feynman}
+\begin{tikzpicture}[radius=.05]
+\fill (0,0) circle coordinate(a)
+      (5,0) circle coordinate(b);
+\path (a) +(1,0)  coordinate(c)
+      (b) +(-1,0) coordinate(d);
+\path[fermion edge]
+  (a) edge[draw] (b)
+      edge (c)
+  (d) edge (b);
+\path[photon edge]
+  (c) edge[half left] (d);
 \end{tikzpicture}
 \end{center}
 当我们的电子传播时，它可以一个接一个地放射和再吸收光子，它甚至可以嵌套这一过程，如下所示：
 \begin{center}
 %\includegraphics{img_035-3.png}
-\begin{tikzpicture}
-\begin{feynman}
-\vertex (a);
-\vertex[right=5cm of a] (b);
-\vertex[right=1cm of a] (c);
-\vertex[left=1cm of b] (d);
-\vertex[right=.7cm of c] (e);
-\vertex[left=.7cm of d] (f);
-\diagram* {
-  {[edges=fermion]
-    (a) -- (c) -- (d) -- (b)
-  },
-  (c) --[photon, half left] (d),
-  (e) --[photon, half left] (f)
-};
-\fill (a) circle (.5mm);
-\fill (b) circle (.5mm);
-\end{feynman}
+\begin{tikzpicture}[radius=.05]
+\fill (0,0) circle coordinate(a)
+      (5,0) circle coordinate(b);
+\path (a) +(1,0)   coordinate(c)
+      (b) +(-1,0)  coordinate(d)
+      (c) +(.7,0)  coordinate(e)
+      (d) +(-.7,0) coordinate(f);
+\path[fermion edge]
+  (a) edge[draw] (b)
+      edge (c)
+  (d) edge (b);
+\path[photon edge]
+  (c) edge[half left] (d)
+  (e) edge[half left] (f);
 \end{tikzpicture}
 \end{center}
 与这些图案——“费因曼图案”——相对应的数学表达式很容易写下来，但它们比裸电子的表达式难计算一些。真正使事情复杂化的是光子（实的或虚的）能在瞬间里衰变成一对正负电子。然后这一对电子相互湮灭，原来的光子魔术般又出现了。下面是这种过程的示意：
 \begin{center}
 %\includegraphics{img_035-4.png}
 \begin{tikzpicture}
-\begin{feynman}
-\vertex (a);
-\vertex[right=5cm of a] (b);
-\vertex[right=15mm of a] (c);
-\vertex[left=15mm of b] (d);
-\diagram* {
-  (a) --[photon] (c),
-  (d) --[photon] (b),
-  (c) --[fermion, half left] (d),
-  (d) --[fermion, half left] (c)
-};
-\end{feynman}
+\path (0,0) coordinate(a)
+      (5,0) coordinate(b)
+      (a) +(1.5,0)  coordinate(c)
+      (b) +(-1.5,0) coordinate(d)
+  (a) edge[photon] (c)
+  (d) edge[photon] (b)
+  (c) edge[fermion, half left] (d)
+  (d) edge[fermion, half left] (c);
 \end{tikzpicture}
 \end{center}
 电子有一个指向右边的箭头，而正电子的箭头是指向左边。
@@ -701,56 +687,49 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
 
 \begin{figure}
 %\includegraphics{img_035-5.png}
-\begin{tikzpicture}
-\begin{feynman}
-\vertex[label=left:A] (a);
-\vertex[right=15mm of a] (b);
-\vertex[right=15mm of b] (c);
-\vertex (d) at ($(c)+(-60:12mm)$);
-\vertex (e) at ($(d)+(-120:15mm)$);
-\vertex (f) at ($(e)+(-60:15mm)$);
-\vertex[right=8mm of f] (g);
-\vertex[right=8mm of g] (h);
-\vertex (i) at ($(h)+(45:8mm)$);
-\vertex (j) at ($(i)+(-45:8mm)$);
-\vertex[right=8mm of j] (k);
-\vertex[right=15mm of k, label=right:B] (l);
-\vertex[above=8mm of i] (m);
-\vertex (n) at ($(m)+(45:8mm)$);
-\vertex (o) at ($(n)+(135:8mm)$);
-\vertex (p) at ($(o)+(-135:8mm)$);
-\vertex (q) at ($(d)+(-60:15mm)$);
-\vertex[left=4mm of q] (r);
-\vertex[right=4mm of q] (s);
-\vertex[above=6mm of q] (t);
-\vertex[below=6mm of q] (u);
-
-\diagram* {
-  {[edges=fermion]
-    (a) -- (b) -- (c) -- (d) -- (e)
-        -- (f) -- (g) -- (h) -- (i)
-        -- (j) -- (k) -- (l)
-    (m) -- (n) -- (o) -- (p) -- (m)
-    (t) --[bend right] (r)
-    (u) --[bend right] (s)
-  },
-  {[edges=photon]
-    (b) -- (e),
-    (m) -- (i),
-    (n) -- (p),
-    (r) -- (s),
-    (d) -- (t),
-    (u) -- (f),
-    (c) --[bend left=75] (o),
-    (h) --[half right] (j),
-    (g) --[half right] (k)
-  },
-  (r) --[bend right] (u),
-  (s) --[bend right] (t),
-};
-\fill (a) circle (.5mm);
-\fill (l) circle (.5mm);
-\end{feynman}
+\begin{tikzpicture}[radius=.05]
+\fill (0,0) coordinate[label=left:A](a) circle;
+\draw (a) -- ++(15mm,0)    coordinate(b)
+          -- ++(15mm,0)    coordinate(c)
+          -- ++(-60:12mm)  coordinate(d)
+          -- ++(-120:15mm) coordinate(e)
+          -- ++(-60:15mm)  coordinate(f)
+          -- ++(8mm,0)     coordinate(g)
+          -- ++(8mm,0)     coordinate(h)
+          -- ++(45:8mm)    coordinate(i)
+          -- ++(-45:8mm)   coordinate(j)
+          -- ++(8mm,0)     coordinate(k)
+          -- ++(15mm,0)    coordinate[label=right:B](l)
+      (i) +(0,8mm) coordinate(m)
+      (m) -- ++(45:8mm)   coordinate(n)
+          -- ++(135:8mm)  coordinate(o)
+          -- ++(-135:8mm) coordinate(p) --cycle;
+\path (d) ++(-60:15mm) coordinate(q)
+             +(-4mm,0) coordinate(r)
+             +(4mm,0)  coordinate(s)
+             +(0,6mm)  coordinate(t)
+             +(0,-6mm) coordinate(u);
+\fill (l) circle;
+\path[fermion edge]
+  (t) edge[draw,bend right] (r)
+  (u) edge[draw,bend right] (s)
+  foreach \x [remember=\x as \lastx (initially a)] in {b,c,...,l}
+    { (\lastx) edge (\x) }
+  foreach \x [remember=\x as \lastx (initially m)] in {n,o,p,m}
+    { (\lastx) edge (\x) };
+\path
+  (r) edge[bend right] (u)
+  (s) edge[bend right] (t);
+\path[photon edge]
+  (b) edge (e)
+  (m) edge (i)
+  (n) edge (p)
+  (r) edge (s)
+  (d) edge (t)
+  (u) edge (f)
+  (c) edge[bend left=75] (o)
+  (h) edge[half right] (j)
+  (g) edge[half right] (k);
 \end{tikzpicture}
 \caption[一幅复杂的费因曼图案。]
   {一个费因曼图案，表示出重正化了的电子从A到B的传播。图中，时间从左向右增加，因此，在电子的箭头指向左边的片段中，它的移动是“与时间反向的”。更为直观的说法是，反电子（正电子）在正向的（即正常的）时间中移动。光子的反粒子是它们自己，因此它们的曲线无须箭头。}
@@ -760,16 +739,12 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
 \begin{center}
 %\includegraphics{img_035-6.png}
 \begin{tikzpicture}
-\begin{feynman}
-\vertex (a);
-\vertex[right=5cm of a] (b);
-\vertex[right=15mm of a] (c);
-\vertex[left=15mm of b] (d);
-\diagram* {
-  (a) --[photon] (b),
-  (c) --[fermion, half left] (d)
-};
-\end{feynman}
+\path (0,0) coordinate(a)
+      (5,0) coordinate(b)
+      (a) +(1.5,0)  coordinate(c)
+      (b) +(-1.5,0) coordinate(d)
+  (a) edge[photon] (b)
+  (c) edge[fermion, half left] (d);
 \end{tikzpicture}
 \end{center}
 你可以称之为非“良构”的费因曼图案。这些语法来自物理学基本定律，如能量守恒、电荷守恒等等。而且，正像人类语言的语法那样，这种语法的结构是递归的，允许很深的结构嵌套。完全可能画出一组递归迁移网来定义电磁相互作用的“语法”。当裸电子和裸光子允许以这些随意缠绕的方式相互作用时，结果是形成重正化的电子与光子。这样，要理解实际的、物质的电子是怎样从A传播到B的，物理学家必须能对无穷多不同可能的涉及虚粒子的图案取某种平均。芝诺的话好像应验了！

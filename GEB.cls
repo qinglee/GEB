@@ -65,7 +65,6 @@
     rerunfilecheck ,
     hyperxmp ,
     tikz ,
-    tikz-feynman ,
   }
 
 %\ctex_patch_cmd:Nnn \pgfutil@InputIfFileExists
@@ -77,36 +76,7 @@
 %    \@popfilename
 %  }
 
-\tl_clear:N \tikzfeynman@luatex@required@path
-\tl_clear:N \tikzfeynman@luatex@required@key
 \ExplSyntaxOff
-
-\tikzfeynmanset{
-  compat=1.1.0,
-  warn luatex=false,
-  with arrow/.style={
-    /tikz/decoration={
-      markings,
-      mark=at position #1 with {
-        \arrow[xshift=1mm]{Stealth}
-      },
-    },
-    /tikz/postaction={
-      /tikz/decorate=true,
-    },
-  },
-  with reversed arrow/.style={
-    /tikz/decoration={
-      markings,
-      mark=at position #1 with {
-        \arrowreversed[xshift=1mm]{Stealth}
-      },
-    },
-    /tikz/postaction={
-      /tikz/decorate=true,
-    },
-  },
-}
 
 \usetikzlibrary
   {
@@ -119,8 +89,10 @@
     arrows.meta ,
     shapes.misc ,
     shapes.multipart ,
-    decorations.markings ,
-    decorations.pathreplacing ,
+    shapes.geometric ,
+    decorations.markings,
+    decorations.pathmorphing,
+    decorations.pathreplacing
   }
 
 \tikzset
@@ -130,13 +102,93 @@
     arrow decoration/.style={
       /tikz/decoration={
         markings,
-        mark=at position #1 with {
-          \arrow[xshift=1mm]{Stealth}
-        },
+        mark=at position #1 with {\arrow[xshift=1mm]{Stealth}}
       }
     },
     arrow decoration/.default=.5,
+    half left/.style={
+      /tikz/bend left=90,
+      /tikz/looseness=1.5
+    },
+    half right/.style={
+      /tikz/bend right=90,
+      /tikz/looseness=1.5
+    },
+    fermion/.style={%
+      /tikz/arrow decoration,
+      /tikz/postaction={
+        /tikz/decorate=true
+      }
+    },
+    photon/.style={
+      /tikz/draw=none,
+      /tikz/decoration={
+        complete sines,
+        amplitude=1mm,
+        segment length=2mm
+      },
+      /tikz/postaction={
+        /tikz/draw,
+        /tikz/line join=round,
+        /tikz/decorate=true
+      }
+    },
+    fermion edge/.style={
+      /tikz/every edge/.style={fermion}
+    },
+    photon edge/.style={
+      /tikz/every edge/.style={photon}
+    },
   }
+
+%% Complete sines replaces the path with a whole number of sine waves.
+%% Thanks to http://tex.stackexchange.com/a/134516/26980
+\pgfdeclaredecoration{complete sines}{initial}
+{
+  %% Begin by computing the overall path length and find how many sine waves we
+  %% can fit in.  Nothing happens beyond the computation.
+  \state{initial}[
+    width=+0pt,
+    next state=move,
+    persistent precomputation={
+      \def\tikzfeynman@cs@angle@step{30}
+      \def\tikzfeynman@cs@current@angle{0}
+      \edef\tikzfeynman@cs@points@per@step{\the\dimexpr
+        \pgfdecoratedinputsegmentlength
+        / \numexpr\dimexpr\pgfdecoratedinputsegmentlength\relax/
+                  \dimexpr\pgfdecorationsegmentlength\relax\relax
+        / 360
+        * \tikzfeynman@cs@angle@step\relax}
+    },
+  ]{}
+  %% Move to the origin to the path
+  \state{move}[
+    width=+\tikzfeynman@cs@points@per@step,
+    next state=draw
+  ]{
+    \pgfpathmoveto{\pgfpointorigin}
+  }
+  %% Draw the sine wave itself.  This computes the value every 30 degrees and draws straight edges.
+  \state{draw}[
+    width=+\tikzfeynman@cs@points@per@step,
+    switch if less than=1.25*\tikzfeynman@cs@points@per@step to final, % <- bit of a hack
+    persistent postcomputation={
+      \pgfmathmod{\tikzfeynman@cs@current@angle+\tikzfeynman@cs@angle@step}{360}
+      \let\tikzfeynman@cs@current@angle=\pgfmathresult
+    },
+  ]{
+    \pgfmathsin{\tikzfeynman@cs@current@angle}
+    \dimen@=\pgfdecorationsegmentamplitude\relax
+    \dimen@=\dimexpr\pgfmathresult\dimen@/2\relax
+    \tikz@decoratepathfalse
+    \pgfpathlineto{\pgfqpoint{0pt}{\dimen@}}
+  }
+  \state{final}{
+    \ifdim\pgfdecoratedremainingdistance>\z@
+      \pgfpathlineto{\pgfpointdecoratedpathlast}
+    \fi
+  }
+}
 
 \ExplSyntaxOn
 
@@ -1204,6 +1256,7 @@
   { captionskip = \intextsep }
 \newfloatcommand { figurebox } { figure } [ \nocapbeside \capbot ]
 \newfloatcommand { tablebox }  { table }  [ \nocapbeside \captop ] [ \FBwidth ]
+\DeclareFloatSeparators { mqquad } { \skip_horizontal:n { -2em } }
 
 \DeclareCaptionFont { kaishu } { \kaishu }
 \DeclareCaptionLabelFormat { plain } { \bothIfFirst {#1} { \, } #2 }

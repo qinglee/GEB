@@ -60,6 +60,7 @@
     rotating ,
     subcaption ,
     floatrow ,
+    picinpar ,
     hyperref ,
     bookmark ,
     rerunfilecheck ,
@@ -1299,6 +1300,9 @@
       { \caption@startanchor \@currentHref }
       { \caption@anchor@n { \caption@startanchor \@currentHref } }
     \ctex_patch_cmd:Nnn \sidewaysfigure
+      { \@float }
+      { \@saveanchortrue \@float }
+    \ctex_patch_cmd:Nnn \sidewaystable
       { \@float }
       { \@saveanchortrue \@float }
     \ctex_patch_cmd:Nnn \end@rotfloat

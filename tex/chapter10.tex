@@ -101,20 +101,28 @@
 
 一个典型的字中大概有$36$位左右。\note{制作者注：现代计算机字长一般为$2$的整数次方，即$16$位、$32$位、$64$位等。}
 
-\par\nointerlineskip\medskip
-\begin{center}
-\linespread{1.1}\footnotesize
-\setlength\tabcolsep{1.1pt}
-\begin{tabular}{|*{36}{c|}}
-\hline
-O&O&X&O&X&X&X&O&X&O&O&X&X&O&O&X&O&X&
-X&X&X&X&X&O&X&X&O&O&X&X&X&O&O&O&O&O\\
-\hline
-\end{tabular}\\
-\medskip
-——一个$36$位的字——
-\end{center}
-\par\nointerlineskip\medskip
+\begin{figure}
+\begin{tikzpicture}[thin,
+  every node/.style={inner sep=0mm,font=\footnotesize,anchor=center}]
+\edef\SEP{\the\dimexpr(\linewidth-1pt)/36\relax}
+\edef\HSEP{\the\dimexpr\SEP/2\relax}
+\matrix[matrix of nodes,column sep={\SEP,between origins}]
+{
+  O&O&X&O&X&X&X&O&X&O&O&X&X&O&O&X&O&X&
+  X&X&X&X&X&O&X&X&O&O&X&X&X&O&O&O&O&O\\
+};
+\draw (0,\HSEP) -- (0,-\HSEP)
+  foreach \x in {1,2,...,17}
+    {
+      \pgfextra {\edef\x{\the\dimexpr\SEP*\x\relax}}
+      (\x,\HSEP) -- (\x,-\HSEP)
+      (-\x,\HSEP) -- (-\x,-\HSEP)
+    };
+\edef\x{\the\dimexpr\SEP*18\relax}
+\draw (-\x,\HSEP) rectangle (\x,-\HSEP);
+\end{tikzpicture}
+\caption*{——一个$36$位的字——}
+\end{figure}
 
 从物理上看，一个位不过是一种磁性“开关”，它可以处于两种状态。你不妨把这两种状态称为“开”和“关”，或“X”和“O”，或“$1$”和“$0$”……第三种是最常用的。这种表示很方便，但也可能使人误解，以为计算机说到底是存储数字的。这是错的。三十六个位组成的集合不一定要被想象成数字，正像一角钱不一定要被想象成一根冰棍的价格。钱可以有各种不同的用途，这取决你怎样使用它。同样，存储器中的一个字也可以有不同的功能。当然，有时这$36$位确实是表示了一个二进制数。另一些时候它们也可能是表示一个电视屏幕上的$36$个点，或文章中的一个词。存储器中的一个字应当如何理解，这完全取决于这个字在程序中所扮演的角色。当然，它也可能扮演多种角色——像卡农曲中的一个音符一样。
 

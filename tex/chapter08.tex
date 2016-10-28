@@ -517,7 +517,7 @@ $a$是一个变元。如果我们不限于简朴版本，那么$b$，$c$，$d$�
 这些规则能够为我们提供极其丰富的各式各样的定理。比如，下列推导就产生出一些相当基本的定理：
 
 \begin{tabbing*}
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall a:\forall b:(a+Sb)=S(a+b)$ \>公理3\\
 $\forall b:(S0+Sb)=S(S0+b)$         \>特称（$S0$对$a$）\\
 $(S0+S0)=S(S0+0)$                   \>特称（$0$对$b$）\\
@@ -532,7 +532,7 @@ $(S0+S0)=SS0$                      \>传递（第3、6行）
 \end{center}
 
 \begin{tabbing*}
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall a:\forall b:(a\cdot Sb)=((a\cdot b)+a)$ \>公理5\\
 $\forall b:(S0\cdot Sb)=((S0\cdot b)+S0)$        \>特称（$S0$对$a$）\\
 $(S0\cdot S0)=((S0\cdot 0)+S0)$                  \>特称（$0$对$b$）\\
@@ -554,7 +554,7 @@ $(S0\cdot S0)=S0$                                \>传递（第3、13行）
 一个令人感兴趣的问题是：“怎样为串$0=0$做一个推导？”看起来，要走的路线显然会是先推出串$\forall a:a=a$，然后用特称。那么，下面这个$\forall a:a=a$的“推导”怎么样……有什么问题吗？你能把它修补好吗？
 
 \begin{tabbing*}
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall a:(a+0)=a$ \>公理2\\
 $\forall a:a=(a+0)$ \>对称\\
 $\forall a:a=a$     \>传递（第2，1行）
@@ -566,7 +566,7 @@ $\forall a:a=a$     \>传递（第2，1行）
 现在让我们来看为什么对特称和概括二者都有加限制的必要性。下面有两个推导，两者当中都有一个限制被违反了。看看由此产生的灾难性后果：
 
 \begin{tabbing*}
-\qquad\qquad \= \quad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \quad \= \tabindent{-2em} \= \+\kill
 $[$ \>                     \>推入\+\\
   $a=0$                    \>前提\\
   $\forall a:a=0$          \>概括（错了）\\
@@ -582,7 +582,7 @@ $S0=0$ \>                  \>分离（第9，8行）
 这是第一个灾难。另一个灾难是由于用错了特称而产生的。
 
 \begin{tabbing*}
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall a:a=a$             \>　以前的定理\\
 $Sa=Sa$                     \>　特称\\
 $\exists b:b=Sa$            \>　存在\\
@@ -653,7 +653,7 @@ $Sa=Sa$ \>　特称（错了！）
 在我们谈过的那个特定的金字塔里有一个模式，可以从下面的推导中的4--9行获得。
 
 \begin{tabbing*}
-\qquad\qquad \= \quad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \quad \= \tabindent{-2em} \= \+\kill
 $\forall a:\forall b:(a+Sb)=S(a+b)$ \> \>公理3\\
 $\forall b:(0+Sb)=S(0+b)$ \>           \>特称\\
 $(0+Sb)=S(0+b)$ \>                     \>特称\\
@@ -682,7 +682,7 @@ X\{a\}
 \end{thm}
 把皮亚诺第五公设纳入TNT里来的努力最多也就能做到这个地步。现在让我们用它来证明$\forall a:(0+a)=a$的确是一个TNT定理。我们先用幻想规则从上面推导中的那个幻想里出来，得到：
 \begin{tabbing*}[]
-\qquad\qquad \= \quad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \quad \= \tabindent{-2em} \= \+\kill
 $＜(0+b)=b→(0+Sb)=Sb＞$ \>           \>幻想规则\\
 $\forall b:＜(0+b)=b→(0+Sb)-Sb＞$ \> \> 概括
 \end{tabbing*}
@@ -697,7 +697,7 @@ $\forall b:＜(0+b)=b→(0+Sb)-Sb＞$ \> \> 概括
 
 现在我想介绍一个TNT中较长的推导，以便你能够看到这种推导是什么样的。这个推导证明了一个虽然简单，但却是很重要的数论事实。
 \begin{tabbing*}
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall a:\forall b:(a+Sb)=S(a+b)$ \>公理3\\
 $\forall b:(d+Sb)=S(d+b)$ \>特称\\
 $(d+SSc)=S(d+Sc)$ \>特称\\
@@ -735,7 +735,7 @@ $\forall d:(d+S0)=(Sd+0)$ \>概括
 * \quad * \quad * \quad * \quad *
 \end{center}
 \begin{tabbing*}[]
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall c:\forall d:(d+Sc)=(Sd+c)$ \>归纳（18、27行）
 \end{tabbing*}
 \begin{center}
@@ -743,7 +743,7 @@ $\forall c:\forall d:(d+Sc)=(Sd+c)$ \>归纳（18、27行）
 * \quad * \quad * \quad * \quad *
 \end{center}
 \begin{tabbing*}[]
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall b:(c+Sb)=S(c+b)$ \>特称（第1行）\\
 $(c+Sd)=S(c+d)$ \>特称\\
 $\forall b:(d+Sb)=S(d+b)$ \>特称（第1行）\\
@@ -776,7 +776,7 @@ $\forall d:＜\forall c:(c+d)=(d+c)→\forall c:(c+Sd)=(Sd+c)＞$\\
 * \quad * \quad * \quad * \quad *
 \end{center}
 \begin{tabbing*}[]
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $(c+0)=c$ \>特称（第20行）\\
 $\forall a:(0+a)=a$ \>已有的定理\\
 $(0+c)=c$ \>特称\\
@@ -789,7 +789,7 @@ $\forall c:(c+0)=(0+c)$ \>概括
 * \quad * \quad * \quad * \quad *
 \end{center}
 \begin{tabbing*}[]
-\qquad\qquad \= \tabindent{-2em} \= \+\kill
+\indent\indent \= \tabindent{-2em} \= \+\kill
 $\forall d:\forall c:(c+d)=(d+c)$ \>归纳（49、55行）
 \end{tabbing*}
 

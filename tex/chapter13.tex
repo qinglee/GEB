@@ -111,7 +111,7 @@ BlooP、FlooP和GlooP不是神话中的巨人，不是唐老鸭的小侄子们�
 \newcommand*\QUITBLOCK[1]{\inst{QUIT} \inst{BLOCK} $#1$;}
 
 \begin{tabbing}
-\qquad \= \qquad \= \tabindent{0em} \= \kill
+\indent \= \qquad \= \tabindent{0em} \= \kill
 \PROCEDURE{TWO-TO-THE-THREE-TO-THE}{N} \\
  \> \>                                    \CM 定义过程名和参数$N$\\
 \BEGINBLOCK{0} \> \>                      \CM 第$0$块开始 \+\\
@@ -153,7 +153,7 @@ BlooP、FlooP和GlooP不是神话中的巨人，不是唐老鸭的小侄子们�
 现在让我们看另一个过程，它将展示BlooP的其它特点，这些特点使该语言更加具有一般性。如果只会做加法，你怎样才能求出$M-N$的值呢？窍门在于把各种各样的数和$N$相加，直至你发现一个与$N$的和等于$M$的数为止。但是如果$M$小于$N$会发生什么情况呢？如果我们想从$2$中取走$5$会怎样？这在自然数域中是没有答案的。但我们希望我们的BlooP过程不管怎样应当给出一个答案——比如说$0$。下面就是一个做减法的BlooP过程：
 
 \begin{tabbing}
-\qquad \= \qquad \= \tabindent{-1em} \= \kill
+\indent \= \qquad \= \tabindent{-1em} \= \kill
 \PROCEDURE{MINUS}{M,N} \> \>    \CM 定义过程名和变量$M$ \\
 \BEGINBLOCK{0} \> \>            \CM 第$0$块开始 \+\\
   \IFTHEN{M<N} \>               \CM 若$M<N$，则：\\
@@ -187,7 +187,7 @@ BlooP的另一个特点是：某些特定过程可以用\inst{YES}或\inst{NO}�
 让我们看一个例子，其中把BlooP的最后这两个特点表现在一个算法里。这个算法要测试一个函数的自变量是否是素数。
 
 \begin{tabbing}
-\qquad \= \qquad \= \tabindent{0em} \= \kill
+\indent \= \qquad \= \tabindent{0em} \= \kill
 \PROCEDURE{PRIME}{N} \> \>                     \CM 定义过程名和变量$N$ \\
 \BEGINBLOCK{0} \> \>                           \CM 第$0$块开始\+\\
   \IFTHEN{N=0} \>                              \CM 若$N=0$，则：\\
@@ -253,7 +253,7 @@ BlooP的另一个特点是：某些特定过程可以用\inst{YES}或\inst{NO}�
 凭直觉就能看出哥德巴赫性质是原始递归的。为了使其明确化，这里有一个用BlooP写的过程定义，来显示如何测试这一性质是否存在：
 
 \begin{tabbing}
-\qquad \= \qquad \= \qquad \= \tabindent{0em} \= \kill
+\indent \= \qquad \= \qquad \= \tabindent{0em} \= \kill
 \PROCEDURE{GOLDBACH}{N} \>\>\>   \CM 定义过程名和变量$N$\\
 \BEGINBLOCK{0} \> \> \>                    \CM 第$0$块开始\+\\
   $\CELL(0)\impliedby 2$; \> \>            \CM 把$\CELL(0)$置成$2$\\

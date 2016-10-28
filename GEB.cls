@@ -48,7 +48,6 @@
     unicode-math ,
     xfrac ,
     xlop ,
-    marvosym ,
     chngcntr ,
     titleps ,
     enumitem ,
@@ -86,13 +85,13 @@
     arrows ,
     matrix ,
     positioning ,
-    intersections,
+    intersections ,
     arrows.meta ,
     shapes.misc ,
     shapes.multipart ,
     shapes.geometric ,
-    decorations.markings,
-    decorations.pathmorphing,
+    decorations.markings ,
+    decorations.pathmorphing ,
     decorations.pathreplacing
   }
 
@@ -1262,6 +1261,7 @@
     floatrowsep     = quad ,
     subfloatrowsep  = quad ,
     capbesidesep    = quad ,
+    floatHaslist    = true ,
     capbesideposition = { right , bottom }
   }
 \floatsetup [ figure ] { capposition  = bottom }
@@ -1305,28 +1305,21 @@
 
 \tl_gput_right:Nn \caption@prepareslc
   { \cs_set_eq:NN \note \use_none:n }
+\tl_gput_right:Nn \FR@loc@
+  { \cs_set_eq:NN \note \use_none:n }
 
-\AtBeginDocument { \@@_fix_sideways_anchor: }
-\cs_new_protected_nopar:Npn \@@_fix_sideways_anchor:
+\AtBeginDocument { \@@_patch_float_anchor: }
+\cs_new_protected_nopar:Npn \@@_patch_float_anchor:
   {
     \ctex_patch_cmd:Nnn \caption@start@
       { \caption@startanchor \@currentHref }
       { \caption@anchor@n { \caption@startanchor \@currentHref } }
-    \ctex_patch_cmd:Nnn \sidewaysfigure
-      { \@float }
-      { \@saveanchortrue \@float }
-    \ctex_patch_cmd:Nnn \sidewaystable
-      { \@float }
-      { \@saveanchortrue \@float }
-    \ctex_patch_cmd:Nnn \end@rotfloat
-      { \wd \rot@float@box \z@ }
-      {
-        \put@caption@anchor
-        \wd \rot@float@box \z@
-      }
   }
 \tl_gput_right:Nn \caption@subtypehook
   { \@saveanchorfalse }
+\tl_gput_right:Nn \@floatboxreset
+  { \@saveanchortrue }
+\cs_set_eq:NN \FR@flboxreset \@floatboxreset
 \cs_new_protected_nopar:Npn \@saveanchortrue
   { \cs_set_eq:NN \caption@anchor@n \@_save_caption_anchor:n }
 \cs_new_protected_nopar:Npn \@saveanchorfalse
@@ -1349,9 +1342,32 @@
   }
 \cs_new_protected_nopar:Npn \@@_put_caption_anchor:
   {
-    \box_use_clear:N \g_@@_caption_anchor_box
-    \nointerlineskip
+    \vbox_gset:Nn \@currbox
+      {
+        \box_use_clear:N \g_@@_caption_anchor_box
+        \nointerlineskip
+        \box_use_clear:N \@currbox
+      }
   }
+\ctex_preto_cmd:NnnTF \@largefloatcheck
+  { \ExplSyntaxOff }
+  { \put@caption@anchor }
+  { }
+  { \ctex_patch_failure:N \@largefloatcheck }
+
+\ctex_patch_cmd:Nnn \float@endH
+  { \vskip \intextsep }
+  { \addvspace \intextsep }
+\ctex_patch_cmd:Nnn \float@endH
+  { \vskip \intextsep }
+  {
+    \vskip \intextsep
+    \nointerlineskip
+    \if@nobreak \@nobreakfalse \fi
+  }
+\ctex_patch_cmd:Nnn \float@endH
+  { \box \@currbox }
+  { \put@caption@anchor \box \@currbox }
 
 %% <--- http://tex.stackexchange.com/a/40896
 \ctex_patch_cmd:Nnn \@addtocurcol
@@ -1382,7 +1398,8 @@
 \ctex_patch_cmd:Nnn \LT@start
   { \vskip \LTpre }
   { \nointerlineskip \vskip \LTpre }
-\ctex_appto_cmd:NnnTF \endlongtable { }
+\ctex_appto_cmd:NnnTF \endlongtable
+  { \ExplSyntaxOff }
   {
     \nointerlineskip
     \addtocounter { table } { \m@ne }
@@ -1396,7 +1413,7 @@
 \cs_new_protected_nopar:Npn \@@_endnote_chapter:
   {
     \@@_endnote_end:
-    \stepcounter { CHAPTER }
+    \setcounter { endnote } { \c_zero }
     \group_begin:
       \cs_set_eq:NN \protect \@unexpandable@protect
       \tl_gset:Nx \g_@@_current_chapter_tl
@@ -1543,8 +1560,7 @@
   }
 \iow_new:N \g_@@_endnote_iow
 \bool_new:N \g_@@_endnote_bool
-\newcounter { CHAPTER }
-\newcounter { endnote } [ CHAPTER ]
+\newcounter { endnote }
 \tl_gset:Nn \theendnote { \circedctr { endnote } }
 
 \newlist { entlist } { enumerate } { 1 }
@@ -1701,6 +1717,12 @@
 \NewEnviron { dnaseq } [1] [ \linewidth ]
   { \tex_noindent:D \exp_args:Nno \@@_dna_seq:nn {#1} { \BODY } }
 
+\newfontfamily \XITSmath { XITS ~ Math }
+\ProvideTextCommandDefault \textlcurvearrowdown
+  { \hmode@start@before@group { \XITSmath ^^^^2938 } }
+\ProvideTextCommandDefault \textrcurvearrowdown
+  { \hmode@start@before@group { \XITSmath ^^^^2939 } }
+
 \cs_new_protected_nopar:Npn \@@_dna_seq:nn #1#2
   {
     \vbox:n
@@ -1720,7 +1742,7 @@
             \smash
               {
                 \box_move_down:nn { \l_tmpa_dim }
-                  { \hbox_overlap_left:n { \LeftTorque \, } }
+                  { \hbox_overlap_left:n { \textrcurvearrowdown \, } }
               }
           }
         \hbox_set:Nn \l_@@_rmark_box
@@ -1728,7 +1750,7 @@
             \smash
               {
                 \box_move_down:nn { \l_tmpa_dim }
-                  { \hbox_overlap_right:n { \, \RightTorque } }
+                  { \hbox_overlap_right:n { \, \textlcurvearrowdown } }
               }
           }
         \@@_dna_seq:n {#2}

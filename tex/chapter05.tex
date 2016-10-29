@@ -417,15 +417,15 @@ child { node {2}
 \end{figure}
 
 这棵无穷树有着非常奇特的数学性质。从右边往上数是著名的斐波那契数列：
-\[
+\begin{center}
 \begin{tikzpicture}[inner sep=0pt]
-\matrix [matrix of math nodes, column sep=7pt, anchor=base]
+\matrix [matrix of math nodes, column sep=7pt]
   {
-     1, & 1, & 2, & 3, & 5, & 8, & 13, &
+     1, & 1,  & 2,  & 3,  & 5,   & 8,   & 13, &
     21, & 34, & 55, & 89, & 144, & 233, & \dotsc \\
   };
 \end{tikzpicture}
-\]
+\end{center}
 这是由比萨的列奥那多于1902年发现的，他是波那契奥[Bonaccio]的儿子，因此叫“斐利尤斯·波那契”[Filius Bonacci，拉丁语，意即波那契奥之子]或简称“斐波那契”。这些数可由一对方程极好地递归定义出来：
 \begin{align*}
 \fibo(n) & =\fibo(n-1)+\fibo(n-2) \quad \text{当$n>2$} \\
@@ -501,9 +501,9 @@ child { node {2}
 \end{align*}
 
 它使人想起斐波那契数的定义，在那里每一个新的值都是前面两个值的和——但这里不是紧挨着的前两个数的值。在这里，紧挨着的那前两个值是说明：往前数多少位，才能得到计算新值所要加起来的那两个数。前$17$个$\mQ$数排列如下：
-\[
-\begin{tikzpicture}[inner ysep=3pt, inner xsep=0pt, baseline=(E.north)]
-\matrix [matrix of math nodes, column sep=7pt, anchor=base]
+\begin{center}
+\begin{tikzpicture}[inner ysep=3pt, inner xsep=0pt]
+\matrix [matrix of math nodes, column sep=7pt]
   {
     1, & 1, & 2, & 3, & 3, & 4, & 5, &
     |(a)| 5, &
@@ -517,22 +517,22 @@ child { node {2}
 \settowidth\linewidth{$,$}
 \divide \linewidth 2\relax
 \edef\x{\endgroup
-  \noexpand\node (A) [below= 8pt of a, xshift=-\the\linewidth] {$5$};
-  \noexpand\node (B) [below= 8pt of b, xshift=-\the\linewidth] {$6$};
-}\x
+  \noexpand\path[every node/.style={xshift=-\the\linewidth}]}
+\x node (A) [below= 8pt of a] {$5$}
+   node (B) [below= 8pt of b] {$6$};
 \draw[->] (A) -- (A |- a.south);
 \draw[->] (B) -- (B |- b.south);
 \node at ($(A)!.5!(B)$) {$+$};
 \node (C) [right=0pt of B] {${}=\vphantom{1}$};
 \node (D) [right=0pt of C] {$11$};
-\node (E) [below=3pt of D, font=\footnotesize] {新值};
-\draw[decorate,decoration=brace]
+\node (E) [inner sep=0pt,below=6pt of D,font=\footnotesize] {新值};
+\draw[decorate,decoration={brace,raise=2pt}]
   (E.north west) -- (E.north east);
 \draw[decorate,decoration=brace]
   (d.south east) -- (c.south west)
   node [midway, below=3pt, font=\footnotesize] {向左移多少位};
 \end{tikzpicture}
-\]
+\end{center}
 要得到下一个数，向左（从省略号开始）分别数$10$个数和$9$个数，遇到$5$和$6$，如箭头所示。它们的和——$11$——给出了$\mQ(18)$这个新值。在这个奇怪的过程里，已知的一列$\mQ$数被用来扩展自身。这样得到的序列，如果温和点说，是杂乱无章的。走得越远，它变得越没有意义。这是那些非常奇特的情况之一，即一个多少是个自然的定义，导致一个令人极度困惑的现象：以很有秩序的方式制造出了混乱。人们很自然地会想到：表面上的混乱是否隐含着某种微妙的规律性。当然，根据定义是有规律性的。但有趣的是，是否有另一种刻划这个序列的方式——要是运气好的话，最好一个非递归的定义。
 
 \section{两个令人惊异的递归图}
@@ -549,9 +549,9 @@ child { node {2}
 第一个图形（\fig{32}）是一个函数的图形，这函数我称为$\INT(x)$。这里给出的是$x$处于$0$和$1$之间的情形，对于$x$处于其它任意一组整数$n$和$n+1$之间的情形，你只要找到$\INT(x-n)$，然后再加上$n$即可。你可以看到，这个图的结构是跳跃式的，由无数个弯曲的片段组成。这些片段离角落越近就越小——并且也越直。假如你仔细观察每个这样的小片段，你会发现实际上它是整个图形的一个副本，只是弯曲了！这意味着丰富的内容。其中之一是：$\INT$图恰恰是由它本身的一个个副本组成的，它们层层嵌套，以至无穷。如果你拿出图的一小部分，不管是多小的一部分，你其实是拿着整个图形的一个完整的副本——事实上，是无穷多个副本！
 
 $\INT$不是由别的，而是由它本身的一个个副本组成的，这一事实可能使你觉得它一定是短命的。它的定义似乎是循环的。它究竟是怎么开始的呢？这是件很有趣的事。最值得注意的是：如果向一个没见过$\INT$的人描述它那么仅仅说“它是由它本身的副本组成的”是不够的。事情的另一半——非递归的那一半——说明这些副本存在于正方形中的哪个地方、相对于整个图形它们是怎么变形的。只有把$\INT$的这两个方面结合起来，才能说明$\INT$的结构。这正像在斐波那契数的定义中一样，需要两条线索——一条线索定义递归，另一条定义“基底”（也就是最开始的值）。说得具体些就是：如果你设基础的值是$3$而不是$1$，就会产生完全不同的序列，即卢卡斯序列：
-\[
-\begin{tikzpicture}[inner ysep=3pt, inner xsep=0pt, baseline=(O.center)]
-\matrix [matrix of math nodes, column sep=7pt, anchor=base]
+\begin{center}
+\begin{tikzpicture}[inner ysep=3pt, inner xsep=0pt]
+\matrix [matrix of math nodes, column sep=7pt]
   {
     |(a)| 1, &
     |(b)| 3, &
@@ -565,19 +565,20 @@ $\INT$不是由别的，而是由它本身的一个个副本组成的，这一�
 \settowidth\linewidth{$,$}
 \divide \linewidth 2\relax
 \edef\x{\endgroup
-  \noexpand\node (C) [below= 3pt of c, xshift=-\the\linewidth] {$29$};
-  \noexpand\node (D) [below= 3pt of d, xshift=-\the\linewidth] {$47$};
-  \noexpand\node (E) [below= 3pt of e, xshift=-\the\linewidth] {$76$};
-}\x
+  \noexpand\path[every node/.style={xshift=-\the\linewidth}]}
+\x node (C) [below= 3pt of c] {$29$}
+   node (D) [below= 3pt of d] {$47$}
+   node (E) [below= 3pt of e] {$76$};
 \node at ($(C)!.5!(D)$) {$+$};
 \node at ($(D)!.5!(E)$) {${}=\vphantom{7}$};
 \draw[decorate,decoration=brace]
   (b.south east) -- (a.south west)
   node [midway, below=3pt, font=\footnotesize] {基底};
-\node [below= 0pt of D, font=\linespread{1.2}\footnotesize, align=center]
+\node [inner sep=0pt,below= 3pt of D,
+       font=\linespread{1}\footnotesize, align=center]
   (O) {与斐波那契序列\\相同的递归规则};
 \end{tikzpicture}
-\]
+\end{center}
 
 在$\INT$的定义中，与基底相对应的是一个由许多小方框组成的图（\fig{33}a），它表示出副本在什么地方，它们是如何扭曲的。我们把它叫做$\INT$的“骨架”。从骨架开始构造$\INT$，需按下列步骤：首先，对于骨架的每个方框，你要做两件事：\pnum{1}把骨架的一个弯曲了的小副本放进方框，用里面的弯曲的线作为它的向导；\pnum{2}涂掉外面的方框及其弯线。一旦把原骨架的每一个方框都这样做了，每个大骨架原来所在之处就换成了许多的“小辈”骨架。下一步，降一个层次对那些小辈骨架重复这一过程。然后再重复，再重复，再重复……这样下去的极限就是$\INT$图，当然极限是达不到的。就这样，一层一层地把骨架嵌套于它自身之中，$\INT$图就“无中生有”地逐渐构造出来了。但事实上，这“无”不是虚无——是一幅图。
 

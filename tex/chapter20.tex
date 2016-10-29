@@ -105,7 +105,7 @@
 %\includegraphics{img_136.png}
 \begin{tikzpicture}[every edge/.style={draw,postaction=decorate,bend left},
   arrow decoration]
-\matrix[matrix of nodes,column sep=0mm,row sep=10mm,
+\matrix[inner sep=0pt,matrix of nodes,column sep=0mm,row sep=10mm,
   every node/.style={draw,ellipse,inner sep=2mm}]
 {
   |(A)| 左手 & & |(B)| 右手 \\
@@ -373,7 +373,7 @@
 \begin{tikzpicture}[RC/.style={rounded corners,postaction=decorate},
   small font/.style={align=center,font=\linespread{1.1}\small},
   arrow decoration]
-\matrix[matrix of nodes,column sep=5mm,row sep=10mm,
+\matrix[inner sep=0pt,matrix of nodes,column sep=5mm,row sep=10mm,
   every node/.style={draw,ellipse,inner sep=2mm,minimum width=16mm}]
 {
            & |(A)| 城镇 \\
@@ -401,7 +401,7 @@
 \begin{tikzpicture}[RC/.style={rounded corners,postaction=decorate},
   small font/.style={align=center,font=\linespread{1.1}\small},
   arrow decoration=.75]
-\matrix[matrix of nodes,column sep=15mm,row sep=10mm,
+\matrix[inner sep=0pt,matrix of nodes,column sep=15mm,row sep=10mm,
   every node/.style={draw,ellipse,inner sep=2mm,minimum width=16mm},
   every label/.style={draw=none,inner sep=0mm,minimum width=0mm,font=\small}]
 {
@@ -426,7 +426,8 @@
 \coordinate (A) at (0,0);
 \draw[postaction=decorate]
   (A) arc [start angle=-60,end angle=240, x radius=16mm, y radius=8mm]
-  node[midway,above,font=\small]{$\text{包含}+\text{描绘}$}
+  node[midway,above=2mm,font=\small,inner sep=0pt]
+    {$\text{包含}+\text{描绘}$}
   coordinate (B);
 \node[draw,ellipse,inner sep=2mm,minimum width=16mm] at ($(A)!.5!(B)$) {图画};
 \end{tikzpicture}
@@ -437,7 +438,8 @@
 \coordinate (A) at (0,0);
 \draw[postaction=decorate]
   (A) arc [start angle=-60,end angle=240, x radius=16mm, y radius=8mm]
-  node[midway,above,font=\small]{$\text{包含}+\text{描绘}+\text{表示}$}
+  node[midway,above=2mm,font=\small,inner sep=0pt]
+    {$\text{包含}+\text{描绘}+\text{表示}$}
   coordinate (B);
 \node[draw,ellipse,inner sep=2mm,minimum width=16mm] at ($(A)!.5!(B)$) {人};
 \end{tikzpicture}

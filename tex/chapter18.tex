@@ -668,17 +668,17 @@ C：请X告诉我他或她头发的长度。
 \begin{lrbox}{\TEMPBOX}%
 \begin{tikzpicture}[trim right=(R),
   every node/.style={font=\normalfont\small}]
-\matrix [matrix of nodes,column sep=10mm,row sep=5mm,
+\matrix [inner sep=0pt,matrix of nodes,column sep=10mm,row sep=5mm,
   LX/.style={shape=diamond,shape aspect=3,inner xsep=0mm,inner ysep=.5mm},
-  JX/.style={inner sep=3mm},nodes={draw}]
+  JX/.style={inner sep=3mm},YX/.style={circle,inner sep=1mm},nodes={draw}]
 {
-  |(A)[circle]| 开始  \\
-  |(B)[JX]| 找到方块$\mathrm{X}1$ & |(H)[circle]| 失败 \\
+  |(A)[YX]| 开始  \\
+  |(B)[JX]| 找到方块$\mathrm{X}1$ & |(H)[YX]| 失败 \\
   |(C)[LX]| $\mathrm{X}1$是红的吗？\\
   |(D)[LX]| $\mathrm{X}1$是等边的吗？\\
   |(E)[JX]| 找到方锥$\mathrm{X}2$\\
   |(F)[LX]| $\mathrm{X}1$是支撑着$\mathrm{X}2$吗？\\
-  |(G)[circle]| 成功\\
+  |(G)[YX]| 成功\\
 };
 \draw[->] (A) -- (B);
 \draw[->] (B) -- (C);

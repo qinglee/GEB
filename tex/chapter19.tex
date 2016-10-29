@@ -433,8 +433,8 @@ $1$、$2$、$3$、$4$、$5$、……、许多、很少，等等。
 \begin{tikzpicture}
 \coordinate (L) at (0,0);
 \coordinate (R) at (\the\dimexpr\linewidth-1pt\relax,0);
-\matrix [shift={($(L)!.5!(R)$)},matrix of nodes,column sep=12mm,row sep=-1mm,
-  every node/.style={inner sep=1mm}]
+\matrix [inner sep=0pt,matrix of nodes,column sep=12mm,row sep=-1mm,
+  every node/.style={inner sep=1mm}] at ($(L)!.5!(R)$)
 {
   |(A)| 乌龟 & & |(B)| 阿基里斯 \\
            & |(O)| 螃蟹 \\

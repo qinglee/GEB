@@ -505,14 +505,14 @@ S & & 123 & 后继关系：$1$, $2$, $3$, \ldots \\
 = & & 111 & 视觉上的相似：横过来看 \\
 + & & 112 & $1+1=2$ \\
 · & & 236 & $2\times 3=6$ \\
-( & & 362 & \sbox8{以$2$结尾}\copy8
-\tikz[remember picture]\coordinate(a)at(2mm,\ht8); \\
+( & & 362 &
+  \tikz[remember picture,inner sep=0pt,baseline=(a.base)]]\node(a){以$2$结尾}; \\
 ) & & 323 & 以$3$结尾 \\
 ＜ & & 212 & 以$2$结尾 \\
 ＞ & & 213 & 以$3$结尾 \\\relax
 [ & & 312 & 以$2$结尾 \\
-] & & 313 & 以$3$结尾%
-\tikz[remember picture]\coordinate(b)at(2mm,0); \\
+] & & 313 &
+  \tikz[remember picture,inner sep=0pt,baseline=(b.base)]]\node(b){以$3$结尾}; \\
 a & & 262 & 与$\forall$（$626$）相反 \\
 ' & & 163 & $163$是质数，而“质数”的“质”首笔是撇 \\
 ∧ & & 161 & “$∧$”是序列$1$-$6$-$1$的“形象” \\
@@ -525,9 +525,10 @@ a & & 262 & 与$\forall$（$626$）相反 \\
 \text{标点} & & 611 & 序列$6$-$1$-$1$的“形象”似乎意味着结束 \\
 \bottomrule
 \end{tabular}
-\begin{tikzpicture}[remember picture, overlay, semithick]
-\draw[decorate, decoration={brace, amplitude=5mm}]
-  (a) -- (a|-b) node[midway, right, xshift=5mm, align=left]{这三对形成\\一个模式};
+\begin{tikzpicture}[remember picture, overlay]
+\draw[decorate, decoration={brace,amplitude=5mm,raise=2mm}]
+  (a.north east) -- (a.north east|-b.south east)
+    node[midway, right=7mm, align=left,font=\small\kaishu]{这三对形成\\一个模式};
 \end{tikzpicture}
 \caption{哥德尔配数表}\label{tab:godel-number}
 \end{table}

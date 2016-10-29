@@ -22,7 +22,8 @@
   (A) at (0,.3) {说谎者句子};
 \node[anchor=north,align=center,font=\linespread{1}\small]
   (B) at (0,-.5){为了理解\\说谎者句子的自指性\\所必须做的认知处理};
-\node[draw,fit=(A) (B),trapezium,trapezium angle=75,inner ysep=5mm,decorate,
+\node[draw,line join=round,fit=(A) (B),inner ysep=5mm,
+      trapezium,trapezium angle=75,decorate,
       decoration={random steps,segment length=5pt,amplitude=5pt}] (C) {};
 \draw[decorate,decoration={coil,mirror,amplitude=.5mm,segment length=5mm}]
   ([xshift=-5mm]O-|C.bottom left corner) --
@@ -491,16 +492,19 @@ AA把该串分成两个“基因”。基因的定义是：一个串中给一个
 
 \begin{figure}
 %\includegraphics{img_090.png}
+\begin{lrbox}{\TEMPBOX}
 \begin{tikzpicture}[arrow decoration]
 \node (A) {酶};
-\node (B) [below= 15mm of A] {串};
-\draw[postaction=decorate]
-  (A) to[bend left=75] node[midway,right,font=\small] {印符操作} (B) ;
-\draw[postaction=decorate]
-  (B) to[bend left=75] node[midway,left,font=\small] {核糖体的翻译} (A) ;
+\node (B) [below= 10mm of A] {串};
+\path[every edge/.style={draw,bend left=75,postaction=decorate},
+      every node/.style={font=\small}]
+  (A) edge node[right] {印符操作} (B)
+  (B) edge node[left] {核糖体的翻译} (A);
 \end{tikzpicture}
+\end{lrbox}
+\fcapside[\FBwidth]{\usebox\TEMPBOX}{%
 \caption[印符遗传学的中心法则。]
-  {“印符遗传学的中心法则”：缠结的层决结构”的一个例子。}
+  {“印符遗传学的中心法则”：“缠结的层决结构”的一个例子。}}
 \end{figure}
 
 这个图说明了印符遗传学的中心法则。它显示了串如何（借助于印符遗传密码）定义酶，以及酶反过来如何作用于那些导出它们的串，从而得到新的串。因此，左边一条线绘出了老信息怎样流上去，因为酶是串的一个翻译，从而含有和串相同的信息，只不过形式不同，特别是作用的形式不同。然而右边那条线并不表示信息流下来，而是表示如何通过在串中调动符号，创造新的信息。
@@ -509,7 +513,7 @@ AA把该串分成两个“基因”。基因的定义是：一个串中给一个
 \begin{center}
 \begin{tikzpicture}
 \node (A) {推理规则};
-\node (B)[below=1cm of A]{符号串};
+\node (B)[below=8mm of A]{符号串};
 \draw[->] (A) -- (B) node[midway,right,font=\small]{（印符操作）};
 \end{tikzpicture}
 \end{center}\nointerlineskip
@@ -785,32 +789,69 @@ DNA必定含有一组蛋白质的密码，而这组蛋白质就将复制这个DN
 \begin{enumerate}
 \item 基（核苷酸）\cdotfill 转录
 \item 氨基酸\cdotfill 翻译
-\item 蛋白质（一级结构）
-\item 蛋白质（三级结构）\cdotfill 基因表示
+
+\item \noindent
+  \tikz[remember picture,inner sep=0pt,baseline=(N1.base)]
+    \node(N1){蛋白质（一级结构）};\hfill
+  \tikz[remember picture]\coordinate(L);%
+\nopagebreak
+\item \noindent
+  \tikz[remember picture,inner sep=0pt,baseline=(N2.base)]
+    \node(N2){蛋白质（三级结构）};%
+  \begin{tikzpicture}[remember picture, overlay,inner sep=0pt]
+    \draw[decorate, decoration={brace,amplitude=2mm,raise=2mm}]
+      (N1.north east) -- (N1.north east|-N2.south east)
+        coordinate[midway,right=5mm](N12);
+    \path
+      (N12-|L) coordinate (NL12)
+      let \p1 = (N12), \p2 = (NL12)
+      in node[text width=\x2-\x1,left] {\cdotfill 基因表示};
+  \end{tikzpicture}
+
 \item 蛋白质束\cdotfill 高层基因表示
-\item ？？？
-\item[\quad$\vdots$]$\vdots$
-\item[($N-1$)] ？？？\cdotfill DNA意义的未知层次
+
+\item \noindent
+  \tikz[remember picture,inner sep=0pt,baseline=(N1.base)]
+    \node(N1){？？？};\hfill
+  \tikz[remember picture]\coordinate(L);%
+\nopagebreak
+\item[{\tikz[remember picture]\coordinate(R);\hphantom{)}}]\noindent
+\nopagebreak
+\item[($N-1$)]\noindent
+  \tikz[remember picture,inner sep=0pt,baseline=(N2.base)]
+    \node(N2){？？？};%
+  \begin{tikzpicture}[remember picture, overlay,inner sep=0pt]
+    \draw[decorate, decoration={brace,amplitude=2mm,raise=2mm}]
+      (N1.north east) -- (N1.north east|-N2.south east)
+        coordinate[midway,right=5mm](N12);
+    \path
+      ($(N1)!.5!(N2)$) node {$\vdots$}
+      -| (R) node[midway,left] {$\vdots$}
+      (N12-|L) coordinate (NL12)
+      let \p1 = (N12), \p2 = (NL12)
+      in node[text width=\x2-\x1,left] {\cdotfill DNA意义的未知层次};
+  \end{tikzpicture}
+
 \item[($N$)] 物理、精神和心理的品质 \cdotfill 伪渐成过程
 \end{enumerate}
 
 \section{中心法则映射}
 
-有了这个背景，我们就可以在克里克的“分子生物学中心法则”（称做法则I，这是一切细胞过程的基础）和我富有诗意的发明——“数理逻辑中心法则”（称作法则II，是哥德尔定理的基础）——之间做一个精细的比较。\fig{99}和表~\ref{tab:central-dogmap} 显示了其间的映射，这个图和表一起构成了“中心法则映射”。
+有了这个背景，我们就可以在克里克的“分子生物学中心法则”（称做\emph{法则I}，这是一切细胞过程的基础）和我富有诗意的发明——“数理逻辑中心法则”（称作\emph{法则II}，是哥德尔定理的基础）——之间做一个精细的比较。\fig{99}和表~\ref{tab:central-dogmap} 显示了其间的映射，这个图和表一起构成了“中心法则映射”。
 
 \begin{table}
 \caption{中心法则映射。}\label{tab:central-dogmap}
 \begin{tabu}[c]{@{}X[r]cX[l]@{}}
 \toprule
-法则I（分子生物学） & & 法则II（数理逻辑）\\
+\emph{法则I}（分子生物学） & & \emph{法则II}（数理逻辑）\\
 \midrule
 DNA串 & $\iff$ & TNT符号串\\
 mRNA串 & $\iff$ & N的陈述\\
 蛋白质 & $\iff$ & 元TNT的陈述\\
 作用在蛋白质上的蛋白质 & $\iff$ & 关于元TNT的陈述的陈述\\
 作用在作用在蛋白质上的\par 蛋白质上的蛋白质 & $\iff$ & 关于关于元TNT陈述的\par 陈述的陈述\strut\\
-转录（$\mathrm{DNA}\Rightarrow\mathrm{RNA}$） & $\iff$ & 解释（$\TNT\Rightarrow N$）\\
-翻译（$\mathrm{RNA}\Rightarrow\text{蛋白质}$） & $\iff$ & 算术化（$\mathrm{N}\Rightarrow\text{元TNT}$）\\
+转录（$\text{DNA}\Rightarrow\text{RNA}$） & $\iff$ & 解释（$\TNT\Rightarrow N$）\\
+翻译（$\text{RNA}\Rightarrow\text{蛋白质}$） & $\iff$ & 算术化（$\text{N}\Rightarrow\text{元TNT}$）\\
 克里克 & $\iff$ & 哥德尔\\
 遗传密码（任意约定） & $\iff$ & 哥德尔编码（任意约定）\\
 密码子（基因的三元组） & $\iff$ & 密码子（数码的三元组）\\
@@ -911,7 +952,7 @@ mRNA串 & $\iff$ & N的陈述\\
 把唱片的音槽转变为\par 声音的过程 & $\iff$ & 把DNA转录到\par mRNA上的过程\strut\\
 唱机产生的声音 & $\iff$ & 信使RNA串\\
 声音翻译为唱机的震颤 & $\iff$ & mRNA翻译成蛋白质\\
-从外部音响到唱机震颤的映射 & $\iff$ & 遗传密码（mRNA三元组到蛋白质的氨基酸的映射）\strut\\
+从外部音响\par 到唱机震颤的映射 & $\iff$ & 遗传密码（mRNA三元组\par 到蛋白质的氨基酸的映射）\strut\\
 唱机的毁坏 & $\iff$ & 细胞的毁灭\\
 为唱机X特制的歌，\par 标题是\par “我不能在唱机X上播放” & $\iff$ & 为细胞X特制的DNA串\par 高层解释：\par “我不能由细胞X复制”\strut\\
 “不完备”的唱机 & $\iff$ & 至少有一个DNA串复制不出来的细胞\strut\\

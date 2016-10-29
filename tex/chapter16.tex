@@ -863,7 +863,49 @@ mRNA串 & $\iff$ & N的陈述\\
 \end{table}
 
 \begin{figure}
-\includegraphics{img_099.png}
+%\includegraphics{img_099.png}
+\begin{tikzpicture}[arrow decoration]
+\matrix (M) [matrix of nodes,inner sep=0pt,nodes={outer sep=.3em},
+  column sep={42mm,between origins},row sep={20mm,between origins},
+  row 4/.style={font=\em}]
+{
+  蛋白质    & 元TNT描述 \\
+  RNA   & N中的陈述 \\
+  DNA   & TNT符号串 \\[-16mm,between borders]
+  法则I  & 法则II \\
+};
+\begin{scope}
+\clip ([xshift=-20mm]M-1-1.north) rectangle
+      ([xshift=20mm,yshift=23.5mm]M-1-2.north);
+\foreach \x in {M-1-1,M-1-2} {
+  \coordinate (B) at ($(\x.center)!.5!(\x.north)$);
+  \draw[postaction=decorate] (B) arc (270:-90:.7  and .6);
+  \draw[postaction=decorate] (B) arc (270:-90:1.1 and .9);
+  \draw[postaction=decorate] (B) arc (270:-90:1.5 and 1.2);
+  \draw (B) arc (-90:-10:1.9 and 1.5) coordinate (O);
+  \draw[dashed] (O) arc (-10:20:1.9 and 1.5);
+  \draw (B) arc (270:190:1.9 and 1.5) coordinate (O);
+  \draw[dashed] (O) arc (190:160:1.9 and 1.5);}
+\end{scope}
+\tikzset{every node/.style={font=\linespread{1}\footnotesize,inner sep=0pt}}
+\path
+  ([xshift=-16mm]M-1-1.north) node[above left,align=left]
+    {蛋白质\\作用于蛋\\白质作用于\\蛋白质，等等}
+  ([xshift=16mm]M-1-2.north)  node[above right,align=right]
+    {对于在\\TNT中\\陈述的陈述\\的陈述，等等};
+\tikzset{auto=right,
+  every node/.style={font=\linespread{1}\footnotesize\kaishu,align=center},
+  every edge/.style={draw,postaction=decorate}}
+\path
+  (M-3-1) edge node {转录\\（转换成活\\跃的形式）}   (M-2-1)
+  (M-2-1) edge node {翻译\\（通过遗\\传密码）}       (M-1-1)
+  (M-3-2) edge node {解释\\（转换成有\\意义的形式）} (M-2-2)
+  (M-2-2) edge node {算术化\\（通过哥德\\尔编码）}   (M-1-2);
+\draw[>->,postaction=decorate,rounded corners]
+  (M-1-1) -- ++(2,0) |- (M-3-1) node[pos=.25] {自复制};
+\draw[>->,postaction=decorate,rounded corners]
+  (M-1-2) -- ++(2,0) |- (M-3-2) node[pos=.25] {自指};
+\end{tikzpicture}
 \caption[中心法则映射。]
   {中心法则映射。在两个基本的缠结构的层次系统——分子生物学层次系统和数理逻辑层次系统——之间的一个类比。}
 \end{figure}

@@ -880,7 +880,7 @@ mRNA串 & $\iff$ & N的陈述\\
   node[name=M32,at=(M31-|M12)] {TNT符号串};
 \path[every node/.style={inner sep=0pt,outer sep=.3333em,font=\em}]
   node[name=M41,below=2mm of M31] {法则I}
-  node[name=M42,at=(M41-|M12)]    {法则I};
+  node[name=M42,at=(M41-|M12)]    {法则II};
 \path[node distance=0mm and 16mm,
       every node/.style={font=\linespread{1}\footnotesize,inner sep=0pt}]
   node[name=L,above left=of M11.north,align=left]
@@ -899,24 +899,20 @@ mRNA串 & $\iff$ & N的陈述\\
   (M11) -- ++(2,0) |- (M31) node[pos=.25] {自复制};
 \draw[>->,postaction=decorate,rounded corners]
   (M12) -- ++(2,0) |- (M32) node[pos=.25] {自指};
-\path
-  (current bounding box.south west) coordinate (LL)
-  (current bounding box.east) coordinate (BBR);
 \begin{scope}
+\begin{pgfinterruptboundingbox}
 \clip (L.south west) rectangle ([yshift=5cm]R.south east);
+\end{pgfinterruptboundingbox}
 \foreach \x in {M11,M12} {
   \coordinate (B) at ($(\x.center)!.5!(\x.north)$);
   \draw[postaction=decorate] (B) arc (270:-90:.7  and .6);
   \draw[postaction=decorate] (B) arc (270:-90:1.1 and .9);
-  \draw[postaction=decorate] (B) arc (270:-90:1.5 and 1.2)
-    coordinate[midway,above=1mm](BBT);
+  \draw[postaction=decorate] (B) arc (270:-90:1.5 and 1.2);
   \draw (B) arc (-90:-10:1.9 and 1.5) coordinate (O);
   \draw[dashed] (O) arc (-10:20:1.9 and 1.5);
   \draw (B) arc (270:190:1.9 and 1.5) coordinate (O);
   \draw[dashed] (O) arc (190:160:1.9 and 1.5);}
 \end{scope}
-\pgfresetboundingbox
-\useasboundingbox (LL) rectangle (BBR |- BBT);
 \end{tikzpicture}
 \caption[中心法则映射。]
   {中心法则映射。在两个基本的缠结构的层次系统——分子生物学层次系统和数理逻辑层次系统——之间的一个类比。}

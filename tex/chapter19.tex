@@ -431,15 +431,15 @@ $1$、$2$、$3$、$4$、$5$、……、许多、很少，等等。
 \begin{figure}
 %\includegraphics{img_131.png}
 \begin{tikzpicture}
-\coordinate (L) at (0,0);
-\coordinate (R) at (\the\dimexpr\linewidth-1pt\relax,0);
-\matrix [inner sep=0pt,matrix of nodes,column sep=12mm,row sep=-1mm,
-  every node/.style={inner sep=1mm}] at ($(L)!.5!(R)$)
-{
-  |(A)| 乌龟 & & |(B)| 阿基里斯 \\
-           & |(O)| 螃蟹 \\
-  |(C)| 阿基里斯 & & |(D)| 乌龟 \\
-};
+\path[on grid,node distance=5mm and 25mm,
+      every node/.style={inner sep=0pt,outer sep=.3333em}]
+  (0,0)                                coordinate (L)
+  (\the\dimexpr\linewidth-1pt\relax,0) coordinate (R)
+  node[name=O,at=($(L)!.5!(R)$)] {螃蟹}
+  node[name=A,above left=of O]   {乌龟}
+  node[name=B,above right=of O]  {阿基里斯}
+  node[name=C,below left=of O]   {阿基里斯}
+  node[name=D,below right=of O]  {乌龟};
 \draw [name path=circle,thick] (O) circle (8mm);
 \path [name path=AB] (A.east) -- (B.west);
 \path [name path=CD] (C.east) -- (D.west);
@@ -485,14 +485,15 @@ $1$、$2$、$3$、$4$、$5$、……、许多、很少，等等。
 \begin{figure}
 %\includegraphics{img_132.png}
 \begin{tikzpicture}[thin]
-\coordinate (L) at (0,0);
-\coordinate (R) at (\the\dimexpr\linewidth-1pt\relax,0);
-\node (O) at ($(L)!.5!(R)$) {着丝点};
+\path
+  (0,0)                                coordinate (L)
+  (\the\dimexpr\linewidth-1pt\relax,0) coordinate (R)
+  (L)+(0,4mm) coordinate (A)
+  (A-|R)      coordinate (B)
+  (A)+(0,1mm) coordinate (C)
+  (C-|R)      coordinate (D)
+  node[name=O,at=($(L)!.5!(R)$)] {着丝点};
 \draw [name path=circle,thick] (O) circle (8mm);
-\coordinate (A) at ([yshift=4mm]L);
-\coordinate (B) at ([yshift=4mm]R);
-\coordinate (C) at ([yshift=1mm]A);
-\coordinate (D) at ([yshift=1mm]B);
 \path [name path=AB] (A) -- (B);
 \path [name path=CD] (C) -- (D);
 \draw [name intersections={of=AB and circle, by={b,a}}]

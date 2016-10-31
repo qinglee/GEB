@@ -1,18 +1,15 @@
 
 \begin{lrbox}{\headingbox}
 \begin{tikzpicture}[thin, dashed, every node/.style={inner sep=0mm,
-  outer sep=auto, minimum size=13pt, font=\footnotesize}]
-\foreach \y in {1,2,...,7}
-  {
-    \begin{scope}[xshift=-\y cm/2, yshift=-\y cm/3]
-      \node (O-0) at (0,0) {\textast};
-      \foreach \x [remember=\x as \lastx (initially 0)] in {1,...,\y}
-        {
-          \node (O-\x) at (\x,0) {\textast};
-          \draw (O-\lastx) -- (O-\x);
-        }
-    \end{scope}
+  outer sep=4.5pt, font=\footnotesize}]
+\draw foreach \y in {1,2,...,7} {
+  [xshift=-\y cm/2, yshift=-\y cm/3]
+  (0,0) node (O-0) {\textast}
+  foreach \x [remember=\x as \lastx (initially 0)] in {1,...,\y} {
+    (\x,0) node (O-\x) {\textast}
+    (O-\lastx) -- (O-\x)
   }
+};
 \path (-1/4,0)node(A){\textast}
        (1/4,0)node(B){\textast}
       (-1/6,1/3)node{\textast}

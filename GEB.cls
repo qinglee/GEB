@@ -1357,7 +1357,7 @@
 
 \ctex_patch_cmd:Nnn \float@endH
   { \vskip \intextsep }
-  { \addvspace \intextsep }
+  { \addvspace \intextsep \nointerlineskip }
 \ctex_patch_cmd:Nnn \float@endH
   { \vskip \intextsep }
   {

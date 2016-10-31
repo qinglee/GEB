@@ -27,7 +27,7 @@
 %\includegraphics{img_026.png}
 \begin{tikzpicture}[scale=0.75,arrow decoration,
   SN/.style={decorate, decoration={snake,amplitude=.4mm,segment length=2mm}},
-  every node/.style={inner sep=2pt,%
+  every node/.style={inner sep=0pt,outer sep=.3333em,%
   font=\footnotesize\offinterlineskip\lineskip1pt\relax}]
 \draw (0,0) -- (2,0)    node[midway, below, align=center] {郝晕的\\空中巢穴}
                         coordinate (A)
@@ -95,11 +95,11 @@
 
 \begin{figure}
 %\includegraphics{img_027.png}
-\tikzset{RE/.style={arrow decoration,
-  node distance=8mm and 8mm,
-  every node/.style={draw, font=\small, inner sep=2pt}}}
+\tikzset{every picture/.append style={arrow decoration,
+    node distance=8mm and 8mm,
+    every node/.style={draw, font=\small, inner sep=2pt}}}
 \begin{subfigure}{\linewidth}\centering
-\begin{tikzpicture}[RE]
+\begin{tikzpicture}
 \node[circle, inner sep=1pt] (A) {开始};
 \node (B) [right= of A]{指示代词};
 \node (C) [right= of B]{量词};
@@ -123,7 +123,7 @@
 \caption{花哨名词}
 \end{subfigure}\par\bigskip
 \begin{subfigure}{\linewidth}\centering
-\begin{tikzpicture}[RE]
+\begin{tikzpicture}
 \node[circle, inner sep=1pt] (A) {开始};
 \node (B) [above right= of A, xshift=2mm]{豪华名词};
 \node (C) [right= of B]{及物动词};
@@ -189,11 +189,11 @@
 
 \begin{figure}
 %\includegraphics{img_028.png}
-\tikzset{RE/.style={arrow decoration,
-  node distance=8mm and 8mm,
-  every node/.style={draw, font=\small, inner sep=2pt}}}
+\tikzset{every picture/.append style={arrow decoration,
+    node distance=8mm and 8mm,
+    every node/.style={draw, font=\small, inner sep=2pt}}}
 \sbox8{%
-\begin{tikzpicture}[RE, line width=1.6pt, baseline=(I.south)]
+\begin{tikzpicture}[line width=1.6pt, baseline=(I.south)]
 \node[circle, inner sep=1pt] (A) {\phantom{开始}};
 \node (B) [above right= of A, xshift=2mm]{\phantom{豪华名词}};
 \node (C) [right= of B]{\phantom{及物动词}};
@@ -223,10 +223,10 @@
 \sbox8{\scalebox{.25}{\copy8}}%
 \edef\MYDEPTH{\the\dp8}%
 \dp8=0pt\relax
-\begin{tikzpicture}[RE, node distance=8mm and 7mm]
+\begin{tikzpicture}[node distance=8mm and 7mm]
 \node[circle, inner sep=1pt] (A) {开始};
-\scoped[every node/.style={inner xsep=-3pt}]
-  \node (B) [above right= of A, yshift=-3mm] {\copy8};
+\path[every node/.style={inner xsep=-3pt}]
+  node (B) [above right= of A, yshift=-3mm] {\copy8};
 \node (C) [right= 6mm of B, xshift=1mm]{及物动词};
 \node (D) [right= of C]{\hbox{“的”\unskip}};
 \node[anchor=west] (E) at ([xshift=2mm]D.east |- A) {花哨动词};
@@ -264,10 +264,10 @@
 
 \begin{figure}
 %\includegraphics{img_029.png}
-\tikzset{RE/.style={%
+\tikzset{every picture/.append style={%
   every node/.style={draw, circle, fill=black,
     inner sep=0pt, minimum size=3pt},
-  end/.style={every node/.style={inner sep=2pt}},
+  end/.style={every node/.style={inner sep=0pt,outer sep=2pt}},
   grow'=up, level distance=4mm,
   level 1/.style={sibling distance=25mm},
   level 2/.style={sibling distance=12.5mm},
@@ -280,7 +280,7 @@
     (\tikzchildnode\tikzchildanchor)}}}
 \floatsetup{heightadjust=none}
 \begin{lrbox}{\TEMPBOX}
-\begin{tikzpicture}[RE]
+\begin{tikzpicture}
 \node (a) {}
   child [end] { node {G} }
   child { node {}
@@ -290,7 +290,7 @@
 \end{tikzpicture}
 \end{lrbox}
 \begin{lrbox}{4}
-\begin{tikzpicture}[RE]
+\begin{tikzpicture}
 \node (a) {}
   child [end] { node {H} }
   child { node {}
@@ -302,7 +302,7 @@
 \end{tikzpicture}
 \end{lrbox}
 \begin{lrbox}{6}
-\begin{tikzpicture}[RE]
+\begin{tikzpicture}
 \node (a) {}
   child { node {}
     child [end] { node {G} }
@@ -322,7 +322,7 @@
 \end{tikzpicture}
 \end{lrbox}
 \begin{lrbox}{8}
-\begin{tikzpicture}[RE]
+\begin{tikzpicture}
 \node (a) {}
   child { node {}
     child [end] { node {H} }
@@ -417,15 +417,13 @@ child { node {2}
 \end{figure}
 
 这棵无穷树有着非常奇特的数学性质。从右边往上数是著名的斐波那契数列：
-\begin{center}
-\begin{tikzpicture}[inner sep=0pt]
-\matrix [matrix of math nodes, column sep=7pt]
-  {
+\[
+\setlength\arraycolsep{3pt}
+\begin{array}{*{14}l}
      1, & 1,  & 2,  & 3,  & 5,   & 8,   & 13, &
-    21, & 34, & 55, & 89, & 144, & 233, & \dotsc \\
-  };
-\end{tikzpicture}
-\end{center}
+    21, & 34, & 55, & 89, & 144, & 233, & \dotsc
+\end{array}
+\]
 这是由比萨的列奥那多于1902年发现的，他是波那契奥[Bonaccio]的儿子，因此叫“斐利尤斯·波那契”[Filius Bonacci，拉丁语，意即波那契奥之子]或简称“斐波那契”。这些数可由一对方程极好地递归定义出来：
 \begin{align*}
 \fibo(n) & =\fibo(n-1)+\fibo(n-2) \quad \text{当$n>2$} \\
@@ -439,7 +437,7 @@ child { node {2}
   node distance=8mm, every node/.style={font=\small, inner sep=2pt},
   fm/.style={draw,minimum height=\ht\strutbox}]
 \node [draw, circle, inner sep=1pt] (A) {开始};
-\node [left= 1mm of A] {$\fibo(n)$: };
+\node [left= 2mm of A, inner sep=0pt] {$\fibo(n)$:};
 \node[fm] (C) [above= 4mm of A, xshift=12mm, anchor=west]{令$x=\fibo(n-1)$};
 \node[fm] (B) [above= 5mm of C]{令$y=\fibo(n-2)$};
 \node[fm] (D) [right= 10mm of C]{$x+y$};
@@ -448,12 +446,13 @@ child { node {2}
 \path (B) edge[postaction=decorate] (C)
       (C) edge[postaction=decorate] (D);
 \path [postaction=decorate] (A) -- ( A |- B);
+\tikzset{every node/.style={font=\footnotesize,inner sep=0pt,outer sep=3pt}}
 \draw[rounded corners=10pt]
-  (A) |- (B) node[pos=.4,left,font=\footnotesize] {若$n>2$};
+  (A) |- (B) node[pos=.4,left] {若$n>2$};
 \draw[rounded corners=10pt, postaction=decorate]
   (D) -| (E);
 \draw[rounded corners=10pt, postaction=decorate]
-  (A) |- (F) node[near end,below,font=\footnotesize] {若$n=1$或$2$};
+  (A) |- (F) node[near end,below] {若$n=1$或$2$};
 \draw[rounded corners=10pt, postaction=decorate]
   (F) -| (E);
 \end{tikzpicture}
@@ -501,8 +500,8 @@ child { node {2}
 \end{align*}
 
 它使人想起斐波那契数的定义，在那里每一个新的值都是前面两个值的和——但这里不是紧挨着的前两个数的值。在这里，紧挨着的那前两个值是说明：往前数多少位，才能得到计算新值所要加起来的那两个数。前$17$个$\mQ$数排列如下：
-\begin{center}
-\begin{tikzpicture}[inner ysep=3pt, inner xsep=0pt]
+\begin{figure}[H]
+\begin{tikzpicture}[inner sep=0pt,outer ysep=3pt]
 \matrix [matrix of math nodes, column sep=7pt]
   {
     1, & 1, & 2, & 3, & 3, & 4, & 5, &
@@ -525,14 +524,14 @@ child { node {2}
 \node at ($(A)!.5!(B)$) {$+$};
 \node (C) [right=0pt of B] {${}=\vphantom{1}$};
 \node (D) [right=0pt of C] {$11$};
-\node (E) [inner sep=0pt,below=6pt of D,font=\footnotesize] {新值};
+\node (E) [below=4pt of D,font=\footnotesize,outer sep=0pt] {新值};
 \draw[decorate,decoration={brace,raise=2pt}]
   (E.north west) -- (E.north east);
 \draw[decorate,decoration=brace]
   (d.south east) -- (c.south west)
   node [midway, below=3pt, font=\footnotesize] {向左移多少位};
 \end{tikzpicture}
-\end{center}
+\end{figure}
 要得到下一个数，向左（从省略号开始）分别数$10$个数和$9$个数，遇到$5$和$6$，如箭头所示。它们的和——$11$——给出了$\mQ(18)$这个新值。在这个奇怪的过程里，已知的一列$\mQ$数被用来扩展自身。这样得到的序列，如果温和点说，是杂乱无章的。走得越远，它变得越没有意义。这是那些非常奇特的情况之一，即一个多少是个自然的定义，导致一个令人极度困惑的现象：以很有秩序的方式制造出了混乱。人们很自然地会想到：表面上的混乱是否隐含着某种微妙的规律性。当然，根据定义是有规律性的。但有趣的是，是否有另一种刻划这个序列的方式——要是运气好的话，最好一个非递归的定义。
 
 \section{两个令人惊异的递归图}
@@ -540,7 +539,6 @@ child { node {2}
 数学里奇特的递归是不胜枚举的，而我的目的并不是把它们一一列举出来。不过，在我自己的经历中有两个特别触目的例子，值得把它们提出来。两个都是图形。一个出现在某些关于数论的研究里，另一个出现在我的博士学位论文——固体力学之中。最有趣的是这两个图形有着密切的联系。
 
 \begin{figure}
-
 \includegraphics{img_032.png}
 \caption[函数$\INT(x)$的图形。]
   {函数$\INT(x)$的图形。在$x$的每个有理数值处都是个跳跃性的不连续点。}
@@ -549,8 +547,8 @@ child { node {2}
 第一个图形（\fig{32}）是一个函数的图形，这函数我称为$\INT(x)$。这里给出的是$x$处于$0$和$1$之间的情形，对于$x$处于其它任意一组整数$n$和$n+1$之间的情形，你只要找到$\INT(x-n)$，然后再加上$n$即可。你可以看到，这个图的结构是跳跃式的，由无数个弯曲的片段组成。这些片段离角落越近就越小——并且也越直。假如你仔细观察每个这样的小片段，你会发现实际上它是整个图形的一个副本，只是弯曲了！这意味着丰富的内容。其中之一是：$\INT$图恰恰是由它本身的一个个副本组成的，它们层层嵌套，以至无穷。如果你拿出图的一小部分，不管是多小的一部分，你其实是拿着整个图形的一个完整的副本——事实上，是无穷多个副本！
 
 $\INT$不是由别的，而是由它本身的一个个副本组成的，这一事实可能使你觉得它一定是短命的。它的定义似乎是循环的。它究竟是怎么开始的呢？这是件很有趣的事。最值得注意的是：如果向一个没见过$\INT$的人描述它那么仅仅说“它是由它本身的副本组成的”是不够的。事情的另一半——非递归的那一半——说明这些副本存在于正方形中的哪个地方、相对于整个图形它们是怎么变形的。只有把$\INT$的这两个方面结合起来，才能说明$\INT$的结构。这正像在斐波那契数的定义中一样，需要两条线索——一条线索定义递归，另一条定义“基底”（也就是最开始的值）。说得具体些就是：如果你设基础的值是$3$而不是$1$，就会产生完全不同的序列，即卢卡斯序列：
-\begin{center}
-\begin{tikzpicture}[inner ysep=3pt, inner xsep=0pt]
+\begin{figure}[H]
+\begin{tikzpicture}[inner sep=0pt,outer ysep=3pt]
 \matrix [matrix of math nodes, column sep=7pt]
   {
     |(a)| 1, &
@@ -574,11 +572,11 @@ $\INT$不是由别的，而是由它本身的一个个副本组成的，这一�
 \draw[decorate,decoration=brace]
   (b.south east) -- (a.south west)
   node [midway, below=3pt, font=\footnotesize] {基底};
-\node [inner sep=0pt,below= 3pt of D,
+\node [outer sep=0pt,below= 3pt of D,
        font=\linespread{1}\footnotesize, align=center]
   (O) {与斐波那契序列\\相同的递归规则};
 \end{tikzpicture}
-\end{center}
+\end{figure}
 
 在$\INT$的定义中，与基底相对应的是一个由许多小方框组成的图（\fig{33}a），它表示出副本在什么地方，它们是如何扭曲的。我们把它叫做$\INT$的“骨架”。从骨架开始构造$\INT$，需按下列步骤：首先，对于骨架的每个方框，你要做两件事：\pnum{1}把骨架的一个弯曲了的小副本放进方框，用里面的弯曲的线作为它的向导；\pnum{2}涂掉外面的方框及其弯线。一旦把原骨架的每一个方框都这样做了，每个大骨架原来所在之处就换成了许多的“小辈”骨架。下一步，降一个层次对那些小辈骨架重复这一过程。然后再重复，再重复，再重复……这样下去的极限就是$\INT$图，当然极限是达不到的。就这样，一层一层地把骨架嵌套于它自身之中，$\INT$图就“无中生有”地逐渐构造出来了。但事实上，这“无”不是虚无——是一幅图。
 
@@ -621,7 +619,7 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
 当相互作用的“开关”被“打开”时，粒子就像函数$\mF$和$\mM$、或者说两个结了婚的人那样纠缠在一起。这些实际的粒子称为“重正化了的”——一个丑陋但却有启发性的术语。结果是，一个粒子如果不涉及所有其它粒子就无法给出定义，而其它粒子的定义反过来又要靠最初那个粒子，等等。这样转来转去，构成了一个永不停止的循环。
 
 让我们更具体一点。我们只限于讨论两种粒子：电子和光子。不过还要附带上电子的反粒子——正电子（光子的反粒子是它自己）。首先，设想一下在一个乏味的世界中裸电子要从A点传到B点，就像芝诺在我那《三部创意曲》里所做的那样。一个物理学家会画出这样一个图：
-\begin{center}
+\begin{figure}[H]
 %\includegraphics{img_035-1.png}
 \begin{tikzpicture}[radius=.05]
 \fill (0,0) circle coordinate(a)
@@ -629,12 +627,12 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
 \path[fermion edge]
   (a) edge[draw] (b);
 \end{tikzpicture}
-\end{center}
+\end{figure}
 
 有一个数学表达式与这条线及其端点相对应，而且很容易写下来。物理学家可以用这个表达式来理解裸电子在这个轨道上的行为。
 
 现在让我们“打开”电磁相互作用的开关，让电子和光子相互作用。虽然光子没出现，还是有一些很有价值的结果，即使是在这么简单的轨道上。特别是，我们的电子现在变得能够放射、吸收“虚光子”——出现之后还未被看到就消失掉的光子。我们这样表示这个过程：
-\begin{center}
+\begin{figure}[H]
 %\includegraphics{img_035-2.png}
 \begin{tikzpicture}[radius=.05]
 \fill (0,0) circle coordinate(a)
@@ -646,11 +644,16 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
       edge (c)
   (d) edge (b);
 \path[photon edge]
-  (c) edge[half left] (d);
+  (c) edge[half left] coordinate[above=1mm](BBT) (d);
+\path
+  (current bounding box.south west)  coordinate (LL)
+  (current bounding box.east |- BBT) coordinate (UR);
+\pgfresetboundingbox
+\useasboundingbox (LL) rectangle (UR);
 \end{tikzpicture}
-\end{center}
+\end{figure}
 当我们的电子传播时，它可以一个接一个地放射和再吸收光子，它甚至可以嵌套这一过程，如下所示：
-\begin{center}
+\begin{figure}[H]
 %\includegraphics{img_035-3.png}
 \begin{tikzpicture}[radius=.05]
 \fill (0,0) circle coordinate(a)
@@ -664,12 +667,17 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
       edge (c)
   (d) edge (b);
 \path[photon edge]
-  (c) edge[half left] (d)
+  (c) edge[half left] coordinate[above=1mm](BBT) (d)
   (e) edge[half left] (f);
+\path
+  (current bounding box.south west)  coordinate (LL)
+  (current bounding box.east |- BBT) coordinate (UR);
+\pgfresetboundingbox
+\useasboundingbox (LL) rectangle (UR);
 \end{tikzpicture}
-\end{center}
+\end{figure}
 与这些图案——“费因曼图案”——相对应的数学表达式很容易写下来，但它们比裸电子的表达式难计算一些。真正使事情复杂化的是光子（实的或虚的）能在瞬间里衰变成一对正负电子。然后这一对电子相互湮灭，原来的光子魔术般又出现了。下面是这种过程的示意：
-\begin{center}
+\begin{figure}[H]
 %\includegraphics{img_035-4.png}
 \begin{tikzpicture}
 \path (0,0) coordinate(a)
@@ -678,17 +686,23 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
       (b) +(-1.5,0) coordinate(d)
   (a) edge[photon] (c)
   (d) edge[photon] (b)
-  (c) edge[fermion, half left] (d)
-  (d) edge[fermion, half left] (c);
+  (c) edge[fermion, half left] coordinate[above=1mm](BBT) (d)
+  (d) edge[fermion, half left] coordinate[below=1mm](BBB) (c);
+\path
+  (current bounding box.west |- BBB) coordinate (LL)
+  (current bounding box.east |- BBT) coordinate (UR);
+\pgfresetboundingbox
+\useasboundingbox (LL) rectangle (UR);
 \end{tikzpicture}
-\end{center}
+\end{figure}
 电子有一个指向右边的箭头，而正电子的箭头是指向左边。
 
 读者或许已经预料到，这些虚的过程可以嵌套到任意深度。这可以产生出一些看起来非常复杂的图案，如\fig{35}。在费因曼图案中，一个电子从A的左边进入，演出一些惊人的杂技，之后一个电子在B的右边出现。对于一个看不出内情的观察者，似乎是一个电子从A平平安安地滑行到B，没有那些内部的混乱。在图案中，读者可以看到电子的曲线是怎样被随意地装饰，光子也是一样。要计算这个图案是非常之困难的。
 
 \begin{figure}
 %\includegraphics{img_035-5.png}
-\begin{tikzpicture}[radius=.05]
+\begin{tikzpicture}[radius=.05,
+  every label/.append style={inner sep=0pt,outer sep =.3333em}]
 \fill (0,0) coordinate[label=left:A](a) circle;
 \draw (a) -- ++(15mm,0)    coordinate(b)
           -- ++(15mm,0)    coordinate(c)
@@ -728,16 +742,21 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
   (r) edge (s)
   (d) edge (t)
   (u) edge (f)
-  (c) edge[bend left=75] (o)
+  (c) edge[bend left=75] coordinate[pos=.3,above=1mm](BBT) (o)
   (h) edge[half right] (j)
-  (g) edge[half right] (k);
+  (g) edge[half right] coordinate[below=1mm](BBB) (k);
+\path
+  (current bounding box.west |- BBB) coordinate (LL)
+  (current bounding box.east |- BBT) coordinate (UR);
+\pgfresetboundingbox
+\useasboundingbox (LL) rectangle (UR);
 \end{tikzpicture}
 \caption[一幅复杂的费因曼图案。]
   {一个费因曼图案，表示出重正化了的电子从A到B的传播。图中，时间从左向右增加，因此，在电子的箭头指向左边的片段中，它的移动是“与时间反向的”。更为直观的说法是，反电子（正电子）在正向的（即正常的）时间中移动。光子的反粒子是它们自己，因此它们的曲线无须箭头。}
 \end{figure}
 
 这些图案有一种“语法”，使得只有某些特定的图案能在自然界中实现。比如，下面这种图案就是不可能的：
-\begin{center}
+\begin{figure}[H]
 %\includegraphics{img_035-6.png}
 \begin{tikzpicture}
 \path (0,0) coordinate(a)
@@ -745,9 +764,14 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
       (a) +(1.5,0)  coordinate(c)
       (b) +(-1.5,0) coordinate(d)
   (a) edge[photon] (b)
-  (c) edge[fermion, half left] (d);
+  (c) edge[fermion, half left] coordinate[above=1mm](BBT) (d);
+\path
+  (current bounding box.south west)  coordinate (LL)
+  (current bounding box.east |- BBT) coordinate (UR);
+\pgfresetboundingbox
+\useasboundingbox (LL) rectangle (UR);
 \end{tikzpicture}
-\end{center}
+\end{figure}
 你可以称之为非“良构”的费因曼图案。这些语法来自物理学基本定律，如能量守恒、电荷守恒等等。而且，正像人类语言的语法那样，这种语法的结构是递归的，允许很深的结构嵌套。完全可能画出一组递归迁移网来定义电磁相互作用的“语法”。当裸电子和裸光子允许以这些随意缠绕的方式相互作用时，结果是形成重正化的电子与光子。这样，要理解实际的、物质的电子是怎样从A传播到B的，物理学家必须能对无穷多不同可能的涉及虚粒子的图案取某种平均。芝诺的话好像应验了！
 
 因此，关键在于一个物质粒子——一个重正化的粒子——涉及了\pnum{1}一个裸粒子、\pnum{2}一大群虚粒子，它们在乱七八糟的递归中紧紧地纠缠在一起。所以，每个真实粒子的存在都涉及到无穷多其它粒子的存在，后者组成一团虚“云”，在前者传播时围绕着它。当然，云里的虚粒子也拖着自己的虚云，如此下去，以至无穷。
@@ -842,13 +866,12 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
     child { node {} }
     child { node {} }
   };
-\begin{scope}[x=.1mm, y=.1mm]
+\tikzset{x=.1mm, y=.1mm}
 \def\GRID{%
   \draw[thin] (-27,9) -- +(54,0)  (-27,-9) -- +(54,0)
               (-9,27) -- +(0,-54) (9,27)   -- +(0,-54);}
-\begin{scope}[shift=(O)]
+\tikzset{shift=(O)}
 \GRID
-\end{scope}
 \def\TEST#1#2{%
   \if#10\def\xs{0}\else\edef\xs{\the\numexpr#120\relax}\fi
   \if#20\def\ys{0}\else\edef\ys{\the\numexpr#220\relax}\fi}
@@ -859,11 +882,10 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
     O-3/-/+
   }
   {
-    \begin{scope}[shift=(\p)]
+    \tikzset{shift=(\p)}
     \GRID
     \TEST\x\y
     \draw plot[mark=x] coordinates{(\xs,\ys)};
-    \end{scope}
   }
 \foreach \p / \x / \y / \s / \t in
   {
@@ -881,15 +903,13 @@ G图显示出了这个分布。水平轴代表能量，垂直轴代表上面提�
     O-3-5/-/+/+/-
   }
   {
-    \begin{scope}[shift=(\p)]
+    \tikzset{shift=(\p)}
     \GRID
     \TEST\x\y
     \draw plot[mark=x] coordinates{(\xs,\ys)};
     \TEST\s\t
     \draw (\xs,\ys) circle (5);
-    \end{scope}
   }
-\end{scope}
 \end{tikzpicture}
 \caption[三子棋树。]
   {三子棋开始两步的超前搜索树。}

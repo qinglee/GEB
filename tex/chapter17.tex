@@ -207,17 +207,16 @@ r^4+s^4+t^4=u^4+v^4+w^4=x^4+y^4+z^4
 
 \begin{figure}
 %\includegraphics{img_106.png}
-\begin{tikzpicture}[semithick]
-\matrix[inner sep=0pt,column sep=10mm,row sep=10mm,every node/.style={%
-  draw,align=center,font=\linespread{1}\selectfont,inner sep=2mm}]{
-\node(A){计算机程序\\（高级语言）};
-& & \node[rounded rectangle](B){人脑\\（符号层）};\\
-& \node[rounded corners=2mm](C){自然数\\的空间};\\
-};
-\draw[dashed]
-      (A) -- (B) node[midway,above]{同构};
-\draw (A.south) -- (C.west) node[midway,left,yshift=-1mm]{同构}
-      (B.south) -- (C.east) node[midway,right,yshift=-1mm]{同构};
+\begin{tikzpicture}
+\path[every node/.style={%
+    draw,align=center,font=\linespread{1}\selectfont,inner sep=2mm}]
+  (0,0)  node[name=A,left]                      {计算机程序\\（高级语言）}
+  (4,0)  node[name=B,right,rounded rectangle]   {人脑\\（符号层）}
+  (2,-2) node[name=C,below,rounded corners=2mm] {自然数\\的空间};
+\path
+  (A)      edge[dashed] node[above]{同构} (B)
+  (C.west) edge  node[sloped,below]{同构} (A.south)
+  (C.east) edge  node[sloped,below]{同构} (B.south);
 \end{tikzpicture}
 \caption[联系着自然数、计算机和人脑的同构关系。]
   {自然数的性质能在人类大脑和计算机程序中得到反映。这两个不同的描述因而能在一个适当的抽象层次上彼此对应。}
@@ -252,19 +251,18 @@ r^4+s^4+t^4=u^4+v^4+w^4=x^4+y^4+z^4
 \begin{tikzpicture}[every node/.style={font=\linespread{1}\small},
   decoration={markings,
     mark=at position .5 with {\arrow[xshift=1mm]{Stealth[open,round]}}}]
-\matrix[inner sep=0pt,column sep=15mm,row sep=15mm,
-  every node/.style={draw,align=center,
-    inner sep=-5mm,minimum width=12mm,minimum height=12mm,
-    rounded rectangle,rounded rectangle arc length=90}]{
-  & \node(A){大脑的\\高层次\\（符号层）}; & \node(B){世界};\\
-    \node(C){神经原网络\\的\\计算机模型}; & \node(D){基质：\\作为神经原\\集合的大脑};\\
-};
-\draw[arrows = {Stealth[left]-Stealth[left]}]
-  (A) -- (B) node[midway,below,align=center]{半同构\\（意义）};
-\draw[<->]
-  (C) -- (D) node[midway,below]{同构};
-\draw[dashed,postaction=decorate]
-  (D) -- (A) node[midway,right]{带随意性的联系};
+\path[node distance=15mm,nodes={draw,align=center,
+        inner sep=-5mm,minimum width=12mm,minimum height=12mm,
+        rounded rectangle,rounded rectangle arc length=90}]
+  node[name=A]            {神经原网络\\的\\计算机模型}
+  node[name=B,right=of A] {基质：\\作为神经原\\集合的大脑}
+  node[name=C,above=of B] {大脑的\\高层次\\（符号层）}
+  node[name=D,right=of C] {世界};
+\path
+  (A) edge[<->] node[below]{同构} (B)
+  (B) edge[dashed,postaction=decorate] node[right]{带随意性的联系} (C)
+  (C) edge[arrows={Stealth[left]-Stealth[left]}]
+      node[below,align=center]{半同构\\（意义）} (D);
 \end{tikzpicture}
 \caption[大脑中的神经和符号活动。]
   {大脑的符号层漂浮于神经原活动之上，从而反映了世界。不过能在计算机上模拟的那种神经原活动本身并不能产生思维，那得靠组织中的一些更高的层次。}
@@ -293,21 +291,20 @@ r^4+s^4+t^4=u^4+v^4+w^4=x^4+y^4+z^4
 \begin{figure}
 %\includegraphics{img_108.png}
 \begin{tikzpicture}[decoration={brace,amplitude=3mm,raise=1mm},
-  every node/.style={font=\linespread{1}\small},
-  DN/.style={draw,align=center,
-    inner sep=-5mm,minimum width=9mm,minimum height=12mm,
-    rounded rectangle,rounded rectangle arc length=90}]
-\matrix[inner sep=0pt,column sep=15mm,row sep=10mm,every node/.style=DN]{
-  \node(A){大脑的\\“符号”层\\（心智）}; & \node(D){宏观世界};\\
-  \node(B){大脑\\（中间层次）};         & \node(E){微观世界};\\
-  \node(C){大脑的\\高层次\\（符号层）};  & \node(F){“终极基础”\\（物理律）};\\
-};
-\coordinate (O) at ($(A.west)!.5!(B.west)$);
-\begin{scope}[every node/.style={DN,font=\linespread{1}\small}]
-\node (G) [left= 20mm of O] {人工\\智能\\程序};
-\node (I) [left= 20mm of C.west] {电子基质};
-\node (H) at ($(G)!.5!(I)$) {低层软件};
-\end{scope}
+  every node/.style={font=\linespread{1}\small}]
+\path[node distance=10mm and 16mm,nodes={draw,align=center,
+        inner sep=-5mm,minimum width=9mm,minimum height=12mm,
+        rounded rectangle,rounded rectangle arc length=90}]
+  node[name=A]            {大脑的\\“符号”层\\（心智）}
+  node[name=B,below=of A] {大脑\\（中间层次）}
+  node[name=C,below=of B] {大脑的\\高层次\\（符号层）}
+  node[name=D,right=of A] {宏观世界}
+  node[name=E,at=(B-|D)]  {微观世界}
+  node[name=F,at=(C-|D)]  {“终极基础”\\（物理律）}
+  coordinate[name=O,at=($(A.west)!.5!(B.west)$)]
+  node[name=G,left=2cm of O] {人工\\智能\\程序}
+  node[name=I,at=(C-|G)]  {电子基质}
+  node[name=H,at=($(G)!.5!(I)$)] {低层软件};
 \draw[dashed]
   (A) -- (B) -- (C)
   (D) -- (E) -- (F)

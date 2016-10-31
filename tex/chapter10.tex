@@ -186,24 +186,26 @@
 \begin{figure}
 %\includegraphics{img_058.png}
 \begin{lrbox}{\TEMPBOX}%
-\begin{tikzpicture}[SPN/.style={chamfered rectangle,
-    chamfered rectangle xsep=1cm,inner sep=1mm},
+\begin{tikzpicture}[baseline=(E.south),
+  node distance=10mm and 15mm,
+  SPN/.style={chamfered rectangle,chamfered rectangle xsep=5cm,inner sep=1mm},
   SN/.style={decorate,decoration={snake,amplitude=1pt,segment length=4pt}},
   AR/.style={postaction=decorate,arrow decoration}]
-\matrix [inner sep=0pt,matrix of nodes,column sep=-5mm, row sep=8mm,
-  every node/.style={outer sep=auto,draw,inner sep=2mm,minimum height=8mm}]
-{
-|(A)| 编译语言 \\
-|(B)[SPN]| 编译程序  & & |(C)| 汇编语言 \\
-  & & |(D)[SPN]| 汇编程序 \\
-  & |(E)| 机器语言 \\
-};
-\path (A) edge[AR] (B)
-      (B) edge[SN] (C)
-      (C) edge[AR] (D)
-      (B.south) edge[->] (E)
-      (D.south) edge[->] (E)
-      (D.east)  edge[SN,bend left=75] (E.east);
+\path[every node/.style={draw,inner sep=2mm,minimum height=8mm}]
+  node[name=A]                {编译语言}
+  node[name=B,below=of A,SPN] {编译程序}
+  node[name=C,right=of B]     {汇编语言}
+  node[name=D,below=of C,SPN] {汇编程序}
+  node[name=E,below=of {D.south-|{$(B.east)!.5!(C.west)$}}] {机器语言}
+    (A) edge[AR] (B)
+    (B) edge[SN] (C)
+    (C) edge[AR] (D)
+    (B.south) edge[->] (E)
+    (D.south) edge[->] (E)
+    (D.east)  edge[SN,bend left=75] (E.east);
+\path (current bounding box.north west) coordinate (UL);
+\pgfresetboundingbox
+\useasboundingbox (UL) rectangle ([xshift=1mm]E.south-|D.east);
 \end{tikzpicture}
 \end{lrbox}
 \fcapside[\FBwidth]{\usebox\TEMPBOX}{%

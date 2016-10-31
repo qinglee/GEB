@@ -156,13 +156,15 @@
 
 \begin{figure}
 %\includegraphics{img_086.png}
-\begin{tikzpicture}[DN/.style={draw,ellipse,minimum width=15mm},arrow decoration]
-\node[DN] (A) {歌};
-\node[DN] (B) [right= 3cm of A] {\hbox{“$7$”\unskip}};
-\draw[postaction=decorate]
-  (A) to[bend left] node[midway,above] {人} (B) ;
-\draw[postaction=decorate]
-  (B) to[bend left] node[midway,below] {投币唱机} (A) ;
+\begin{tikzpicture}[arrow decoration]
+\path[every node/.style={draw,ellipse,minimum width=15mm}]
+  node (A) {歌}
+  node (B) [right= 3cm of A] {\hbox{“$7$”\unskip}};
+\path[auto=left,
+      every node/.style={inner sep=0pt,outer sep=1.5mm},
+      every edge/.style={draw,postaction=decorate,bend left}]
+  (A) edge node {人} (B)
+  (B) edge node {投币唱机} (A);
 \end{tikzpicture}
 \caption{一首自复制的歌。}
 \end{figure}
@@ -493,13 +495,15 @@ AA把该串分成两个“基因”。基因的定义是：一个串中给一个
 \begin{figure}
 %\includegraphics{img_090.png}
 \begin{lrbox}{\TEMPBOX}
-\begin{tikzpicture}[arrow decoration]
-\node (A) {酶};
-\node (B) [below= 10mm of A] {串};
-\path[every edge/.style={draw,bend left=75,postaction=decorate},
-      every node/.style={font=\small}]
-  (A) edge node[right] {印符操作} (B)
-  (B) edge node[left] {核糖体的翻译} (A);
+\begin{tikzpicture}[every node/.style={inner sep=0pt,outer sep=.3333em}]
+\path
+  node (A) {酶}
+  node (B) [below= 10mm of A] {串};
+\path[auto=left,arrow decoration,
+      every edge/.style={draw,bend left=75,postaction=decorate},
+      every node/.append style={font=\small}]
+  (A) edge node {印符操作} (B)
+  (B) edge node {核糖体的翻译} (A);
 \end{tikzpicture}
 \end{lrbox}
 \fcapside[\FBwidth]{\usebox\TEMPBOX}{%
@@ -510,13 +514,14 @@ AA把该串分成两个“基因”。基因的定义是：一个串中给一个
 这个图说明了印符遗传学的中心法则。它显示了串如何（借助于印符遗传密码）定义酶，以及酶反过来如何作用于那些导出它们的串，从而得到新的串。因此，左边一条线绘出了老信息怎样流上去，因为酶是串的一个翻译，从而含有和串相同的信息，只不过形式不同，特别是作用的形式不同。然而右边那条线并不表示信息流下来，而是表示如何通过在串中调动符号，创造新的信息。
 
 印符遗传学中的酶就像形式系统中的推理规则，它们闭着眼睛调动串中的符号，而不顾有可能潜藏在符号内的任何“意义”。所以这里就有一个怪异的层次混合状态。一方面，串是被作用的，因而充当了数据的角色（如\fig{90}中右边的箭头所指出的）；另一方面，它们又支配这个施加在数据上的作用，因而又充当了程序的角色（如左边的箭头所指出的）。当然，起解释程序和处理机作用的是做游戏的人。联结“上”“下”两个印符遗传层次的这个双向通道表明：事实上，不管是串还是酶，哪个也不能认为比另一个高。作为对照，"WJU"系统的中心法则图示是：
-\begin{center}
-\begin{tikzpicture}
-\node (A) {推理规则};
-\node (B)[below=8mm of A]{符号串};
-\draw[->] (A) -- (B) node[midway,right,font=\small]{（印符操作）};
+\begin{figure}[H]
+\begin{tikzpicture}[every node/.style={inner sep=0pt,outer sep=.3333em}]
+\path
+  node (A) {推理规则}
+  node (B) [below= 10mm of A] {符号串}
+  (A) edge[->] node [right,font=\small] {（印符操作）} (B);
 \end{tikzpicture}
-\end{center}\nointerlineskip
+\end{figure}
 在"WJU"系统中，层次有明显的区别：推理规则绝对属于比符号串高的层次。对于TNT以及所有的形式系统，情况都类似。
 
 \section{怪圈、TNT及实际的遗传学}
@@ -865,46 +870,53 @@ mRNA串 & $\iff$ & N的陈述\\
 \begin{figure}
 %\includegraphics{img_099.png}
 \begin{tikzpicture}[arrow decoration]
-\matrix (M) [matrix of nodes,inner sep=0pt,nodes={outer sep=.3em},
-  column sep={42mm,between origins},row sep={20mm,between origins},
-  row 4/.style={font=\em}]
-{
-  蛋白质    & 元TNT描述 \\
-  RNA   & N中的陈述 \\
-  DNA   & TNT符号串 \\[-16mm,between borders]
-  法则I  & 法则II \\
-};
-\begin{scope}
-\clip ([xshift=-20mm]M-1-1.north) rectangle
-      ([xshift=20mm,yshift=23.5mm]M-1-2.north);
-\foreach \x in {M-1-1,M-1-2} {
-  \coordinate (B) at ($(\x.center)!.5!(\x.north)$);
-  \draw[postaction=decorate] (B) arc (270:-90:.7  and .6);
-  \draw[postaction=decorate] (B) arc (270:-90:1.1 and .9);
-  \draw[postaction=decorate] (B) arc (270:-90:1.5 and 1.2);
-  \draw (B) arc (-90:-10:1.9 and 1.5) coordinate (O);
-  \draw[dashed] (O) arc (-10:20:1.9 and 1.5);
-  \draw (B) arc (270:190:1.9 and 1.5) coordinate (O);
-  \draw[dashed] (O) arc (190:160:1.9 and 1.5);}
-\end{scope}
-\tikzset{every node/.style={font=\linespread{1}\footnotesize,inner sep=0pt}}
-\path
-  ([xshift=-16mm]M-1-1.north) node[above left,align=left]
+\path[on grid,node distance=20mm and 42mm,
+      every node/.style={inner sep=0pt,outer sep=.3333em}]
+  node[name=M11]               {蛋白质}
+  node[name=M21,below=of M11]  {RNA}
+  node[name=M31,below=of M21]  {DNA}
+  node[name=M12,right=of M11]  {元TNT描述}
+  node[name=M22,at=(M21-|M12)] {N中的陈述}
+  node[name=M32,at=(M31-|M12)] {TNT符号串};
+\path[every node/.style={inner sep=0pt,outer sep=.3333em,font=\em}]
+  node[name=M41,below=2mm of M31] {法则I}
+  node[name=M42,at=(M41-|M12)]    {法则I};
+\path[node distance=0mm and 16mm,
+      every node/.style={font=\linespread{1}\footnotesize,inner sep=0pt}]
+  node[name=L,above left=of M11.north,align=left]
     {蛋白质\\作用于蛋\\白质作用于\\蛋白质，等等}
-  ([xshift=16mm]M-1-2.north)  node[above right,align=right]
+  node[name=R,above right=of M12.north,align=right]
     {对于在\\TNT中\\陈述的陈述\\的陈述，等等};
 \tikzset{auto=right,
   every node/.style={font=\linespread{1}\footnotesize\kaishu,align=center},
   every edge/.style={draw,postaction=decorate}}
 \path
-  (M-3-1) edge node {转录\\（转换成活\\跃的形式）}   (M-2-1)
-  (M-2-1) edge node {翻译\\（通过遗\\传密码）}       (M-1-1)
-  (M-3-2) edge node {解释\\（转换成有\\意义的形式）} (M-2-2)
-  (M-2-2) edge node {算术化\\（通过哥德\\尔编码）}   (M-1-2);
+  (M31) edge node {转录\\（转换成活\\跃的形式）}   (M21)
+  (M21) edge node {翻译\\（通过遗\\传密码）}       (M11)
+  (M32) edge node {解释\\（转换成有\\意义的形式）} (M22)
+  (M22) edge node {算术化\\（通过哥德\\尔编码）}   (M12);
 \draw[>->,postaction=decorate,rounded corners]
-  (M-1-1) -- ++(2,0) |- (M-3-1) node[pos=.25] {自复制};
+  (M11) -- ++(2,0) |- (M31) node[pos=.25] {自复制};
 \draw[>->,postaction=decorate,rounded corners]
-  (M-1-2) -- ++(2,0) |- (M-3-2) node[pos=.25] {自指};
+  (M12) -- ++(2,0) |- (M32) node[pos=.25] {自指};
+\path
+  (current bounding box.south west) coordinate (LL)
+  (current bounding box.east) coordinate (BBR);
+\begin{scope}
+\clip (L.south west) rectangle ([yshift=5cm]R.south east);
+\foreach \x in {M11,M12} {
+  \coordinate (B) at ($(\x.center)!.5!(\x.north)$);
+  \draw[postaction=decorate] (B) arc (270:-90:.7  and .6);
+  \draw[postaction=decorate] (B) arc (270:-90:1.1 and .9);
+  \draw[postaction=decorate] (B) arc (270:-90:1.5 and 1.2)
+    coordinate[midway,above=1mm](BBT);
+  \draw (B) arc (-90:-10:1.9 and 1.5) coordinate (O);
+  \draw[dashed] (O) arc (-10:20:1.9 and 1.5);
+  \draw (B) arc (270:190:1.9 and 1.5) coordinate (O);
+  \draw[dashed] (O) arc (190:160:1.9 and 1.5);}
+\end{scope}
+\pgfresetboundingbox
+\useasboundingbox (LL) rectangle (BBR |- BBT);
 \end{tikzpicture}
 \caption[中心法则映射。]
   {中心法则映射。在两个基本的缠结构的层次系统——分子生物学层次系统和数理逻辑层次系统——之间的一个类比。}

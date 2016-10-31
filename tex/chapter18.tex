@@ -287,10 +287,11 @@ C：请X告诉我他或她头发的长度。
 
 \begin{lrbox}{\TEMPBOX}%
 \begin{tikzpicture}
-\coordinate[label=left:$P$] (P) at (0,0);
-\coordinate[label=right:$P'$] (PP) at (2,0);
-\coordinate[label=above:$A$] (A) at (1,2.5);
-\draw (P) -- (PP) -- (A) -- cycle;
+  [every node/.style={draw=none,inner sep=0pt,outer sep=.3333em}]
+\draw    (0,0)   node[left]  {$P$}
+      -- (2,0)   node[right] {$P'$}
+      -- (1,2.5) node[above] {$A$}
+      -- cycle;
 \end{tikzpicture}
 \end{lrbox}
 
@@ -399,22 +400,24 @@ C：请X告诉我他或她头发的长度。
   };
 \path let \p1= (A.west), \p2= (B.east) in
     \pgfextra{\xdef\LAB{\the\dimexpr\x2-\x1+1cm\relax}};
-\begin{scope}[shift={([xshift=-5mm,yshift=1cm]O.north-|A.west)},%
-  every node/.style={draw=none,inner sep=0pt,outer sep=5pt}]
+\tikzset{shift={([xshift=-5mm,yshift=1cm]O.north-|A.west)},%
+         every node/.style={draw=none,inner sep=0pt,outer sep=5pt,below}}
 \def\xaxis#1#2{\the\dimexpr\LAB*#1/#2\relax}
 \draw (0,0) -- (\LAB,0);
-\fill (0,0) circle (3pt) node[below] {A};
-\fill (\LAB,0) circle (3pt) node[below] {B};
-\fill (\xaxis48,0) circle (2.5pt) node[below,font=\small] {爱利亚};
-\foreach \x in {1,3}
-  \fill (\xaxis{\numexpr\x*2\relax}8,0) circle (2pt)
-    node[below,font=\footnotesize] {$\sfrac\x4$};
-\foreach \x in {1,3,5,7}
-  \fill (\xaxis\x8,0) circle (1.5pt)
-    node[below,font=\scriptsize] {$\sfrac\x8$};
-\foreach \x in {1,3,...,15}
-  \fill (\xaxis\x{16},0) circle (1pt);
-\end{scope}
+\fill
+  (0,0)    circle (3pt) node {A}
+  (\LAB,0) circle (3pt) node {B}
+  (\xaxis48,0) circle (2.5pt) node[font=\small] {爱利亚}
+  foreach \x in {1,3} {
+    (\xaxis{\numexpr\x*2\relax}8,0) circle (2pt)
+      node[font=\footnotesize] {$\sfrac\x4$}
+  }
+  foreach \x in {1,3,5,7} {
+    (\xaxis\x8,0) circle (1.5pt) node[font=\scriptsize] {$\sfrac\x8$}
+  }
+  foreach \x in {1,3,...,15} {
+    (\xaxis\x{16},0) circle (1pt)
+  };
 \end{tikzpicture}
 \caption[芝诺的无穷目标树。]
   {芝诺为了从A到B所建立的无穷目标树。}
@@ -668,24 +671,25 @@ C：请X告诉我他或她头发的长度。
 \begin{lrbox}{\TEMPBOX}%
 \begin{tikzpicture}[trim right=(R),
   every node/.style={font=\normalfont\small}]
-\matrix [inner sep=0pt,matrix of nodes,column sep=10mm,row sep=5mm,
-  LX/.style={shape=diamond,shape aspect=3,inner xsep=0mm,inner ysep=.5mm},
-  JX/.style={inner sep=3mm},YX/.style={circle,inner sep=1mm},nodes={draw}]
-{
-  |(A)[YX]| 开始  \\
-  |(B)[JX]| 找到方块$\mathrm{X}1$ & |(H)[YX]| 失败 \\
-  |(C)[LX]| $\mathrm{X}1$是红的吗？\\
-  |(D)[LX]| $\mathrm{X}1$是等边的吗？\\
-  |(E)[JX]| 找到方锥$\mathrm{X}2$\\
-  |(F)[LX]| $\mathrm{X}1$是支撑着$\mathrm{X}2$吗？\\
-  |(G)[YX]| 成功\\
-};
-\draw[->] (A) -- (B);
-\draw[->] (B) -- (C);
-\draw[->] (E) -- (F);
-\draw[->] (C) -- (D) node[midway,right]{是};
-\draw[->] (D) -- (E) node[midway,right]{是};
-\draw[->] (F) -- (G) node[midway,right]{是};
+\path[node distance=5mm and 10mm,nodes=draw,
+      JX/.style={inner sep=3mm},
+      YX/.style={circle,inner sep=1mm},
+      LX/.style={shape=diamond,shape aspect=3,inner xsep=0mm,inner ysep=.5mm}]
+  node[name=A,YX]            {开始}
+  node[name=B,JX,below=of A] {找到方块$\mathrm{X}1$}
+  node[name=C,LX,below=of B] {$\mathrm{X}1$是红的吗？}
+  node[name=D,LX,below=of C] {$\mathrm{X}1$是等边的吗？}
+  node[name=E,JX,below=of D] {找到方锥$\mathrm{X}2$}
+  node[name=F,LX,below=of E] {$\mathrm{X}1$是支撑着$\mathrm{X}2$吗？}
+  node[name=G,YX,below=of F] {成功}
+  node[name=H,YX,right=of {B-|current bounding box.east}] {失败};
+\path[auto=left,->]
+    (A) edge (B)
+    (B) edge (C)
+    (E) edge (F)
+    (C) edge node{是} (D)
+    (D) edge node{是} (E)
+    (F) edge node{是} (G);
 \draw[->] (F.west) -- ++(-5mm,0) coordinate (O) node[midway,above]{否} |- (E);
 \draw[->] (D.west) -- (O |- D.west) node[midway,above]{否}
   |- ([yshift=2mm]B.west);

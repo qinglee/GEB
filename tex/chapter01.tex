@@ -127,12 +127,13 @@
 
 \begin{figure}
 %\includegraphics{img_011.png}
-\begin{tikzpicture}[thick, node distance=10mm and 2mm, inner xsep=0mm,
-  sibling distance=5mm, level distance=6mm,
+\begin{tikzpicture}[thick, node distance=10mm and 2mm,
+  inner sep=0mm,outer ysep=.3333em,
+  sibling distance=5mm, level distance=7mm,
   quan/.style={decorate, decoration={markings,
     mark connection node=quan,
     mark=at position .5 with
-      {\node[circle, draw,  inner sep=.8pt]
+      {\node[circle, draw, inner sep=.8pt, outer sep=0pt]
             (quan) {#1};}}}]
 \node (A) {"WJUJUJUJU"}
   child;
@@ -141,7 +142,7 @@
 \node (C) [right = of B] {"WJJJJU"}
   child foreach \x in {1,2,3};
 \node (D) [right = of C] {"WJJJJJJJJ"}
-  child[sibling distance=3mm] foreach \x in {1,...,8};
+  child[sibling distance=3mm] foreach \x in {1,2,...,8};
 \node (E) [right = of D] {"WUJ"}
   child
   child;
@@ -164,17 +165,14 @@
 \node (L) [above = of $(J)!.5!(K)$] {"WJ"}
   edge[quan=1] (J)
   edge[quan=2] (K);
-\begin{scope}[node font=\bfseries]
-\node (M) [left = 2mm of A ] {3.}
-      (M |- G) node {2.}
-      (M |- K) node {1.}
-      (M |- L) node {0.};
-\end{scope}
-\node (O)
-  [below left = 15mm of current bounding box.north east] {"WU"};
-\begin{scope}[shift={(O)}]
+\path[font=\bfseries]
+  node[name=M, left = 2mm of A] {3.}
+  (M |- G) node {2.}
+  (M |- K) node {1.}
+  (M |- L) node {0.};
+\node[name=O, below left = 15mm of current bounding box.north east] {"WU"};
+\tikzset{shift={(O)}}
 \node foreach \x in {30,90,...,330} at (\x:8mm) {?};
-\end{scope}
 \end{tikzpicture}
 \caption["WJU"系统中所有定理的“树”。]
   {一个系统地构造出来的"WJU"系统中所有定理的“树”。向下到第$N$步，它包含了恰恰需要$N$个步骤推导的那些定理。圆圈中的数字字表示使用了哪条规则。"WU"是不是在这棵树上的什么地方？}

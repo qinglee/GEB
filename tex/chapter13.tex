@@ -219,15 +219,14 @@ BlooP的另一个特点是：某些特定过程可以用\inst{YES}或\inst{NO}�
 
 \begin{lrbox}{\TEMPBOX}%
 \begin{tikzpicture}[trim right=(OPU)]
-\begin{scope}[every node/.style={draw,dashed,rounded corners=2mm,
-  font=\linespread{1}\selectfont,align=center,
-  inner xsep=3mm,inner ysep=2mm}]
-\node (A) { 过程定义 \\ $\#1$ };
-\node (B) [below =  3mm of A] { 过程定义 \\ $\#2$ };
-\node (C) [below =  3mm of B] { 过程定义 \\ $\#3$ };
-\node (D) [below = 10mm of C] { 过程定义 \\ $\#k$ };
-\end{scope}
-\node[draw=none,rotate=90] at ($(C)!.5!(D)$) {\ldots\ldots};
+\path[every node/.style={draw,dashed,rounded corners=2mm,
+        font=\linespread{1}\selectfont,align=center,
+        inner xsep=3mm,inner ysep=2mm}]
+  node [name=A]                   { 过程定义 \\ $\#1$ }
+  node [name=B,below =  3mm of A] { 过程定义 \\ $\#2$ }
+  node [name=C,below =  3mm of B] { 过程定义 \\ $\#3$ }
+  node [name=D,below = 10mm of C] { 过程定义 \\ $\#k$ };
+\path ($(C)!.5!(D)$) node[rotate=90] {\ldots\ldots};
 \draw[<<<.-.<<<] (D.west) ++(2mm,3mm)   coordinate (IP)
   -- +(-18mm,0) node[at end,above,anchor=south west]{输入};
 \draw[>>>.-.>>>] (D.east) ++(-2mm,-3mm) coordinate (OP)

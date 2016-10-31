@@ -78,12 +78,13 @@
 \begin{tikzpicture}[every node/.style={draw,circle,minimum size=5mm},
   every edge/.style={draw,postaction=decorate,bend left},
   arrow decoration]
-\node (W) at (0,0) {W};
-\node (G) at (2,0) {G};
-\node (Z) at (60:2) {Z};
-\path (W) edge (Z)
-      (Z) edge (G)
-      (G) edge (W);
+\path
+  (0,0)  node (W) {W}
+  (2,0)  node (G) {G}
+  (60:2) node (Z) {Z}
+  (W) edge (Z)
+  (Z) edge (G)
+  (G) edge (W);
 \end{tikzpicture}
 \caption[一个作者三角形。]
   {一个“作者三角形”。}
@@ -103,26 +104,26 @@
 
 \begin{figure}
 %\includegraphics{img_136.png}
-\begin{tikzpicture}[every edge/.style={draw,postaction=decorate,bend left},
-  arrow decoration]
-\matrix[inner sep=0pt,matrix of nodes,column sep=0mm,row sep=10mm,
-  every node/.style={draw,ellipse,inner sep=2mm}]
-{
-  |(A)| 左手 & & |(B)| 右手 \\
-           & \coordinate (M);\\
-           & |(O)| 艾舍尔\\
-};
-\path (A) edge node[midway,below,font=\small]{\hbox{“画”}} (B)
-      (B) edge node[midway,above,font=\small]{\hbox{“画”}} (A)
-      (O) edge[dashed,bend right]
-          node[very near start,left,font=\small]{画}  (A.south)
-      (O) edge[dashed,bend left]
-          node[very near start,right,font=\small]{画} (B.south);
+\begin{tikzpicture}[arrow decoration,
+  every edge/.style={draw,postaction=decorate,bend left}]
+\path[every node/.style={draw,ellipse,inner sep=2mm}]
+  (0,0)  coordinate (O)
+  (-2,1) node[name=A,above] {左手}
+  (2,1)  node[name=B,above] {右手}
+  (0,-1) node[name=C,below] {艾舍尔};
+\tikzset{every node/.style={font=\linespread{1.1}\small,
+                            inner sep=0pt,outer sep=.3333em}}
+\path (A) edge node[below]{\hbox{“画”}} (B)
+      (B) edge node[above]{\hbox{“画”}} (A)
+      (C) edge[dashed,bend right]
+          node[very near start,left]{画}  (A.south)
+      (C) edge[dashed,bend left]
+          node[very near start,right]{画} (B.south);
 \draw[decorate,decoration={coil,mirror,amplitude=.7mm,segment length=5mm}]
-  ([xshift=-5mm]M-|A.west) -- ([xshift=7mm]M-|B.east) coordinate (R);
-\node[align=left,anchor=south west,font=\linespread{1.1}\small]
-  (UR) at ([xshift=-5mm,yshift=3mm]R) {怪圈\\或\\缠结的层次结构\\（可见的）};
-\node[align=left,anchor=north west,font=\linespread{1.1}\small,below=6mm of UR] {不受干扰的层次\\（不可见的）};
+  ([xshift=-5mm]O-|A.west) -- ([xshift=7mm]O-|B.east) coordinate (R);
+\path[align=left]
+  (R)++(-5mm,3mm) node[above right] {怪圈\\或\\缠结的层次结构\\（可见的）}
+     ++(0mm,-6mm) node[below right] {不受干扰的层次\\（不可见的）};
 \end{tikzpicture}
 \caption[艾舍尔的《画手》的抽象示意图。]
   {艾舍尔的《画手》的抽象示意图，上面部分似乎是个悖论，下面部分是它的解。}
@@ -370,26 +371,25 @@
 
 \begin{figure}
 %\includegraphics{img_143.png}
-\begin{tikzpicture}[RC/.style={rounded corners,postaction=decorate},
-  small font/.style={align=center,font=\linespread{1.1}\small},
-  arrow decoration]
-\matrix[inner sep=0pt,matrix of nodes,column sep=5mm,row sep=10mm,
-  every node/.style={draw,ellipse,inner sep=2mm,minimum width=16mm}]
-{
-           & |(A)| 城镇 \\
-  |(B)| 图画 & & |(C)|画廊\\
-           & |(D)|人\\
-};
+\begin{tikzpicture}[arrow decoration,
+  RC/.style={rounded corners,postaction=decorate}]
+\path[every node/.style={draw,ellipse,inner sep=2mm,minimum width=16mm}]
+  (0,2)  node (A) {城镇}
+  (-2,0) node (B) {图画}
+  (2,0)  node (C) {画廊}
+  (0,-2) node (D) {人};
+\tikzset{every node/.style={align=center,font=\linespread{1.1}\small,
+                            inner sep=0mm,outer sep=.3333em}}
 \draw[postaction=decorate] (B) -- (C)
-  node[midway,below,small font]{包含\\（物理地）};
+  node[midway,below]{包含\\（物理地）};
 \draw[RC] (A.west) -- ++(-3mm,0) -- (B.north)
-  node[midway,left,small font,yshift=2mm]{描绘\\（艺术地）};
-\draw[RC] (B.south) -- ($(D.west)-(3mm,0)$)
-  node[midway,left,small font]{表示\\（心理地）} -- (D.west);
+  node[midway,left,yshift=3mm]{描绘\\（艺术地）};
+\draw[RC] (B.south) -- ([xshift=-3mm]D.west)
+  node[midway,left]{表示\\（心理地）} -- (D.west);
 \draw[RC] (D.east) -- ++(3mm,0) -- (C.south)
-  node[midway,right,small font]{包含\\（物理地）};
-\draw[RC] (C.north) -- ($(A.east)+(3mm,0)$)
-  node[midway,right,small font,yshift=2mm]{包含\\（心理地）} -- (A.east);
+  node[midway,right]{包含\\（物理地）};
+\draw[RC] (C.north) -- ([xshift=3mm]A.east)
+  node[midway,right,yshift=3mm]{包含\\（心理地）} -- (A.east);
 \end{tikzpicture}
 \caption{艾舍尔的《画廊》的抽象图示。}
 \end{figure}
@@ -398,19 +398,18 @@
 
 \begin{figure}
 %\includegraphics{img_144.png}
-\begin{tikzpicture}[RC/.style={rounded corners,postaction=decorate},
-  small font/.style={align=center,font=\linespread{1.1}\small},
-  arrow decoration=.75]
-\matrix[inner sep=0pt,matrix of nodes,column sep=15mm,row sep=10mm,
-  every node/.style={draw,ellipse,inner sep=2mm,minimum width=16mm},
-  every label/.style={draw=none,inner sep=0mm,minimum width=0mm,font=\small}]
-{
-           & |(A)| 画廊 \\
-  \coordinate[label=left:描绘] (B); & & \coordinate[label=right:包含](C);\\
-           & |(D)|图画\\
-};
-\draw[RC] (A.west) -- ++(-3mm,0) -- (B) -- ($(D.west)-(3mm,0)$) --(D.west);
-\draw[RC] (D.east) -- ++(3mm,0) -- (C) -- ($(A.east)+(3mm,0)$) --(A.east);
+\begin{tikzpicture}[arrow decoration=.75,
+  RC/.style={rounded corners,postaction=decorate}]
+\path[every node/.style={draw,ellipse,inner sep=2mm,minimum width=16mm}]
+  (0,1.5)  node (A) {画廊}
+  (-2,0)   coordinate (B)
+  (2,0)    coordinate (C)
+  (0,-1.5) node (D) {图画};
+\tikzset{every node/.style={font=\small,inner sep=0mm,outer sep=.3333em}}
+\draw[RC] (A.west) -- ++(-3mm,0) -- (B) node[left] {描绘}
+                   -- ([xshift=-3mm]D.west) -- (D.west);
+\draw[RC] (D.east) -- ++(3mm,0)  -- (C) node[right] {包含}
+                   -- ([xshift=3mm]A.east)  -- (A.east);
 \end{tikzpicture}
 \caption{上图的一种压缩形式。}
 \end{figure}

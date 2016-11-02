@@ -186,12 +186,12 @@
 \begin{figure}
 %\includegraphics{img_058.png}
 \begin{lrbox}{\TEMPBOX}%
-\begin{tikzpicture}[baseline=(E.south),
-  node distance=10mm and 15mm,
-  SPN/.style={chamfered rectangle,chamfered rectangle xsep=5cm,inner sep=1mm},
+\begin{tikzpicture}[node distance=10mm and 15mm,
+  chamfered rectangle xsep=5cm,chamfered rectangle ysep=0pt,
+  SPN/.style={inner xsep=0pt,chamfered rectangle},
   SN/.style={decorate,decoration={snake,amplitude=1pt,segment length=4pt}},
   AR/.style={postaction=decorate,arrow decoration}]
-\path[every node/.style={draw,inner sep=2mm,minimum height=8mm}]
+\path[every node/.style={draw,inner sep=2mm}]
   node[name=A]                {编译语言}
   node[name=B,below=of A,SPN] {编译程序}
   node[name=C,right=of B]     {汇编语言}
@@ -271,28 +271,22 @@
 \begin{figure}
 %\includegraphics{img_059.png}
 \begin{lrbox}{\TEMPBOX}%
-\begin{tikzpicture}[every node/.style={%
-  font=\small,inner sep=5pt,minimum width=4cm,
-  name=O, shape=rectangle split, rectangle split parts=8}]
-\node
-  {%
-    \nodepart{text}智能程序
-    \nodepart{two}嵌入的模式匹配器
-    \nodepart{three}Lisp
-    \nodepart{four}编译程序或解释程序
-    \nodepart{five}机器指令
-    \nodepart{six}寄存器和数据通路
-    \nodepart{seven}触发器和门
-    \nodepart{eight}晶体管
-  };
-\coordinate (P) at (30:.8);
-\coordinate (NW) at ($(O.north west)+(P)$);
-\draw (O.north west) -- (O.north east) -- ++(P) coordinate (NE);
-\draw (O.north east) -- (O.south east);
-\foreach \x in {text,two,three,four,five,six,seven}
-  \draw (O.\x\space split west) -- (O.\x\space split east) -- +(P);
-\draw (O.south east) -- ++(P) -- (NE) -- (NW)
-  -- (O.north west) -- (O.south west) --cycle;
+\begin{tikzpicture}[y=\baselineskip,
+  every node/.style={font=\small,inner sep=0pt,midway,below=.5,centered}]
+\draw foreach \t [count=\y] in {
+        智能程序,
+        嵌入的模式匹配器,
+        Lisp,
+        编译程序或解释程序,
+        机器指令,
+        寄存器和数据通路,
+        触发器和门,
+        晶体管
+      }
+      { (0,-\y,1) -- ++(4,0,0) node {\t} -- ++(0,0,-1) }
+      ++(0,-1,0) -- ++(0,0,1)  -- ++(-4,0,0) -- ++(0,8,0)
+                 -- ++(0,0,-1) -- ++(4,0,0)  -- cycle
+      ++(0,0,1)  -- ++(0,8,0);
 \end{tikzpicture}
 \end{lrbox}
 \fcapside[\FBwidth]{\usebox\TEMPBOX}{%

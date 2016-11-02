@@ -356,7 +356,7 @@ C：请X告诉我他或她头发的长度。
 \node[inner sep=4mm] (O) {从A到B}
   child { node {从A到爱利亚}
     child { node {从A\\到$\sfrac14$}
-      child { node (A) {}
+      child { node {}
         child
         child
       }
@@ -392,32 +392,37 @@ C：请X告诉我他或她头发的长度。
         child
         child
       }
-      child { node (B) {}
+      child { node {}
         child
         child
       }
     }
   };
-\path let \p1= (A.west), \p2= (B.east) in
-    \pgfextra{\xdef\LAB{\the\dimexpr\x2-\x1+1cm\relax}};
-\tikzset{shift={([xshift=-5mm,yshift=1cm]O.north-|A.west)},%
-         every node/.style={draw=none,inner sep=0pt,outer sep=5pt,below}}
+\path let \p1 = (current bounding box.west),
+          \p2 = (current bounding box.east)
+      in  \pgfextra{\xdef\LAB{\the\dimexpr\x2-\x1+1cm\relax}};
+\tikzset{shift={([xshift=-5mm,yshift=1cm]O.north-|current bounding box.west)},%
+         every node/.style={inner sep=0pt,outer sep=5pt,anchor=north}}
 \def\xaxis#1#2{\the\dimexpr\LAB*#1/#2\relax}
 \draw (0,0) -- (\LAB,0);
 \fill
-  (0,0)    circle (3pt) node {A}
-  (\LAB,0) circle (3pt) node {B}
-  (\xaxis48,0) circle (2.5pt) node[font=\small] {爱利亚}
-  foreach \x in {1,3} {
-    (\xaxis{\numexpr\x*2\relax}8,0) circle (2pt)
-      node[font=\footnotesize] {$\sfrac\x4$}
-  }
-  foreach \x in {1,3,5,7} {
-    (\xaxis\x8,0) circle (1.5pt) node[font=\scriptsize] {$\sfrac\x8$}
-  }
-  foreach \x in {1,3,...,15} {
-    (\xaxis\x{16},0) circle (1pt)
-  };
+  [radius=3pt]
+    (0,0)        circle node {A}
+    (\LAB,0)     circle node {B}
+  [radius=2.5pt,nodes={font=\small}]
+    (\xaxis48,0) circle node {爱利亚}
+  [radius=2pt]
+    foreach \x in {1,3} {
+      (\xaxis{\numexpr\x*2\relax}8,0) circle node {$\sfrac\x4$}
+    }
+  [radius=1.5pt,nodes={font=\scriptsize}]
+    foreach \x in {1,3,5,7} {
+      (\xaxis\x8,0) circle node {$\sfrac\x8$}
+    }
+  [radius=1pt]
+    foreach \x in {1,3,...,15} {
+      circle [at={(\xaxis\x{16},0)}]
+    };
 \end{tikzpicture}
 \caption[芝诺的无穷目标树。]
   {芝诺为了从A到B所建立的无穷目标树。}

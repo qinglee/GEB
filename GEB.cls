@@ -88,7 +88,6 @@
     intersections ,
     arrows.meta ,
     shapes.misc ,
-    shapes.multipart ,
     shapes.geometric ,
     decorations.markings ,
     decorations.pathmorphing ,
@@ -763,12 +762,14 @@
 
 \NewDocumentCommand \lofpart { m m m m }
   {
-    \item [#1] \@@_hyper_link:nn {#4} {#2}
+    \item [#1] \indent \@@_hyper_link:nn {#4} {#2}
     \skip_vertical:N \itemsep
   }
 
 \cs_new_protected_nopar:Npn \@@_hyper_link:nn
   { \hyper@link { link } }
+\cs_new_protected_nopar:Npn \@@_hyper_anchor:n #1
+  { \Hy@raisedlink { \hyper@anchor {#1} } }
 
 \RenewDocumentEnvironment { quote } { O { \small } }
   {
@@ -987,7 +988,7 @@
     \cs_if_exist_use:cF { @@_toc_#1:nnn }
       { \@@_saved_contentsline:nnnn {#1} }
   }
-\cs_new_protected:Npn \@@_toc_part:nnn
+\cs_new_protected_nopar:Npn \@@_toc_part:nnn
   {
     \int_compare:nNnTF { \value { tocdepth } } > { -2 }
       { \@@_toc_part_aux:nnn }
@@ -1014,7 +1015,7 @@
     \group_end:
     \nobreak \bigskip
   }
-\cs_new_protected:Npn \@@_toc_chapter:nnn
+\cs_new_protected_nopar:Npn \@@_toc_chapter:nnn
   {
     \int_compare:nNnTF { \value { tocdepth } } > \c_minus_one
       { \@@_toc_chapter_aux:nnn }
@@ -1413,7 +1414,6 @@
 \cs_new_protected_nopar:Npn \@@_endnote_chapter:
   {
     \@@_endnote_end:
-    \setcounter { endnote } { \c_zero }
     \group_begin:
       \cs_set_eq:NN \protect \@unexpandable@protect
       \tl_gset:Nx \g_@@_current_chapter_tl
@@ -1455,6 +1455,7 @@
   {
     \tex_unskip:D
     \@@_save_node:
+    \@@_endnote_open:
     \@@_endnote_mark:
     \@@_endnote_text:n {#1}
     \@@_restore_node:
@@ -1482,7 +1483,7 @@
       }
       { \tex_kern:D \l_tmpa_dim }
   }
-\cs_new_protected:Npn \@@_endnote_mark:
+\cs_new_protected_nopar:Npn \@@_endnote_mark:
   {
     \hbox_set:Nn \l_tmpa_box
       {
@@ -1490,7 +1491,7 @@
         \fontsize { .7\ccwd } { .7\ccwd } \selectfont
         \refstepcounter { endnote }
         \@@_hyper_link:nn
-          { entlisti . \HyperGlobalCurrentHref }
+          { entlist . \HyperGlobalCurrentHref }
           { \theendnote }
       }
     \hbox_set:Nn \l_tmpa_box
@@ -1505,13 +1506,17 @@
 \cs_new_protected:Npn \@@_endnote_text:n #1
   {
     \group_begin:
-      \@@_endnote_open:
       \set@display@protect
       \iow_now:Nx \g_@@_endnote_iow
-        { \c_backslash_str enitem { \HyperGlobalCurrentHref } #1 }
+        {
+          \c_backslash_str enitem
+            { \HyperGlobalCurrentHref }
+            { \arabic { endnote } }
+            #1
+        }
     \group_end:
   }
-\cs_new_protected:Npn \@@_endnote_open:
+\cs_new_protected_nopar:Npn \@@_endnote_open:
   {
     \cs_gset_eq:NN \theendnotes \@@_input_endnote:
     \bool_gset_true:N \g_@@_endnote_open_bool
@@ -1536,10 +1541,11 @@
     \file_input:n { \c_sys_jobname_str .ent }
     \group_end:
   }
-\cs_new_protected:Npn \@@_endnote_begin:
+\cs_new_protected_nopar:Npn \@@_endnote_begin:
   { \bool_if:NF \g_@@_endnote_bool { \@@_endnote_heading: } }
-\cs_new_protected:Npn \@@_endnote_heading:
+\cs_new_protected_nopar:Npn \@@_endnote_heading:
   {
+    \stepcounter { entlist }
     \bool_gset_true:N \g_@@_endnote_bool
     \iow_now:Nx \g_@@_endnote_iow
       {
@@ -1548,7 +1554,7 @@
           { \exp_not:o { \g_@@_current_chapter_tl } }
       }
   }
-\cs_new_protected:Npn \@@_endnote_end:
+\cs_new_protected_nopar:Npn \@@_endnote_end:
   {
     \bool_if:NTF \g_@@_endnote_bool
       {
@@ -1560,27 +1566,26 @@
   }
 \iow_new:N \g_@@_endnote_iow
 \bool_new:N \g_@@_endnote_bool
-\newcounter { endnote }
+\newcounter { entlist }
+\newcounter { endnote } [ entlist ]
 \tl_gset:Nn \theendnote { \circedctr { endnote } }
+\tl_gset:Nn \theHendnote
+  { \arabic { entlist } . \arabic { endnote } }
 
-\newlist { entlist } { enumerate } { 1 }
+\newlist { entlist } { description } { 1 }
 \setlist [ entlist ]
   {
     wide , labelsep = 0.5em ,
-    label  = \circedctr * ,
-    format = \@@_enitem_format:n ,
-    before = \cs_set_eq:NN \enitem \@@_enitem:n ,
+    before = \cs_set_eq:NN \enitem \@@_enitem:nn
   }
-\tl_gset:Nn \theHentlisti { \g_@@_endnote_anchor_tl }
-\cs_new_protected_nopar:Npn \@@_enitem:n #1
+\cs_new_protected_nopar:Npn \@@_enitem:nn #1#2
+  { \@item [ \@@_enitem_format:nn {#1} {#2} ] }
+\cs_new_protected_nopar:Npn \@@_enitem_format:nn #1#2
   {
-    \tl_gset:Nn \g_@@_endnote_anchor_tl {#1}
-    \H@item
+    \@@_hyper_anchor:n { entlist . #1 }
+    \@@_hyper_link:nn {#1} { \circednum {#2} }
   }
-\cs_new_protected_nopar:Npn \@@_enitem_format:n
-  { \@@_hyper_link:nn { \g_@@_endnote_anchor_tl } }
-\tl_new:N \g_@@_endnote_anchor_tl
-\cs_new_eq:NN \enitem \use:n
+\cs_new_eq:NN \enitem \use_none:nn
 
 \NewDocumentEnvironment { thm } { o m }
   {
@@ -1840,7 +1845,7 @@
       }
   }
 \cs_new_eq:NN \nt@numbox \@@_tabbing_number_box:
-\cs_new_protected:Npn \@@_tabbing_no_number:
+\cs_new_protected_nopar:Npn \@@_tabbing_no_number:
   {
     \cs_gset_protected_nopar:Npn \nt@numbox
       { \cs_gset_eq:NN \nt@numbox \@@_tabbing_number_box: }

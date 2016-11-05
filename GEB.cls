@@ -460,19 +460,32 @@
     } ,
     section = {
       fixskip     = true ,
-      format      = \centering \sffamily \bfseries \Large ,
-      titleformat = \@@_strut:n { \baselineskip } ,
-      beforeskip  = \bigskipamount ,
+      hang        = false ,
+      format      = \@@_topskip_kludge:n { section }
+                    \centering \sffamily \bfseries \Large ,
+      beforeskip  = \baselineskip + \smallskipamount ,
       afterskip   = \baselineskip + \smallskipamount ,
     } ,
     subsection= {
       fixskip     = true ,
+      hang        = false ,
       format      = \centering \sffamily \bfseries ,
       beforeskip  = \bigskipamount ,
       afterskip   = \bigskipamount ,
     } ,
     bibname        = 文献目录 ,
     listfigurename = 插图目录 ,
+  }
+
+\cs_new_protected_nopar:Npn \@@_topskip_kludge:n #1
+  {
+    \skip_set:Nn \l_tmpa_skip
+      { \l_@@_headsep_dim - ( \use:c { CTEX@#1@afterskip } ) }
+    \dim_compare:nNnTF { \l_tmpa_skip } > \c_zero_dim
+      { \skip_set_eq:NN \l_tmpa_skip \topskip }
+      { \skip_add:Nn \l_tmpa_skip { \topskip } }
+    \skip_vertical:N \l_tmpa_skip
+    \@vspacer { -\l_tmpa_skip }
   }
 
 \cs_new_protected_nopar:Npn \@@_strut:n #1
@@ -727,6 +740,13 @@
     \tex_hrule:D width \textwidth height .8pt depth \c_zero_dim \scan_stop:
   }
 \pagestyle { main }
+
+\dim_new:N \l_@@_headsep_dim
+\dim_set:Nn \l_@@_headsep_dim
+  {
+    \headsep - \box_ht:N \l_@@_head_rule_box
+             - \box_dp:N \l_@@_head_rule_box
+  }
 
 \NewDocumentEnvironment { thebib } { }
   {

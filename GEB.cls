@@ -972,7 +972,7 @@
   }
 \SetLabelAlign { author }
   {
-    \dim_set_eq:NN \hbadness \c_max_int
+    \int_set_eq:NN \hbadness \c_max_int
     \hbox_to_wd:nn { \labelwidth } {#1}
   }
 

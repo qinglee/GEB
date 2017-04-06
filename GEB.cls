@@ -345,14 +345,14 @@
   }
 \cs_new_protected_nopar:Npn \@@_math_alphabet_aux:nnnn #1#2#3#4
   {
-   \use:x
-    {
-      \@@_math_alphabet:Nnnn
-        { \exp_not:c { mathtext #1 } }
-        { \use:c { #2 default } }
-        { \use:c { #3 default } }
-        { \use:c { #4 default } }
-    }
+    \use:x
+      {
+        \@@_math_alphabet:Nnnn
+          { \exp_not:c { mathtext #1 } }
+          { \use:c { #2 default } }
+          { \use:c { #3 default } }
+          { \use:c { #4 default } }
+      }
   }
 \clist_map_inline:nn
   {

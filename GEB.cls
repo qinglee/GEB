@@ -332,6 +332,38 @@
 \NewDocumentCommand \MakeMinusBin { }
   { \__um_set_mathcode:nnnn { `\- } { \mathbin } { operators } { "02212 } }
 
+\cs_new_protected_nopar:Npn \@@_math_alphabet:Nnnn #1#2#3#4
+  {
+    \cs_undefine:N #1
+    \DeclareMathAlphabet #1 { \encodingdefault } {#2} {#3} {#4}
+    \cs_if_free:cF
+      { \encodingdefault / #2 / \bfdefault / #4 }
+      {
+        \SetMathAlphabet #1 { bold }
+          { \encodingdefault } {#2} { \bfdefault } {#4}
+      }
+  }
+\cs_new_protected_nopar:Npn \@@_math_alphabet_aux:nnnn #1#2#3#4
+  {
+   \use:x
+    {
+      \@@_math_alphabet:Nnnn
+        { \exp_not:c { mathtext #1 } }
+        { \use:c { #2 default } }
+        { \use:c { #3 default } }
+        { \use:c { #4 default } }
+    }
+  }
+\clist_map_inline:nn
+  {
+    { rm } { rm } { md } { up } ,
+    { it } { rm } { md } { it } ,
+    { bf } { rm } { bf } { up } ,
+    { sf } { sf } { md } { up } ,
+    { tt } { tt } { md } { up } ,
+  }
+  { \@@_math_alphabet_aux:nnnn #1 }
+
 %\DeclareSymbolFont { mathsans }
 %  { \g_fontspec_encoding_tl }
 %  { \g__fontspec_mathsf_tl }

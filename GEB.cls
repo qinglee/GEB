@@ -415,6 +415,10 @@
 \newCJKfontfamily \KAISHU   { FZNewKai_GB18030-Z03 }
 \newCJKfontfamily \FANGSONG { FZFangSong-Z02_GB18030 }
 
+\xeCJKDeclareSubCJKBlock { Strokes } { "31C0 -> "31EF }
+\setCJKmainfont
+  [ Strokes , Language = Chinese ~ Simplified ] { Source ~ Han ~ Serif }
+
 \ctex_set_font_size:Nnn \normalsize { 5 }
   {
     \skip_zero:N \abovedisplayshortskip
@@ -961,7 +965,7 @@
   }
 \cs_new_eq:NN \@circedctr \circednum
 \newfontfamily \circednumfont
-  { Kozuka ~ Mincho ~ Pr6N }
+  [ Language = Japanese ] { Source ~ Han ~ Serif }
 
 \AddEnumerateCounter * { \circedctr } { \circednum } { 1 }
 
@@ -1185,7 +1189,7 @@
 
 \NewDocumentCommand \fig { s m }
   {
-    \xeCJK_leave_vmode:
+    \mode_leave_vertical:
     \prop_get:NnNTF \g_@@_figure_dest_prop {#2} \l_tmpa_tl
       {
         \@@_save_node:
@@ -1713,7 +1717,7 @@
   { \item \alignbox { \l_@@_alignbox_width_tl } { #1 } }
 \NewDocumentCommand \alignbox { m m }
   {
-    \xeCJK_leave_vmode:
+    \mode_leave_vertical:
     \hbox_to_wd:nn {#1} { #2 \tex_unskip:D \tex_hfill:D }
     \tex_ignorespaces:D
   }

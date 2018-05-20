@@ -353,9 +353,9 @@ C：请X告诉我他或她头发的长度。
   level 3/.style={level distance=10mm,sibling distance=10mm,
     every node/.style={draw,minimum width=7mm,minimum height=5mm}},
   level 4/.style={dashed,level distance=7mm,sibling distance=4mm}]
-\node[inner sep=4mm] (O) {从A到B}
-  child { node {从A到爱利亚}
-    child { node {从A\\到$\sfrac14$}
+\node[inner sep=4mm] (O) {从$A$到$B$}
+  child { node {从$A$到爱利亚}
+    child { node {从$A$\\到$\sfrac14$}
       child { node {}
         child
         child
@@ -376,7 +376,7 @@ C：请X告诉我他或她头发的长度。
       }
     }
   }
-  child { node {从爱利亚到B}
+  child { node {从爱利亚到$B$}
     child { node {从爱利亚\\到$\sfrac34$}
       child { node {}
         child
@@ -387,7 +387,7 @@ C：请X告诉我他或她头发的长度。
         child
       }
     }
-    child { node {从$\sfrac34$\\到B}
+    child { node {从$\sfrac34$\\到$B$}
       child { node {}
         child
         child
@@ -407,8 +407,8 @@ C：请X告诉我他或她头发的长度。
 \draw (0,0) -- (\LAB,0);
 \fill
   [radius=3pt]
-    (0,0)        circle node {A}
-    (\LAB,0)     circle node {B}
+    (0,0)        circle node {$A$}
+    (\LAB,0)     circle node {$B$}
   [radius=2.5pt,nodes={font=\small}]
     (\xaxis48,0) circle node {爱利亚}
   [radius=2pt]
@@ -425,10 +425,10 @@ C：请X告诉我他或她头发的长度。
     };
 \end{tikzpicture}
 \caption[芝诺的无穷目标树。]
-  {芝诺为了从A到B所建立的无穷目标树。}
+  {芝诺为了从$A$到$B$所建立的无穷目标树。}
 \end{figure}
 
-问题分解使芝诺陷入了困境。你可能还记得，芝诺从A走到B（把B看成目标）所用的办法是把这个问题“分解”成两个子问题：首先走一半，然后再走另一半。这样就把两个子目标“压入”——在第五章中的意义下——你的“目标栈”中了。然后二者中的每一个又都依次被两个子子目标所取代——如此下去，直至无穷。你最后得到的是一个无穷大的目标栈，而不是单个目标（\fig{115}）。从你的栈中弹出无穷多个目标将被证明是难以做到的事——当然，这只是芝诺的观点。
+问题分解使芝诺陷入了困境。你可能还记得，芝诺从$A$走到$B$（把$B$看成目标）所用的办法是把这个问题“分解”成两个子问题：首先走一半，然后再走另一半。这样就把两个子目标“压入”——在第五章中的意义下——你的“目标栈”中了。然后二者中的每一个又都依次被两个子子目标所取代——如此下去，直至无穷。你最后得到的是一个无穷大的目标栈，而不是单个目标（\fig{115}）。从你的栈中弹出无穷多个目标将被证明是难以做到的事——当然，这只是芝诺的观点。
 
 关于问题分解中的无穷递归，另一个例子是在对话《和声小迷宫》中，当阿基里斯希望一个无类型愿望得到批准的时候。对这个愿望的批准要延期到元怪物许可时才能进行，但为了得到表示许可的许可，她必须去召唤元元怪物——如此等等。尽管目标栈是无穷大的，阿基里斯还是实现了他的愿望。问题分解胜利了！
 

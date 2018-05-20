@@ -44,6 +44,7 @@
 \PassOptionsToPackage { mainaux , starttoc } { rerunfilecheck }
 \RequirePackage
   {
+    xunicode-addon ,
     empheq ,
     unicode-math ,
     xfrac ,
@@ -66,6 +67,10 @@
     hyperxmp ,
     tikz ,
   }
+
+\ctex_patch_cmd:Nnn \computeilg
+  { \char \tcl }
+  { \iffontchar \font \tcl \char \tcl \fi }
 
 %\ctex_patch_cmd:Nnn \pgfutil@InputIfFileExists
 %  { \input #1 \relax }
@@ -303,7 +308,7 @@
 \unimathsetup
   {
     colon = literal ,
-    warnings-off = mathtools-colon
+    warnings-off = { mathtools-colon , mathtools-overbracket }
   }
 
 \xeCJKsetup
@@ -318,14 +323,14 @@
     NewLineCS+              = \item
   }
 
-\setmainfont { TeX ~ Gyre ~ Termes }
+\setmainfont { STIX ~ Two ~ Text }
 \setsansfont { TeX ~ Gyre ~ Heros }
 \setmonofont { TeX ~ Gyre ~ Cursor }
-\setmathfont { TeX ~ Gyre ~ Termes ~ Math }
+\setmathfont { STIX ~ Two ~ Math }
 \newfontfamily \Palatino  [ Ligatures = TeX ] { TeX ~ Gyre ~ Pagella }
-\newfontfamily \Cyrillic  [ Ligatures = TeX ] { FreeSerif }
 
-\DeclareTextFontCommand { \textcyr } { \Cyrillic }
+\NewDocumentCommand \textcyr { }
+  { \textrm }
 
 \NewDocumentCommand \MakeMinusOrd { }
   { \__um_set_mathcode:nnnn { `\- } { \mathord } { operators } { "02212 } }
@@ -1778,11 +1783,10 @@
 \NewEnviron { dnaseq } [1] [ \linewidth ]
   { \tex_noindent:D \exp_args:Nno \@@_dna_seq:nn {#1} { \BODY } }
 
-\newfontfamily \XITSmath { XITS ~ Math }
 \ProvideTextCommandDefault \textlcurvearrowdown
-  { \hmode@start@before@group { \XITSmath ^^^^2938 } }
+  { \ensuremath { \cwrightarcarrow  } }
 \ProvideTextCommandDefault \textrcurvearrowdown
-  { \hmode@start@before@group { \XITSmath ^^^^2939 } }
+  { \ensuremath { \acwleftarcarrow } }
 
 \cs_new_protected_nopar:Npn \@@_dna_seq:nn #1#2
   {

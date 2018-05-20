@@ -4,20 +4,20 @@
   outer sep=4.5pt, font=\footnotesize}]
 \draw foreach \y in {1,2,...,7} {
   [xshift=-\y cm/2, yshift=-\y cm/3]
-  (0,0) node (O-0) {\textast}
+  (0,0) node (O-0) {$\ast$}
   foreach \x [remember=\x as \lastx (initially 0)] in {1,...,\y} {
-    (\x,0) node (O-\x) {\textast}
+    (\x,0) node (O-\x) {$\ast$}
     (O-\lastx) -- (O-\x)
   }
 };
-\path (-1/4,0)node(A){\textast}
-       (1/4,0)node(B){\textast}
-      (-1/6,1/3)node{\textast}
-       (1/6,1/3)node{\textast}
-      (-1/6,7/3)node{\textast}
-       (1/6,7/3)node{\textast};
+\path (-1/4,0)   node (A) {$\ast$}
+       (1/4,0)   node (B) {$\ast$}
+      (-1/6,1/3) node     {$\ast$}
+       (1/6,1/3) node     {$\ast$}
+      (-1/6,7/3) node     {$\ast$}
+       (1/6,7/3) node     {$\ast$};
 \draw (A) -- (B);
-\path foreach \x in {2,3,...,6,8} { (0,\x/3)node{\textast} };
+\path foreach \x in {2,3,...,6,8} { (0,\x/3)node{$\ast$} };
 \end{tikzpicture}
 \end{lrbox}
 

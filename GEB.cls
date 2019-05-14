@@ -276,12 +276,6 @@
       } ,
   }
 
-\use:x
-  {
-    \ctex_patch_cmd:Nnn \exp_not:N \hyxmp@text@resource
-      { \c_right_brace_str \c_space_tl }
-      { \c_right_brace_str }
-  }
 
 \bookmarksetup
   {

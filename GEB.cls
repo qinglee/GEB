@@ -320,7 +320,7 @@
     CheckFullRight          = true ,
     PunctStyle              = kaiming ,
     KaiMingPunct+           = ：； ,
-    NewLineCS+              = \item
+    NewLineCS+              = \item \captiontextend
   }
 
 \setmainfont { STIX ~ Two ~ Text }
@@ -533,7 +533,7 @@
   {
     \hbox_set:Nn \l_tmpa_box { }
     \box_set_ht:Nn \l_tmpa_box {#1}
-    \box_use_clear:N \l_tmpa_box
+    \box_use_drop:N \l_tmpa_box
   }
 
 \cs_new_nopar:Npn \shangxia #1
@@ -588,7 +588,7 @@
         \use:nn
       }
       {
-        \noindent \box_use_clear:N \headingbox
+        \noindent \box_use_drop:N \headingbox
         \par \nointerlineskip
       }
       { \skip_vertical:N \l_tmpa_skip }
@@ -624,7 +624,7 @@
         \hbox_set:Nn \@labels
           {
             \box_set_wd:Nn \@labels { \c_zero_dim }
-            \box_use_clear:N \@labels
+            \box_use_drop:N \@labels
           }
       }
   }
@@ -925,7 +925,7 @@
         }
       \NewDocumentCommand \@@_verse_cr:w { o t #1 }
     }
-  \int_set_eq:NN \tex_endlinechar:D \c_minus_one
+  \int_set:Nn \tex_endlinechar:D { -1 }
   \char_set_catcode_active:n { 13 }
 \exp_after:wN \group_end: \@@_temp:w { ^^M }
   {
@@ -987,7 +987,7 @@
 \NewDocumentEnvironment { signature } { O { c } }
   {
     \skip_set_eq:NN \topsep \bigskipamount
-    \cs_set_eq:NN \@beginparpenalty \c_ten_thousand
+    \int_set_eq:NN \@beginparpenalty \c_@@_nobreak_penalty_int
     \tl_set:Nn \arraystretch { 1 }
     \cs_set_eq:NN \extrarowheight \c_zero_dim
     \flushright
@@ -1078,7 +1078,7 @@
   }
 \cs_new_protected_nopar:Npn \@@_toc_chapter:nnn
   {
-    \int_compare:nNnTF { \value { tocdepth } } > \c_minus_one
+    \int_compare:nNnTF { \value { tocdepth } } > { -1 }
       { \@@_toc_chapter_aux:nnn }
       { \use_none:nnn }
   }
@@ -1090,14 +1090,15 @@
       \dim_set:Nn \tex_parindent:D { -\tex_leftskip:D }
       \skip_set:Nn \tex_rightskip:D { 6\ccwd plus 1fil minus 3\ccwd }
       \skip_sub:Nn \tex_parfillskip:D { \tex_rightskip:D }
-      \int_set_eq:NN \tex_interlinepenalty:D \c_ten_thousand
+      \int_set_eq:NN \tex_interlinepenalty:D \c_@@_nobreak_penalty_int
       \tex_indent:D
       \@@_hyper_link:nn {#3} {#1}
-      \tex_penalty:D \c_zero \null \@@_cdot_fill:
+      \tex_penalty:D \c_zero_int \null \@@_cdot_fill:
       \@@_hyper_link:nn {#3} { { \normalfont #2 } }
       \par
     \group_end:
   }
+\int_const:Nn \c_@@_nobreak_penalty_int { 10 000 }
 \cs_new_eq:NN \@@_toc_chapter_aux:nnn \@@_toc_chapter_nocheck:nnn
 \cs_new_protected:Npn \@@_toc_chapter_check:nnn #1
   { \@@_toc_chapter_check_aux:w #1 \numberline { } \numberline \q_stop }
@@ -1112,15 +1113,15 @@
   {
     \group_begin:
       \sffamily
-      \hbox_set:Nn \l_tmpa_box { #1 \tex_unskip:D \quad }
+      \hbox_set:Nn \l_tmpa_box { #1 \quad }
       \skip_set:Nn \tex_leftskip:D { \box_wd:N \l_tmpa_box }
       \dim_set:Nn \tex_parindent:D { -\tex_leftskip:D }
       \skip_set:Nn \tex_rightskip:D { 6\ccwd plus 1fil minus 3\ccwd }
       \skip_sub:Nn \tex_parfillskip:D { \tex_rightskip:D }
-      \int_set_eq:NN \tex_interlinepenalty:D \c_ten_thousand
+      \int_set_eq:NN \tex_interlinepenalty:D \c_@@_nobreak_penalty_int
       \tex_indent:D
       \@@_hyper_link:nn {#4} { \box_use:N \l_tmpa_box #2 }
-      \tex_penalty:D \c_zero \null \@@_cdot_fill:
+      \tex_penalty:D \c_zero_int \null \@@_cdot_fill:
       \@@_hyper_link:nn {#4} { { \normalfont #3 } }
       \par
     \group_end:
@@ -1133,10 +1134,10 @@
       \skip_set:Nn \tex_leftskip:D { 4\ccwd }
       \skip_set:Nn \tex_rightskip:D { 6\ccwd plus 1fil minus 3\ccwd }
       \skip_sub:Nn \tex_parfillskip:D { \tex_rightskip:D }
-      \int_set_eq:NN \tex_interlinepenalty:D \c_ten_thousand
+      \int_set_eq:NN \tex_interlinepenalty:D \c_@@_nobreak_penalty_int
       \tex_indent:D
       \@@_hyper_link:nn {#3} {#1}
-      \tex_penalty:D \c_zero \null \@@_cdot_fill:
+      \tex_penalty:D \c_zero_int \null \@@_cdot_fill:
       \@@_hyper_link:nn {#3} { { \normalfont #2 } }
       \par
     \group_end:
@@ -1154,8 +1155,8 @@
       \skip_set:Nn \tex_rightskip:D { 4\ccwd plus 1fil minus 2\ccwd }
       \skip_sub:Nn \tex_parfillskip:D { \tex_rightskip:D }
       \dim_set_eq:NN \tex_hangindent:D \l_tmpa_dim
-      \int_set_eq:NN \tex_hangafter:D \c_one
-      \int_set_eq:NN \tex_interlinepenalty:D \c_ten_thousand
+      \int_set_eq:NN \tex_hangafter:D \c_one_int
+      \int_set_eq:NN \tex_interlinepenalty:D \c_@@_nobreak_penalty_int
       \@@_hyper_link:nn {#4} { \box_use:N \l_tmpa_box #2 }
       \@@_cdot_fill:
       \@@_hyper_link:nn {#4} {#3} \tex_par:D
@@ -1190,7 +1191,7 @@
 \seq_new:N \g_@@_toc_seq
 \prop_new:N \g_@@_figure_dest_prop
 \cs_new_protected:Npn \@@_toc_mark:n #1
-  { \etex_marks:D \g_@@_toc_label_mark {#1} }
+  { \tex_marks:D \g_@@_toc_label_mark {#1} }
 
 \NewDocumentCommand \fig { s m }
   {
@@ -1221,17 +1222,17 @@
 \cs_new_protected_nopar:Npn \@@_set_toc_label_width:
   {
     \str_if_eq_x:nnF
-      { \etex_topmarks:D \g_@@_toc_label_mark }
-      { \etex_firstmarks:D \g_@@_toc_label_mark }
+      { \tex_topmarks:D \g_@@_toc_label_mark }
+      { \tex_firstmarks:D \g_@@_toc_label_mark }
       { \@@_set_toc_label_width_aux: }
   }
 \cs_new_protected_nopar:Npn \@@_set_toc_label_width_aux:
   {
     \tl_gset:Nn \g_@@_toc_label_width_tl { 0pt }
     \int_step_inline:nnnn
-      { \etex_firstmarks:D \g_@@_toc_label_mark }
+      { \tex_firstmarks:D \g_@@_toc_label_mark }
       { 1 }
-      { \etex_botmarks:D \g_@@_toc_label_mark }
+      { \tex_botmarks:D \g_@@_toc_label_mark }
       {
         \seq_gpop_left:NNTF \g_@@_toc_seq \l_tmpa_tl
           {
@@ -1338,8 +1339,8 @@
 \DeclareCaptionLabelFormat { plain } { \bothIfFirst {#1} { \, } #2 }
 \DeclareCaptionLabelSeparator { en } { \enspace }
 \DeclareCaptionTextFormat { nostrut } { \@@_caption_nostrut:w #1 }
-\cs_new:Npn \@@_caption_nostrut:w #1 \caption@ifstrut #2 \par
-  { #1 \par }
+\cs_new:Npn \@@_caption_nostrut:w #1 \caption@ifstrut #2 \captiontextend
+  { #1 \captiontextend }
 \captionsetup
   {
     format      = hang ,
@@ -1406,9 +1407,9 @@
   {
     \vbox_gset:Nn \@currbox
       {
-        \box_use_clear:N \g_@@_caption_anchor_box
+        \box_use_drop:N \g_@@_caption_anchor_box
         \nointerlineskip
-        \box_use_clear:N \@currbox
+        \box_use_drop:N \@currbox
       }
   }
 \ctex_preto_cmd:NnnTF \@largefloatcheck
@@ -1559,10 +1560,10 @@
       {
         \box_move_up:nn
           { \ccwd - \box_ht:N \l_tmpa_box }
-          { \box_use_clear:N \l_tmpa_box }
+          { \box_use_drop:N \l_tmpa_box }
       }
     \box_set_ht:Nn \l_tmpa_box { \c_zero_dim }
-    \box_use_clear:N \l_tmpa_box
+    \box_use_drop:N \l_tmpa_box
   }
 \cs_new_protected:Npn \@@_endnote_text:n #1
   {
@@ -1780,8 +1781,9 @@
 \NewDocumentCommand \diff { }
   { \mathop { } \! \mathrm { d } }
 
-\NewEnviron { dnaseq } [1] [ \linewidth ]
-  { \tex_noindent:D \exp_args:Nno \@@_dna_seq:nn {#1} { \BODY } }
+\NewDocumentEnvironment { dnaseq } { O { \linewidth } b }
+  { \tex_noindent:D \@@_dna_seq:nn {#1} {#2} }
+  { }
 
 \ProvideTextCommandDefault \textlcurvearrowdown
   { \ensuremath { \cwrightarcarrow  } }
@@ -2031,7 +2033,7 @@
     \hbox_set:Nn \l_tmpa_box {#1}
     \hbox_to_wd:nn { \box_wd:N \l_tmpa_box }
       {
-        \box_trim:Nnnnn \l_tmpa_box
+        \box_set_trim:Nnnnn \l_tmpa_box
           { 0pt } { 0pt } { #3 \box_wd:N \l_tmpa_box } { 0pt }
         \box_clip:N \l_tmpa_box
         \box_use:N \l_tmpa_box

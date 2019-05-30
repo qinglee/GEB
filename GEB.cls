@@ -1,6 +1,4 @@
 
-\let \pdfmdfivesum \mdfivesum
-
 \NeedsTeXFormat{LaTeX2e}[2016/01/01]
 \RequirePackage{expl3}[2016/01/01]
 \ProvidesExplClass{GEB}{2016/10/01}{0}{GEB}
@@ -49,7 +47,7 @@
     unicode-math ,
     xfrac ,
     xlop ,
-    chngcntr ,
+    varwidth ,
     titleps ,
     enumitem ,
     tabu ,
@@ -63,7 +61,6 @@
     picinpar ,
     hyperref ,
     bookmark ,
-    rerunfilecheck ,
     hyperxmp ,
     tikz ,
   }
@@ -172,7 +169,8 @@
   ]{
     \pgfpathmoveto{\pgfpointorigin}
   }
-  %% Draw the sine wave itself.  This computes the value every 30 degrees and draws straight edges.
+  %% Draw the sine wave itself.
+  %% This computes the value every 30 degrees and draws straight edges.
   \state{draw}[
     width=+\tikzfeynman@cs@points@per@step,
     switch if less than=1.25*\tikzfeynman@cs@points@per@step to final, % <- bit of a hack
@@ -268,8 +266,14 @@
         Author   = \c_@@_author_tl ,
         Subject  =
           {
-            集异璧——GEB，是数学家哥德尔、版画家艾舍尔、音乐家巴赫三人名字的前缀。本书通过对哥德尔的数理逻辑，艾舍尔的版画和巴赫的音乐三者的综合阐述，引人入胜地介绍了数理逻辑学、可计算理论、人工智能学、语言学、遗传学、音乐、绘画的理论等方面，构思精巧、含义深刻、视野广阔、富于哲学韵味。\textCR
-            本书在英语世界中有极高评价，曾获得普利策文学奖。该中译本前后费时十余年，译者都是数学和哲学的专家，还得到原作者的直接参与，译文严谨通达，特别是在原作者的帮助下，把西方的文化典故和说法，尽可能转换为中国文化的典故和说法，使这本译本甚至可看作是一部新的创作，也是中外翻译史上的一个创举。
+            集异璧——GEB，是数学家哥德尔、版画家艾舍尔、音乐家巴赫三人名字的前缀。本书通过对
+            哥德尔的数理逻辑，艾舍尔的版画和巴赫的音乐三者的综合阐述，引人入胜地介绍了数理逻
+            辑学、可计算理论、人工智能学、语言学、遗传学、音乐、绘画的理论等方面，构思精巧、
+            含义深刻、视野广阔、富于哲学韵味。\textCR
+            本书在英语世界中有极高评价，曾获得普利策文学奖。该中译本前后费时十余年，译者都是
+            数学和哲学的专家，还得到原作者的直接参与，译文严谨通达，特别是在原作者的帮助下，
+            把西方的文化典故和说法，尽可能转换为中国文化的典故和说法，使这本译本甚至可看作是
+            一部新的创作，也是中外翻译史上的一个创举。
           } ,
         Keywords = { 哥德尔 , ~ 艾舍尔 , ~ 巴赫 } ,
         Creator = XeLaTeX ~ + ~ xeCJK ~ + ~ CTeX ,
@@ -314,7 +318,7 @@
     CheckFullRight          = true ,
     PunctStyle              = kaiming ,
     KaiMingPunct+           = ：； ,
-    NewLineCS+              = \item \captiontextend
+    NewLineCS+              = \item \captiontextend \@@_endline_mark:
   }
 
 \setmainfont { STIX ~ Two ~ Text }
@@ -487,6 +491,8 @@
       fixskip     = true ,
       format      = \centering \bfseries \LARGE
                     \@@_endnote_chapter: ,
+      nameformat  = \@@_chapter_name:n ,
+      titleformat = \@@_chapter_title:n ,
       tocline     = \CTEXnumberline {#1} #2 ,
       beforeskip  = \bigskipamount * 2 ,
       afterskip   = \bigskipamount * 2 ,
@@ -498,6 +504,7 @@
       hang        = false ,
       format      = \@@_topskip_kludge:n { section }
                     \centering \sffamily \bfseries \Large ,
+      titleformat = \@@_endline_mark:n ,
       beforeskip  = \baselineskip + \smallskipamount ,
       afterskip   = \baselineskip + \smallskipamount ,
     } ,
@@ -511,6 +518,43 @@
     bibname        = 文献目录 ,
     listfigurename = 插图目录 ,
   }
+
+\cs_new_protected:Npn \@@_chapter_name:n #1
+  {
+    \hbox_set:Nn \l_tmpa_box {#1}
+    \dim_gset:Nn \g_@@_chapter_name_width_dim
+      { \box_wd:N \l_tmpa_box }
+    \tex_noindent:D \box_use_drop:N \l_tmpa_box
+  }
+\dim_new:N \g_@@_chapter_name_width_dim
+\cs_new_protected_nopar:Npn \@@_chapter_title:n
+  {
+    \CTEXifname
+      { \@@_chapter_title_auxi:n }
+      { \@@_endline_mark:n }
+  }
+\cs_new_protected_nopar:Npn \@@_chapter_title_auxi:n
+  {
+    \dim_compare:nNnTF \g_@@_chapter_name_width_dim > \c_zero_dim
+      { \@@_chapter_title_auxii:n }
+      { \@@_endline_mark:n }
+  }
+\cs_new_protected:Npn \@@_chapter_title_auxii:n #1
+  {
+    \group_begin:
+      \dim_set:Nn \l_tmpa_dim
+        { \linewidth - \g_@@_chapter_name_width_dim - \tex_lastskip:D }
+      \varwidth [ t ] { \l_tmpa_dim }
+        \@@_endline_mark:n {#1}
+      \endvarwidth
+    \group_end:
+    \dim_gzero:N \g_@@_chapter_name_width_dim
+  }
+\cs_new_protected:Npn \@@_endline_mark:n #1
+  { #1 \@@_endline_mark: }
+\cs_new_protected_nopar:Npn \@@_endline_mark:
+  { \@@_endline_mark_aux: }
+\cs_new_eq:NN \@@_endline_mark_aux: \prg_do_nothing:
 
 \cs_new_protected_nopar:Npn \@@_topskip_kludge:n #1
   {
@@ -553,12 +597,14 @@
   {
     \ctexset
       {
-        chapter/numbering  = false ,
-        chapter/format     = \kaishu \centering \LARGE
-                             \@@_put_heading_box:
-                             \@@_endnote_chapter: ,
-        chapter/beforeskip = \baselineskip ,
-        chapter/afterskip  = \baselineskip
+        chapter = {
+          numbering   = false ,
+          format      = \kaishu \centering \LARGE
+                        \@@_put_heading_box:
+                        \@@_endnote_chapter: ,
+          beforeskip  = \baselineskip ,
+          afterskip   = \baselineskip
+        }
       }
     \chapter
   }
@@ -825,6 +871,7 @@
   { \hyper@link { link } }
 \cs_new_protected_nopar:Npn \@@_hyper_anchor:n #1
   { \Hy@raisedlink { \hyper@anchor {#1} } }
+\cs_generate_variant:Nn \@@_hyper_link:nn { o }
 
 \RenewDocumentEnvironment { quote } { O { \small } }
   {
@@ -964,7 +1011,7 @@
   }
 \cs_new_eq:NN \@circedctr \circednum
 \newfontfamily \circednumfont
-  [ Language = Japanese ] { Source ~ Han ~ Serif }
+  [ Language = Japanese ] { Source ~ Han ~ Serif } \scan_stop:
 
 \AddEnumerateCounter * { \circedctr } { \circednum } { 1 }
 
@@ -1223,9 +1270,8 @@
 \cs_new_protected_nopar:Npn \@@_set_toc_label_width_aux:
   {
     \tl_gset:Nn \g_@@_toc_label_width_tl { 0pt }
-    \int_step_inline:nnnn
+    \int_step_inline:nnn
       { \tex_firstmarks:D \g_@@_toc_label_mark }
-      { 1 }
       { \tex_botmarks:D \g_@@_toc_label_mark }
       {
         \seq_gpop_left:NNTF \g_@@_toc_seq \l_tmpa_tl
@@ -1474,8 +1520,11 @@
       \cs_set_eq:NN \protect \@unexpandable@protect
       \tl_gset:Nx \g_@@_current_chapter_tl
         {
-          \CTEXifname { \CTEXthechapter ： } { }
-          \@currentlabelname
+          {
+            \CTEXifname { \CTEXthechapter ： } { }
+            \exp_not:o { \@currentlabelname }
+          }
+          { \exp_not:o { \@currentHref } }
         }
     \group_end:
   }
@@ -1484,8 +1533,9 @@
 \NewDocumentCommand \theendnotes { }
   { \msg_term:n { NO ~ ENDNOTE! } }
 
-\NewDocumentEnvironment { endnotes } { +m }
+\NewDocumentEnvironment { endnotes } { +m m }
   {
+    \tl_set:Nn \l_@@_chapter_anchor_tl {#2}
     \section {#1}
     \footnotesize
     \entlist
@@ -1502,10 +1552,9 @@
   { \cs_set_eq:NN \note \use_none:n }
 \ctex_at_end_package:nn { gettitlestring }
   {
+    \GetTitleStringSetup { expand = true }
     \GetTitleStringDisableCommands
       { \cs_set_eq:NN \note \use_none:n }
-    \tl_put_right:Nn \GTS@PredefinedLeftCmds
-      { \GTS@TestLeft \note \GTS@CdrTwo }
   }
 \cs_new_protected:Npn \@@_endnote:n #1
   {
@@ -1589,9 +1638,11 @@
     \ctexset
       {
         section = {
-          format     = \centering \sffamily \bfseries ,
-          beforeskip = \bigskipamount ,
-          afterskip  = \bigskipamount
+          numbering   = false ,
+          format      = \centering \sffamily \bfseries ,
+          titleformat = \@@_hyper_link:on { \l_@@_chapter_anchor_tl } ,
+          beforeskip  = \bigskipamount ,
+          afterskip   = \bigskipamount
         }
       }
     \file_input:n { \c_sys_jobname_str .ent }
@@ -1607,7 +1658,7 @@
       {
         \iow_newline:
         \c_backslash_str begin { endnotes }
-          { \exp_not:o { \g_@@_current_chapter_tl } }
+        \exp_not:o { \g_@@_current_chapter_tl }
       }
   }
 \cs_new_protected_nopar:Npn \@@_endnote_end:
@@ -2052,7 +2103,7 @@
   {
     \hcoffin_set:Nn \l_tmpa_coffin
       { \hbox_to_wd:nn { 2em } { \tex_hss:D #1  \tex_hss:D  } }
-    \hcoffin_set:Nn \l_tmpb_coffin { $ #2 $ }
+    \hcoffin_set:Nn \l_tmpb_coffin { \ensuremath {#2} }
     \coffin_attach:NnnNnnnn
       \l_tmpa_coffin { r } { H }
       \l_tmpb_coffin { l } { H } { 1em } { -2ex }

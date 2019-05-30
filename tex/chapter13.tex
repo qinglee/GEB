@@ -216,7 +216,7 @@ BlooP的另一个特点是：某些特定过程可以用\inst{YES}或\inst{NO}�
 \]
 合起来构成了一个完整的BlooP程序，它的运行结果是$512$。
 
-如果你只有一条过程定义链，那什么东西都不会被执行。它们就在那里等着调用，等着用特定的数值启动它们。这就像一台绞肉机等着肉来绞——或者说更像一串连在一起的绞肉机，前面一台绞完了就送进后一台……对于绞肉机来说，这种安排可能没什么必要，但对于BlooP程序来说，这种结构是非常重要的。我们可以可以称它为一个“待调用程序”。这个概念显示在\fig{72}中
+如果你只有一条过程定义链，那什么东西都不会被执行。它们就在那里等着调用，等着用特定的数值启动它们。这就像一台绞肉机等着肉来绞——或者说更像一串连在一起的绞肉机，前面一台绞完了就送进后一台……对于绞肉机来说，这种安排可能没什么必要，但对于BlooP程序来说，这种结构是非常重要的。我们可以可以称它为一个“待调用程序”。这个概念显示在\fig{72}中。
 
 \begin{lrbox}{\TEMPBOX}%
 \begin{tikzpicture}[trim right=(OPU)]
@@ -236,8 +236,8 @@ BlooP的另一个特点是：某些特定过程可以用\inst{YES}或\inst{NO}�
       (IP) ++(-6mm,-1mm) coordinate (IPD)
       (OP) ++(6mm,1mm) coordinate (OPU)
       (OP) ++(6mm,-1mm) coordinate (OPD);
-\draw (IPU) |- ($(A.north)+(0,3mm)$) -| (OPU)
-      (IPD) |- ($(D.south)+(0,-3mm)$) -| (OPD);
+\draw (IPU) |- ([yshift= 3mm]A.north) -| (OPU)
+      (IPD) |- ([yshift=-3mm]D.south) -| (OPD);
 \end{tikzpicture}
 \end{lrbox}
 

@@ -145,10 +145,8 @@
   (E) edge (F)
   (I) edge (J)
   (J) edge[bend right] (E.south);
-\draw[rounded corners=5pt, postaction=decorate]
-  (G) -| (I.north);
-\draw[rounded corners=5pt, postaction=decorate]
-  (H) -| (I.south);
+\draw[rounded corners=5pt, postaction=decorate] (G) -| (I.north);
+\draw[rounded corners=5pt, postaction=decorate] (H) -| (I.south);
 \end{tikzpicture}
 \caption{豪华名词}
 \end{subfigure}
@@ -192,7 +190,7 @@
 \tikzset{every picture/.append style={arrow decoration,
     node distance=8mm and 8mm,
     every node/.style={draw, font=\small, inner sep=2pt}}}
-\sbox8{%
+\begin{lrbox}{\TEMPBOX}
 \begin{tikzpicture}[line width=1.6pt, baseline=(I.south)]
 \node[circle, inner sep=1pt] (A) {\phantom{开始}};
 \node (B) [above right= of A, xshift=2mm]{\phantom{豪华名词}};
@@ -215,18 +213,17 @@
   (E) edge (F)
   (I) edge (J)
   (J) edge[bend right] (E.south);
-\draw[rounded corners=5pt, postaction=decorate]
-  (G) -| (I.north);
-\draw[rounded corners=5pt, postaction=decorate]
-  (H) -| (I.south);
-\end{tikzpicture}}
-\sbox8{\scalebox{.25}{\copy8}}%
-\edef\MYDEPTH{\the\dp8}%
-\dp8=0pt\relax
+\draw[rounded corners=5pt, postaction=decorate] (G) -| (I.north);
+\draw[rounded corners=5pt, postaction=decorate] (H) -| (I.south);
+\end{tikzpicture}
+\end{lrbox}
+\sbox\TEMPBOX{\scalebox{.25}{\usebox\TEMPBOX}}
+\edef\MYDEPTH{\the\dp\TEMPBOX}
+\dp\TEMPBOX=0pt\relax
 \begin{tikzpicture}[node distance=8mm and 7mm]
 \node[circle, inner sep=1pt] (A) {开始};
 \path[every node/.style={inner xsep=-3pt}]
-  node (B) [above right= of A, yshift=-3mm] {\copy8};
+  node (B) [above right= of A, yshift=-3mm] {\usebox\TEMPBOX};
 \node (C) [right= 6mm of B, xshift=1mm]{及物动词};
 \node (D) [right= of C]{\hbox{“的”\unskip}};
 \node[anchor=west] (E) at ([xshift=2mm]D.east |- A) {花哨动词};
@@ -246,10 +243,8 @@
   (E) edge (F)
   (I) edge (J)
   (J) edge[bend right] (E.south);
-\draw[rounded corners=5pt, postaction=decorate]
-  (G) -| (I.north);
-\draw[rounded corners=5pt, postaction=decorate]
-  (H) -| (I.south);
+\draw[rounded corners=5pt, postaction=decorate] (G) -| (I.north);
+\draw[rounded corners=5pt, postaction=decorate] (H) -| (I.south);
 \draw[dashed, thin] ($(B.south west) - (5pt,\MYDEPTH)$) rectangle
                     ($(B.north east) + (5pt,0)$);
 \end{tikzpicture}
@@ -436,25 +431,28 @@ child { node {2}
 \begin{tikzpicture}[arrow decoration,
   node distance=8mm, every node/.style={font=\small, inner sep=2pt},
   fm/.style={draw,minimum height=\ht\strutbox}]
-\node [draw, circle, inner sep=1pt] (A) {开始};
-\node [left= 2mm of A, inner sep=0pt] {$\fibo(n)$:};
-\node[fm] (C) [above= 4mm of A, xshift=12mm, anchor=west]{令$x=\fibo(n-1)$};
-\node[fm] (B) [above= 5mm of C]{令$y=\fibo(n-2)$};
-\node[fm] (D) [right= 10mm of C]{$x+y$};
-\node[draw, circle, inner sep=1pt] (E) at ([xshift=15mm]D.east |- A){结束};
-\node[fm] (F) at ([yshift=-8mm]$(A)!.5!(E)$){值是$1$};
-\path (B) edge[postaction=decorate] (C)
-      (C) edge[postaction=decorate] (D);
-\path [postaction=decorate] (A) -- ( A |- B);
-\tikzset{every node/.style={font=\footnotesize,inner sep=0pt,outer sep=3pt}}
-\draw[rounded corners=10pt]
-  (A) |- (B) node[pos=.4,left] {若$n>2$};
-\draw[rounded corners=10pt, postaction=decorate]
-  (D) -| (E);
-\draw[rounded corners=10pt, postaction=decorate]
-  (A) |- (F) node[near end,below] {若$n=1$或$2$};
-\draw[rounded corners=10pt, postaction=decorate]
-  (F) -| (E);
+\matrix (M)
+  [row sep=5mm, inner sep=0pt, outer sep=0pt, matrix of nodes, nodes=fm]
+  { 令$x=\fibo(n-1)$ \\ 令$y=\fibo(n-2)$ \\ };
+\draw (M-1-1) -| ([xshift=-2mm]M.west) coordinate (L) |- (M-2-1)
+      (M-1-1) -| ([xshift= 2mm]M.east) coordinate (R) |- (M-2-1);
+\node[draw, circle, inner sep=1pt, left=12mm of M.south west]
+  (A) {开始};
+\node[left=2mm of A, inner sep=0pt] {$\fibo(n)$:};
+\node[fm, right=10mm of R] (B) {$x+y$};
+\node[draw, circle, inner sep=1pt, right=10mm of B.east|-A]
+  (C) {结束};
+\node[fm] (D) at ({$(L)!2!(L|-A)$} -| {$(A)!.5!(C)$}) {值是$1$};
+\draw[postaction=decorate] (R) -- (B);
+\tikzset{%
+  every node/.style={font=\footnotesize, inner sep=0pt, outer sep=3pt},
+  rounded corners=10pt}
+\draw[postaction=decorate] (D) -| (C);
+\draw[postaction=decorate] (B) -| (C);
+\draw[postaction=decorate]
+  (A) |- (D) node[near end, below] {若$n=1$或$2$};
+\draw[postaction=decorate, decoration=reset marks, arrow decoration=0.65]
+  (A) |- (L) node[near end, above] {若$n>2$};
 \end{tikzpicture}
 \caption[斐波那契数的RTN。]
   {一个斐波那契数的递归迁移网。}

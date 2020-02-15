@@ -1,7 +1,7 @@
 
 \NeedsTeXFormat{LaTeX2e}[2016/01/01]
-\RequirePackage{expl3}[2016/01/01]
-\ProvidesExplClass{GEB}{2016/10/01}{0}{GEB}
+\RequirePackage{expl3}[2020/02/14]
+\ProvidesExplClass{GEB}{2020/02/14}{0}{GEB}
 
 \DeclareOption * { \PassOptionsToClass { \CurrentOption } { ctexbook } }
 \PassOptionsToClass { linespread = 4/3 , fontset = none } { ctexbook }
@@ -1262,7 +1262,7 @@
   }
 \cs_new_protected_nopar:Npn \@@_set_toc_label_width:
   {
-    \str_if_eq_x:nnF
+    \str_if_eq:eeF
       { \tex_topmarks:D \g_@@_toc_label_mark }
       { \tex_firstmarks:D \g_@@_toc_label_mark }
       { \@@_set_toc_label_width_aux: }

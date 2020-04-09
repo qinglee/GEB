@@ -1568,18 +1568,26 @@
 \cs_new_protected_nopar:Npn \@@_save_node:
   {
     \scan_stop:
-    \dim_compare:nNnTF \tex_lastkern:D = \c_zero_dim
-      { \xeCJK_cs_gclear:N \@@_restore_node: }
+    \tl_clear:N \l_@@_restore_node_tl
+    \dim_compare:nNnF \tex_lastkern:D = \c_zero_dim
       { \@@_save_node_aux: }
+    \seq_gpush:No \g_@@_restore_node_seq { \l_@@_restore_node_tl }
   }
-\cs_new_eq:NN \@@_restore_node: \prg_do_nothing:
+\seq_new:N \g_@@_restore_node_seq
+\cs_new_protected_nopar:Npn \@@_restore_node:
+  {
+    \seq_gpop:NNTF \g_@@_restore_node_seq \l_@@_restore_node_tl
+      { \tl_use:N \l_@@_restore_node_tl }
+      { \BOOM }
+  }
+\tl_new:N \g_@@_restore_node_tl
 \cs_new_protected_nopar:Npn \@@_save_node_aux:
   {
     \dim_set_eq:NN \l_tmpa_dim \tex_lastkern:D
     \tex_unkern:D
     \dim_compare:nNnTF \tex_lastkern:D = { - \l_tmpa_dim }
       {
-        \cs_gset_protected_nopar:Npx \@@_restore_node:
+        \tl_set:Nx \l_@@_restore_node_tl
           {
             \tex_kern:D \dim_use:N \tex_lastkern:D \exp_stop_f:
             \tex_kern:D \dim_use:N \l_tmpa_dim     \exp_stop_f:

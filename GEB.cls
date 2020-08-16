@@ -42,6 +42,7 @@
 \PassOptionsToPackage { mainaux , starttoc } { rerunfilecheck }
 \RequirePackage
   {
+    xeCJKfntef ,
     xunicode-addon ,
     empheq ,
     unicode-math ,
@@ -61,6 +62,7 @@
     picinpar ,
     hyperref ,
     bookmark ,
+    zref-abspage ,
     hyperxmp ,
     tikz ,
   }
@@ -77,6 +79,9 @@
 %    \input #1 \relax
 %    \@popfilename
 %  }
+
+\cs_new_eq:NN \INTMOD \int_mod:nn
+\cs_new_eq:NN \INTDIV \int_div_truncate:nn
 
 \ExplSyntaxOff
 
@@ -145,51 +150,49 @@
 %% Complete sines replaces the path with a whole number of sine waves.
 %% Thanks to http://tex.stackexchange.com/a/134516/26980
 \pgfdeclaredecoration{complete sines}{initial}
-{
+{%
   %% Begin by computing the overall path length and find how many sine waves we
   %% can fit in.  Nothing happens beyond the computation.
   \state{initial}[
     width=+0pt,
     next state=move,
-    persistent precomputation={
-      \def\tikzfeynman@cs@angle@step{30}
-      \def\tikzfeynman@cs@current@angle{0}
+    persistent precomputation={%
+      \def\tikzfeynman@cs@angle@step{30}%
+      \def\tikzfeynman@cs@current@angle{0}%
       \edef\tikzfeynman@cs@points@per@step{\the\dimexpr
         \pgfdecoratedinputsegmentlength
-        / \numexpr\dimexpr\pgfdecoratedinputsegmentlength\relax/
-                  \dimexpr\pgfdecorationsegmentlength\relax\relax
-        / 360
-        * \tikzfeynman@cs@angle@step\relax}
+          / \INTDIV{\dimexpr\pgfdecoratedinputsegmentlength\relax}
+                   {\dimexpr\pgfdecorationsegmentlength\relax}
+          / 360 * \tikzfeynman@cs@angle@step\relax}%
     },
-  ]{}
+  ]{}%
   %% Move to the origin to the path
   \state{move}[
     width=+\tikzfeynman@cs@points@per@step,
     next state=draw
-  ]{
-    \pgfpathmoveto{\pgfpointorigin}
-  }
+  ]{%
+    \pgfpathmoveto{\pgfpointorigin}%
+  }%
   %% Draw the sine wave itself.
   %% This computes the value every 30 degrees and draws straight edges.
   \state{draw}[
     width=+\tikzfeynman@cs@points@per@step,
     switch if less than=1.25*\tikzfeynman@cs@points@per@step to final, % <- bit of a hack
-    persistent postcomputation={
-      \pgfmathmod{\tikzfeynman@cs@current@angle+\tikzfeynman@cs@angle@step}{360}
-      \let\tikzfeynman@cs@current@angle=\pgfmathresult
+    persistent postcomputation={%
+      \edef\tikzfeynman@cs@current@angle{%
+        \INTMOD{\tikzfeynman@cs@current@angle+\tikzfeynman@cs@angle@step}{360}}%
     },
-  ]{
-    \pgfmathsin{\tikzfeynman@cs@current@angle}
-    \dimen@=\pgfdecorationsegmentamplitude\relax
-    \dimen@=\dimexpr\pgfmathresult\dimen@/2\relax
+  ]{%
     \tikz@decoratepathfalse
-    \pgfpathlineto{\pgfqpoint{0pt}{\dimen@}}
-  }
-  \state{final}{
+    \pgfmathsin@{\tikzfeynman@cs@current@angle}%
+    \dimen@=\dimexpr\pgfmathresult\pgfdecorationsegmentamplitude/2\relax
+    \pgfpathlineto{\pgfqpoint{0pt}{\dimen@}}%
+  }%
+  \state{final}{%
     \ifdim\pgfdecoratedremainingdistance>\z@
-      \pgfpathlineto{\pgfpointdecoratedpathlast}
+      \pgfpathlineto{\pgfpointdecoratedpathlast}%
     \fi
-  }
+  }%
 }
 
 \ExplSyntaxOn

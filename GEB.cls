@@ -1,5 +1,5 @@
 
-\NeedsTeXFormat{LaTeX2e}[2016/01/01]
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
 \RequirePackage{expl3}[2020/02/14]
 \ProvidesExplClass{GEB}{2020/02/14}{0}{GEB}
 
@@ -62,7 +62,7 @@
     picinpar ,
     hyperref ,
     bookmark ,
-    zref-abspage ,
+    zref-base ,
     hyperxmp ,
     tikz ,
   }
@@ -321,7 +321,7 @@
     CheckFullRight          = true ,
     PunctStyle              = kaiming ,
     KaiMingPunct+           = ：； ,
-    NewLineCS+              = \item \captiontextend \@@_endline_mark:
+    NewLineCS+              = \item \caption@textend \@@_endline_mark:
   }
 
 \setmainfont { STIX ~ Two ~ Text }
@@ -992,15 +992,52 @@
 \NewDocumentCommand \pagemark { m }
   {
     \thispdfpagelabel {#1}
-    \AtBeginShipoutNext
+    \AddToHookNext { shipout/before }
+      { \AtBeginShipoutAddToBox { \@@_page_bookmark:n {#1} } }
+  }
+
+\g@addto@macro \Hy@EveryPageBoxHook
+  { \@@extract@page@anchor }
+
+\cs_new_protected:Npn \@@extract@page@anchor
+  {
+    \tl_gset:Nx \g_@@_hyper_page_anchor_tl
+      { \tl_tail:N \Hy@TempPageAnchor }
+    \cs_gset_protected:Npx \@@_page_bookmark:n
+      { \exp_not:N \bookmark [ dest = \g_@@_hyper_page_anchor_tl ] }
+  }
+\tl_new:N \g_@@_hyper_page_anchor_tl
+
+\NewDocumentCommand \background { +m }
+  {
+    \AddToHookNext { shipout/background }
       {
-        \AtBeginShipoutAddToBox
-          { \bookmark [ page = \arabic { abspage } ] {#1} }
+        \vbox_to_zero:n
+          {
+            \hbox_overlap_right:n {#1}
+            \tex_vss:D
+          }
       }
   }
 
-\NewDocumentCommand \background { +m }
-  { \AtBeginShipoutNext { \AtBeginShipoutUpperLeft {#1} } }
+\NewDocumentCommand \backgroundpicture { s m }
+  {
+    \exp_args:Ne \background
+      {
+        \exp_not:N \includegraphics
+        \IfBooleanTF {#1}
+          { [ width  = \Gm@layoutwidth ] }
+          {
+            [
+              keepaspectratio = false ,
+              width  = \Gm@layoutwidth ,
+              height = \Gm@layoutheight
+            ]
+          }
+          {#2}
+      }
+  }
+
 
 \cs_new_nopar:Npn \circedctr #1
   { \circednum { \int_eval:n { \value {#1} } } }
@@ -1219,16 +1256,15 @@
   }
 \cs_new_protected:Npn \@@_toc_label:nnn #1#2
   {
-    \dim_set:Nn \l_tmpa_dim
-      { \zref@extractdefault { toc.#1 } { label@width } { \c_zero_dim } }
-    \dim_compare:nNnTF \l_tmpa_dim > \c_zero_dim
-      { \hbox_set_to_wd:Nnn \l_tmpa_box { \l_tmpa_dim } }
+    \int_compare:nNnT \g_@@_toc_int > \g_@@_toc_width_int
+      { \@@_extract_toc_width: }
+    \dim_compare:nNnTF \g_@@_toc_width_dim > \c_zero_dim
+      { \hbox_set_to_wd:Nnn \l_tmpa_box { \g_@@_toc_width_dim } }
       { \hbox_set:Nn \l_tmpa_box }
       { \tex_hfill:D #2 . \enspace }
     \dim_set:Nn \l_tmpa_dim { \box_wd:N \l_tmpa_box }
-    \seq_gput_right:No \g_@@_toc_seq { \dim_use:N \l_tmpa_dim }
+    \seq_gput_right:Nx \g_@@_toc_seq { \dim_use:N \l_tmpa_dim }
     \@@_toc_mark:n { \int_use:N \g_@@_toc_int }
-    \zref@labelbylist { toc.#1 } { toc@label }
     \prop_gput:Nnn \g_@@_figure_dest_prop {#1}
   }
 \int_new:N \g_@@_toc_int
@@ -1258,11 +1294,29 @@
 \RenewDocumentCommand \listoffigures { }
   {
     \group_begin:
-      \AtBeginShipout { \@@_set_toc_label_width: }
+      \hook_gput_code:nnn { shipout/before } { toc_width }
+        { \@@_set_toc_label_width: }
       \@starttoc { lof }
-      \AtBeginShipoutNext { \tl_gclear:N \@@_set_toc_label_width: }
+      \hook_gput_next_code:nn { shipout/before }
+        { \hook_gremove_code:nn { shipout/before } { toc_width } }
     \group_end:
   }
+\cs_new_protected:Npn \SetTocLabelWidth #1#2
+  { \seq_gput_right:Nn \g_@@_toc_width_seq { {#1} {#2} } }
+\cs_new_protected:Npn \@@_extract_toc_width:
+  {
+    \seq_gpop_left:NNT \g_@@_toc_width_seq \l_tmpa_tl
+      { \exp_after:wN \@@_extract_toc_width:nn \l_tmpa_tl }
+  }
+\cs_new_protected:Npn \@@_extract_toc_width:nn #1#2
+  {
+    \int_gset:Nn \g_@@_toc_width_int {#1}
+    \dim_gset:Nn \g_@@_toc_width_dim {#2}
+  }
+
+\int_new:N \g_@@_toc_width_int
+\dim_new:N \g_@@_toc_width_dim
+\seq_new:N \g_@@_toc_width_seq
 \cs_new_protected_nopar:Npn \@@_set_toc_label_width:
   {
     \str_if_eq:eeF
@@ -1273,9 +1327,10 @@
 \cs_new_protected_nopar:Npn \@@_set_toc_label_width_aux:
   {
     \tl_gset:Nn \g_@@_toc_label_width_tl { 0pt }
+    \int_set:Nn \l_tmpa_int { \tex_botmarks:D \g_@@_toc_label_mark }
     \int_step_inline:nnn
       { \tex_firstmarks:D \g_@@_toc_label_mark }
-      { \tex_botmarks:D \g_@@_toc_label_mark }
+      { \l_tmpa_int }
       {
         \seq_gpop_left:NNTF \g_@@_toc_seq \l_tmpa_tl
           {
@@ -1284,12 +1339,15 @@
           }
           { \BOOM }
       }
+    \iow_now:Nx \@mainaux
+      {
+        \c_backslash_str SetTocLabelWidth
+          { \int_use:N \l_tmpa_int }
+          { \g_@@_toc_label_width_tl }
+      }
   }
 \newmarks \g_@@_toc_label_mark
 \tl_new:N \g_@@_toc_label_width_tl
-\zref@newprop * { label@width } [ 0pt ] { \g_@@_toc_label_width_tl }
-\zref@newlist { toc@label }
-\zref@addprop { toc@label } { label@width }
 \newlist { lof } { description } { 3 }
 \setlist [ lof ]
   {
@@ -1382,8 +1440,8 @@
 \DeclareCaptionLabelFormat { plain } { \bothIfFirst {#1} { \, } #2 }
 \DeclareCaptionLabelSeparator { en } { \enspace }
 \DeclareCaptionTextFormat { nostrut } { \@@_caption_nostrut:w #1 }
-\cs_new:Npn \@@_caption_nostrut:w #1 \caption@ifstrut #2 \captiontextend
-  { #1 \captiontextend }
+\cs_new:Npn \@@_caption_nostrut:w #1 \caption@ifstrut #2 \caption@textend
+  { #1 \caption@textend }
 \captionsetup
   {
     format      = hang ,
@@ -1534,7 +1592,7 @@
 \tl_new:N \g_@@_current_chapter_tl
 
 \NewDocumentCommand \theendnotes { }
-  { \msg_term:n { NO ~ ENDNOTE! } }
+  { \iow_term:n { NO ~ ENDNOTE! } }
 
 \NewDocumentEnvironment { endnotes } { +m m }
   {

@@ -3,25 +3,4 @@
 
 \pagemark{封面}
 
-\makeatletter
-\ExplSyntaxOn
-
-\background
-  {
-    \put
-      (
-        \dim_to_decimal:n { \Gm@layouthoffset } ,
-        \dim_to_decimal:n { -\Gm@layoutheight - \Gm@layoutvoffset }
-      )
-      {
-        \includegraphics
-          [
-            keepaspectratio = false ,
-            width  = \Gm@layoutwidth ,
-            height = \Gm@layoutheight
-          ] { frontcover.jpg }
-      }
-  }
-
-\ExplSyntaxOff
-\makeatother
+\backgroundpicture{frontcover.jpg}

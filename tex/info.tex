@@ -5,32 +5,7 @@
 \pagestyle{empty}
 \pagemark{制作信息}
 
-\makeatletter
-\ExplSyntaxOn
-
-\background
-  {
-    \put
-      (
-        \dim_to_decimal:n { \Gm@layouthoffset } ,
-        \dim_to_decimal:n { - \Gm@layoutvoffset }
-      )
-      {
-        \vbox_to_zero:n
-          {
-            \hbox_to_zero:n
-              {
-                \includegraphics [ width  = \Gm@layoutwidth ]
-                  { JELogo.png }
-                \tex_hss:D
-              }
-            \tex_vss:D
-          }
-      }
-  }
-
-\ExplSyntaxOff
-\makeatother
+\backgroundpicture*{JELogo.png}
 
 \vspace*{2pt}
 

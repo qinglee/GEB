@@ -216,30 +216,28 @@
 %  }
 %\cs_new_protected_nopar:Npn \@@_page_attribute:
 %  {
-%    \AtBeginShipoutAddToBox
+%    \dim_set:Nn \l_@@_left_margin_dim
 %      {
-%        \dim_set:Nn \l_@@_left_margin_dim
-%          {
-%            \hoffset + 1in
-%            \int_if_odd:nTF { \value { page } }
-%              { + \oddsidemargin }
-%              { + \evensidemargin }
-%          }
-%        \dim_set:Nn \l_@@_bottom_margin_dim
-%          { \paperheight - \Gm@layoutvoffset - \Gm@layoutheight }
-%        \exp_args:Nx \@@_page_attribute:n
-%          {
-%            /CropBox [ \g_@@_crop_box_tl ]
-%            /ArtBox  [ \g_@@_art_box_tl ]
-%%            /Group << /S /Transparency /CS /DeviceRGB /I ~ true>>
-%          }
+%        \hoffset + 1in
+%        \int_if_odd:nTF { \value { page } }
+%          { + \oddsidemargin }
+%          { + \evensidemargin }
+%      }
+%    \dim_set:Nn \l_@@_bottom_margin_dim
+%      { \paperheight - \Gm@layoutvoffset - \Gm@layoutheight }
+%    \exp_args:Nx \@@_page_attribute:n
+%      {
+%        /CropBox [ \g_@@_crop_box_tl ]
+%        /ArtBox  [ \g_@@_art_box_tl ]
+%%       /Group << /S /Transparency /CS /DeviceRGB /I ~ true>>
 %      }
 %  }
 %\dim_new:N \l_@@_left_margin_dim
 %\dim_new:N \l_@@_bottom_margin_dim
 %\cs_new_protected:Npn \@@_page_attribute:n #1
 %  { \tex_special:D { pdf: put @thispage << /Type /Page #1 >> } }
-%\AtBeginShipout { \@@_page_attribute: }
+%\hook_gput_code:nnn { shipout/background }
+%  { GEB } { \@@_page_attribute: }
 
 \tl_const:Nn \c_@@_title_tl  { 歌德尔、艾舍尔、巴赫——集异壁之大成 }
 \tl_const:Nn \c_@@_author_tl { 侯世达 }
@@ -992,25 +990,28 @@
 \NewDocumentCommand \pagemark { m }
   {
     \thispdfpagelabel {#1}
-    \AddToHookNext { shipout/before }
-      { \AtBeginShipoutAddToBox { \@@_page_bookmark:n {#1} } }
+    \hook_gput_next_code:nn { shipout/background }
+      { \@@_page_bookmark:n {#1} }
   }
 
-\g@addto@macro \Hy@EveryPageBoxHook
-  { \@@extract@page@anchor }
+\cs_new_protected:Npn \@@_page_bookmark:n
+  { \bookmark [ page = \int_use:N \g_shipout_readonly_int ] }
 
-\cs_new_protected:Npn \@@extract@page@anchor
-  {
-    \tl_gset:Nx \g_@@_hyper_page_anchor_tl
-      { \tl_tail:N \Hy@TempPageAnchor }
-    \cs_gset_protected:Npx \@@_page_bookmark:n
-      { \exp_not:N \bookmark [ dest = \g_@@_hyper_page_anchor_tl ] }
-  }
-\tl_new:N \g_@@_hyper_page_anchor_tl
+%\g@addto@macro \Hy@EveryPageBoxHook
+%  { \@@extract@page@anchor }
+%
+%\cs_new_protected:Npn \@@extract@page@anchor
+%  {
+%    \tl_gset:Nx \g_@@_hyper_page_anchor_tl
+%      { \tl_tail:N \Hy@TempPageAnchor }
+%    \cs_gset_protected:Npx \@@_page_bookmark:n
+%      { \exp_not:N \bookmark [ dest = \g_@@_hyper_page_anchor_tl ] }
+%  }
+%\tl_new:N \g_@@_hyper_page_anchor_tl
 
 \NewDocumentCommand \background { +m }
   {
-    \AddToHookNext { shipout/background }
+    \hook_gput_next_code:nn { shipout/background }
       {
         \vbox_to_zero:n
           {
@@ -1037,7 +1038,6 @@
           {#2}
       }
   }
-
 
 \cs_new_nopar:Npn \circedctr #1
   { \circednum { \int_eval:n { \value {#1} } } }

@@ -51,10 +51,8 @@
     varwidth ,
     titleps ,
     enumitem ,
-    tabu ,
-    multirow ,
-    longtable ,
-    booktabs ,
+    array ,
+    tabularray ,
     xcolor ,
     rotating ,
     subcaption ,
@@ -330,6 +328,13 @@
 
 \NewDocumentCommand \textcyr { }
   { \textrm }
+\clist_map_inline:nn
+  { chapter02, dialog03, chapter03, dialog04, chapter04 }
+  {
+    \ctex_gadd_ltxhook:nn { file / #1 .tex / before } { \MakeMinusOrd }
+    \ctex_gadd_ltxhook:nn { file / #1 .tex / after }  { \MakeMinusBin }
+  }
+
 
 \NewDocumentCommand \MakeMinusOrd { }
   { \__um_set_mathcode:nnnn { `\- } { \mathord } { operators } { "02212 } }
@@ -1341,7 +1346,7 @@
       }
     \iow_now:Nx \@mainaux
       {
-        \c_backslash_str SetTocLabelWidth
+        \iow_char:N \\ SetTocLabelWidth
           { \int_use:N \l_tmpa_int }
           { \g_@@_toc_label_width_tl }
       }
@@ -1395,9 +1400,6 @@
 \skip_set:Nn \abovecaptionskip { \intextsep - \smallskipamount }
 \skip_zero:N \belowcaptionskip
 
-\skip_set_eq:NN \LTpre \medskipamount
-\skip_set_eq:NN \LTpost \LTpre
-
 \counterwithout { figure } { chapter }
 \counterwithout { table }  { chapter }
 
@@ -1435,7 +1437,6 @@
 \newfloatcommand { figurebox } { figure } [ \nocapbeside \capbot ]
 \newfloatcommand { tablebox }  { table }  [ \nocapbeside \captop ] [ \FBwidth ]
 \DeclareFloatSeparators { mqquad } { \skip_horizontal:n { -2em } }
-
 \DeclareCaptionFont { kaishu } { \kaishu }
 \DeclareCaptionLabelFormat { plain } { \bothIfFirst {#1} { \, } #2 }
 \DeclareCaptionLabelSeparator { en } { \enspace }
@@ -1466,6 +1467,102 @@
   { margin = 4\ccwd }
 \captionsetup [ floatrow ]
   { margin = \c_zero_dim }
+
+\dim_new:N \l_@@_rule_sep_dim
+\dim_new:N \l_@@_light_rule_dim
+\dim_new:N \l_@@_heavy_rule_dim
+\dim_new:N \l_@@_cmid_rule_dim
+\dim_set:Nn \l_@@_rule_sep_dim   { .4ex }
+\dim_set:Nn \l_@@_light_rule_dim { .05em }
+\dim_set:Nn \l_@@_heavy_rule_dim { \l_@@_light_rule_dim * 8 / 5 }
+\dim_set:Nn \l_@@_cmid_rule_dim  { \l_@@_light_rule_dim * 3 / 5 }
+\cs_new_eq:NN \lightrulewidth \l_@@_light_rule_dim
+\cs_new_eq:NN \heavyrulewidth \l_@@_heavy_rule_dim
+\cs_new_eq:NN \cmidrulewidth  \l_@@_cmid_rule_dim
+\cs_new_eq:NN \tabrulesep     \l_@@_rule_sep_dim
+
+\SetTblrInner
+  {
+    rows    = { rowsep = 0pt } ,
+    columns = { colsep = \tabcolsep }
+  }
+\NewTblrEnviron { tabu }
+\SetTblrInner [ tabu ]
+  {
+    rows        = { rowsep = 0pt } ,
+    columns     = { colsep = \tabcolsep } ,
+    hline{1,Z}  = { wd = \heavyrulewidth } ,
+    hline{2}    = { wd = \lightrulewidth } ,
+    hborder{1}  = { belowspace = \tabrulesep } ,
+    hborder{2}  = { abovespace = \tabrulesep , belowspace = \tabrulesep } ,
+    hborder{Z}  = { abovespace = \tabrulesep }
+  }
+\NewTblrEnviron { tabu* }
+\SetTblrInner [ tabu* ]
+  {
+    rows    = { rowsep = 0pt } ,
+    columns = { colsep = \tabcolsep }
+  }
+\NewTblrEnviron { longtabu }
+\SetTblrOuter [ longtabu ]
+  {
+    long ,
+    halign  = c ,
+    theme   = empty ,
+    presep  = \medskipamount ,
+    postsep = \medskipamount
+  }
+\SetTblrInner [ longtabu ]
+  {
+    rows        = { rowsep = 0pt } ,
+    columns     = { colsep = \tabcolsep } ,
+    hline{1,Z}  = { wd = \heavyrulewidth } ,
+    hline{2}    = { wd = \lightrulewidth } ,
+    hborder{1}  = { belowspace = \tabrulesep } ,
+    hborder{2}  = { abovespace = \tabrulesep , belowspace = \tabrulesep } ,
+    hborder{Z}  = { abovespace = \tabrulesep }
+  }
+\NewTblrEnviron { longtabu* }
+\SetTblrOuter [ longtabu* ]
+  {
+    long ,
+    halign  = c ,
+    theme   = empty* ,
+    presep  = \medskipamount ,
+    postsep = \medskipamount ,
+  }
+\SetTblrInner [ longtabu* ]
+  {
+    rows    = { rowsep = 0pt } ,
+    columns = { colsep = \tabcolsep } ,
+  }
+\DefTblrTemplate { conthead-text } { default } { （续表） }
+\NewTblrTheme { empty }
+  {
+    \SetTblrTemplate { firsthead } { empty }
+  }
+\NewTblrTheme { empty* }
+  {
+    \SetTblrTemplate { head } { empty }
+    \SetTblrTemplate { foot } { empty }
+  }
+\SetTblrTemplate { firstfoot, middlefoot } { empty }
+\SetTblrStyle { middlehead , lasthead }
+  {
+    font   = \small \itshape ,
+    halign = r
+  }
+\DefTblrTemplate { middlehead , lasthead } { default }
+  {
+    \UseTblrAlign  { middlehead }
+    \UseTblrIndent { middlehead }
+    \UseTblrHang   { middlehead }
+    \mode_leave_vertical:
+    \UseTblrTemplate { conthead-text } { default }
+    \para_end:
+  }
+\NewDocumentCommand \ROWNUM { }
+  { \arabic { rownum } }
 
 \tl_gput_right:Nn \caption@prepareslc
   { \cs_set_eq:NN \note \use_none:n }
@@ -1558,21 +1655,6 @@
      \fi}
 \ctex_patch_cmd:Nnn \@getpen { \@M } { \@Mi }
 %% --->
-
-\ctex_patch_cmd:Nnn \LT@start
-  { \vskip \LTpre }
-  { \nointerlineskip \vskip \LTpre }
-\ctex_appto_cmd:NnnTF \endlongtable
-  { \ExplSyntaxOff }
-  {
-    \nointerlineskip
-    \addtocounter { table } { \m@ne }
-  }
-  { }
-  { \ctex_patch_failure:N \endlongtable }
-
-\skip_set:Nn \LTleft { \parindent }
-\skip_set_eq:NN \LTright \fill
 
 \cs_new_protected_nopar:Npn \@@_endnote_chapter:
   {
@@ -2168,7 +2250,7 @@
                  depth .6pt \scan_stop:
   }
 
-\NewDocumentCommand \basecell { m m }
+\cs_new_protected_nopar:Npn \@@_base_cell:nn #1#2
   {
     \hcoffin_set:Nn \l_tmpa_coffin
       { \hbox_to_wd:nn { 2em } { \tex_hss:D #1  \tex_hss:D  } }
@@ -2179,3 +2261,5 @@
     \coffin_typeset:Nnnnn \l_tmpa_coffin
       { l } { H } { \c_zero_dim } { \c_zero_dim }
   }
+\NewDocumentCommand \basecell { m }
+  { \@@_base_cell:nn #1 }

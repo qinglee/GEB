@@ -328,7 +328,10 @@ AT、CAAAGAGGA、CAAAGAGAATCCTCTTTG。
 \section{氨基酸}
 
 共有十五种类型的指令，开列如下：
-\begin{longtable}[c]{r!{——}l}
+\begin{longtabu*}{
+  columns = { colsep = \ccwd } ,
+  colspec = {r!{——}l}
+}
 cut & 切断串\\
 del & 从串里删除一个基\\
 swi & 把酶转移到另一个串上\\
@@ -344,7 +347,7 @@ rpy & 寻找右边最近的嘧啶\\
 rpu & 寻找右边最近的嘌呤\\
 lpy & 寻找左边最近的嘧碇\\
 lpu & 寻找左边最近的嘌呤
-\end{longtable}
+\end{longtabu*}
 每一类指令都有一个用三个字母缩写的名字。我们把这些用三个字母缩写的指令叫作氨基酸。于是，每个酶都由一系列氨基酸制成。我们随便写一个酶：
 \begin{center}
 rpu-inc-cop-mvr-mvl-swi-lpu-int
@@ -401,25 +404,30 @@ ATG\quad 和\quad TAGATCCAGTCCACTCGA
 
 \begin{figure}
 %\includegraphics{img_087.png}
-\def\OLW{\heavyrulewidth}
-\begin{tabu}{|[\OLW]c|c*4{|X[c]}|[\OLW]}
-\tabucline[\OLW]-
-\noalign{\global\extrarowsep=1.5ex\relax}
-\multicolumn2{|[\OLW]l|}{}
-  & \multicolumn4{c|[\OLW]}{第二个基}         \\ \cline{3-6}
-\multicolumn2{|[\OLW]l|}{} & A & C & G & T  \\ \tabucline-
-\multirow[c]{4}{\ccwd}{第一个基}
- & A &                   & \basecell{cut}{s}
-     & \basecell{del}{s} & \basecell{swi}{r}\\ \cline{2-6}
- & C & \basecell{mvr}{s} & \basecell{mvl}{s}
-     & \basecell{cop}{r} & \basecell{off}{l}\\ \cline{2-6}
- & G & \basecell{ina}{s} & \basecell{inc}{r}
-     & \basecell{ing}{r} & \basecell{int}{l}\\ \cline{2-6}
- & T & \basecell{rpy}{r} & \basecell{rpu}{l}
-     & \basecell{lpy}{r} & \basecell{lpu}{l}\\
-\tabucline[\OLW]-
-\end{tabu}
-\global\extrarowsep=0pt\relax
+\begin{tabu*}{
+  rows           = { rowsep = 1.5ex } ,
+  columns        = { colsep = 0pt } ,
+  colspec        = {cc*4{X[c]}} ,
+  vline{1,Z}     = { wd = \heavyrulewidth} ,
+  vline{2-Y}     = { wd = \lightrulewidth} ,
+  hline{1,Z}     = { wd = \heavyrulewidth} ,
+  hline{2-Y}     = { wd = \lightrulewidth} ,
+  row{1,2}       = { ht = 2\ccwd, rowsep = 0pt } ,
+  column{1,2}    = { wd = 2\ccwd } ,
+  cell{1}{1}     = { c = 2, r = 2 }{c} ,
+  cell{1}{3}     = { c = 4 }{c} ,
+  cell{3}{1}     = { r = 4 }{c} ,
+  cell{3}{4-Z}   = { cmd = \basecell } ,
+  cell{4-Z}{3-Z} = { cmd = \basecell } ,
+}
+  &   & 第二个基 \\
+  &   & A & C & G & T  \\
+{第\\一\\个\\基}
+  & A &          & {cut}{s} & {del}{s} & {swi}{r}\\
+  & C & {mvr}{s} & {mvl}{s} & {cop}{r} & {off}{l}\\
+  & G & {ina}{s} & {inc}{r} & {ing}{r} & {int}{l}\\
+  & T & {rpy}{r} & {rpu}{l} & {lpy}{r} & {lpu}{l}\\
+\end{tabu*}
 \caption[印符遗传密码。]
   {印符遗传密码。串中各个二元组按这种对应关系分别给十五种氨基酸（和一个标点符号）编码。}
 \end{figure}
@@ -588,7 +596,7 @@ RNA并不总与自己形成长的双串，尽管它能这样做。所以一般�
 \section{氨基酸}
 
 蛋白质由一系列氨基酸组成。氨基酸共有二十个品种，每一种都由三个字母来表示：
-\begin{longtable}[c]{r!{——}l!{\qquad}r!{——}l}
+\begin{longtabu*}{r!{——}l!{\qquad}r!{——}l}
 ala & 丙氨酸 &
 arg & 精氨酸\\
 asn & 天门冬氨酰胺 &
@@ -609,7 +617,7 @@ thr & 苏氨酸 &
 trp & 色氨酸\\
 tyr & 酪氨酸 &
 val & 缬氨酸
-\end{longtable}
+\end{longtabu*}
 应当注意到这里与印符遗传学在数目上的轻微差别，在那里，我们只有十五种用以组成酶的氨基酸。氨基酸是大体上与核苷酸同样复杂的一个小分子，因而，建造蛋白质的砖块与建造核酸（DNA、RNA）的砖块差不多大。但是蛋白质是由短得多的序列组成的：在典型的情形，大约三百个氨基酸就组成一个完整的蛋白质，而一个DNA串却可以含有数十万乃至上百万个核苷酸。
 
 \section{核糖体与录音机}
@@ -640,34 +648,33 @@ Cu\hfill Ag\hfill Au
 
 \begin{figure}
 %\includegraphics{img_094.png}
-\def\OLW{\heavyrulewidth}
-\def\MLW{\lightrulewidth}
-%\tabulinesep=.5ex\relax
-\begin{tabu} to .8\linewidth{>{\Large}X[.75,c]*4{|X[c]}|X[.5,c]}
-\tabucline[\OLW]-
-\rowfont{\large}
- & U & C & A & G & \\ \tabucline[\MLW]-
-\multirow{4}{*}{U}
-  & phe & ser & tyr & cys & U \\
+\begin{tabu}{
+  width              = .8\linewidth ,
+  colspec            = {X[.75,c]*4{X[c]}X[.5,c]} ,
+  hline{6,10,14}     = { wd = \cmidrulewidth, endpos, lr } ,
+  hborder{6,10,14}   = { abovespace = \tabrulesep/2 , belowspace = \tabrulesep/2 } ,
+  vline{2-Y}         = { wd = \lightrulewidth } ,
+  row{1}             = { font = \large } ,
+  column{1}          = { font = \large } ,
+  cell{2,6,10,14}{1} = { r = 4 }{c} ,
+}
+  & U   & C   & A   & G   & \\
+U & phe & ser & tyr & cys & U \\
   & phe & ser & tyr & cys & C \\
   & leu & ser & 标点  & 标点  & A \\
-  & leu & ser & 标点 & trp & G \\ \tabucline-
-\multirow{4}{*}{C}
-  & leu & pro & his & arg & U \\
+  & leu & ser & 标点 & trp & G \\
+C & leu & pro & his & arg & U \\
   & leu & pro & his & arg & C \\
   & leu & pro & gin & arg & A \\
-  & leu & pro & gin & arg & G \\ \tabucline-
-\multirow{4}{*}{A}
-  & ile & thr & asn & ser & U \\
+  & leu & pro & gin & arg & G \\
+A & ile & thr & asn & ser & U \\
   & ile & thr & asn & ser & C \\
   & ile & thr & lys & arg & A \\
-  & met & thr & lys & arg & G \\ \tabucline-
-\multirow{4}{*}{G}
-  & val & ala & asp & gly & U \\
+  & met & thr & lys & arg & G \\
+G & val & ala & asp & gly & U \\
   & val & ala & asp & gly & C \\
   & val & ala & glu & gly & A \\
   & val & ala & glu & gly & G \\
-\tabucline[\OLW]-
 \end{tabu}
 \caption[遗传密码。]
   {遗传密码。信使RNA串中的每个三元组就这样为二十种氮基酸（及一个标点符号）编码。}
@@ -846,24 +853,26 @@ DNA必定含有一组蛋白质的密码，而这组蛋白质就将复制这个DN
 
 \begin{table}
 \caption{中心法则映射。}\label{tab:central-dogmap}
-\begin{tabu}[c]{@{}X[r]cX[l]@{}}
-\toprule
-\emph{法则I}（分子生物学） & & \emph{法则II}（数理逻辑）\\
-\midrule
-DNA串 & $\iff$ & TNT符号串\\
-mRNA串 & $\iff$ & N的陈述\\
-蛋白质 & $\iff$ & 元TNT的陈述\\
-作用在蛋白质上的蛋白质 & $\iff$ & 关于元TNT的陈述的陈述\\
-作用在作用在蛋白质上的\par 蛋白质上的蛋白质 & $\iff$ & 关于关于元TNT陈述的\par 陈述的陈述\strut\\
-转录（$\text{DNA}\Rightarrow\text{RNA}$） & $\iff$ & 解释（$\TNT\Rightarrow\text{N}$）\\
-翻译（$\text{RNA}\Rightarrow\text{蛋白质}$） & $\iff$ & 算术化（$\text{N}\Rightarrow\text{元TNT}$）\\
-克里克 & $\iff$ & 哥德尔\\
-遗传密码（任意约定） & $\iff$ & 哥德尔编码（任意约定）\\
-密码子（基因的三元组） & $\iff$ & 密码子（数码的三元组）\\
-氨基酸 & $\iff$ & 元TNT中引用的TNT符号\\
-自复制 & $\iff$ & 自指\\
-使自复制得以发生的\par 充分强的细胞系统 & $\iff$ & 使自指得以发生的\par 充分强的算术形式系统\strut\\
-\bottomrule
+\begin{tabu}{
+  colspec   = {X[r]X[l]} ,
+  vline{2}  = {2-Z}{ text = \ensuremath{\iff} } ,
+  column{1} = { leftsep = 0pt, rightsep = \ccwd } ,
+  column{2} = { leftsep = \ccwd, rightsep = 0pt } ,
+}
+\emph{法则I}（分子生物学） & \emph{法则II}（数理逻辑）\\
+DNA串 & TNT符号串\\
+mRNA串 & N的陈述\\
+蛋白质 & 元TNT的陈述\\
+作用在蛋白质上的蛋白质  & 关于元TNT的陈述的陈述\\
+作用在作用在蛋白质上的\par 蛋白质上的蛋白质  & 关于关于元TNT陈述的\par 陈述的陈述\\
+转录（$\text{DNA}\Rightarrow\text{RNA}$） & 解释（$\TNT\Rightarrow\text{N}$）\\
+翻译（$\text{RNA}\Rightarrow\text{蛋白质}$） & 算术化（$\text{N}\Rightarrow\text{元TNT}$）\\
+克里克 & 哥德尔\\
+遗传密码（任意约定） & 哥德尔编码（任意约定）\\
+密码子（基因的三元组） & 密码子（数码的三元组）\\
+氨基酸 & 元TNT中引用的TNT符号\\
+自复制 & 自指\\
+{使自复制得以发生的 \\ 充分强的细胞系统} & {使自指得以发生的 \\ 充分强的算术形式系统}\\
 \end{tabu}
 \end{table}
 
@@ -935,36 +944,47 @@ mRNA串 & $\iff$ & N的陈述\\
 \begin{figure}
 %\includegraphics[height=.8\textheight]{img_100.png}
 \def\EL#1{\tikz[baseline=(A.base)]{%
-  \useasboundingbox node[inner sep=0pt](A){#1};%
+  \useasboundingbox node[inner sep=0pt](A){\ensuremath{#1}};%
   \draw (A) ellipse [x radius=15pt, y radius=7pt];}}
-\def\OLW{\heavyrulewidth}
-\def\MLW{\lightrulewidth}
-\extrarowsep=.2ex\relax
-\begin{tabu} to .8\linewidth{>{\Large}X[.75,c]*4{|X[c]}|X[.5,c]}
-\tabucline[\OLW]-
-\rowfont{\large}
- & 6 & 2 & 1 & 3 & \\ \tabucline[\MLW]-
-\multirow{4}{*}{6}
-  & \EL{$0$} & \EL{$\forall$} & \EL{$\land$} & \EL{$:$} & 6 \\
-  & $0$ & $\forall$ & $\land$ & $:$ & 2 \\
-  & $a$ & $\forall$ & \EL{标点}  & 标点  & 1 \\
-  & $a$ & $\forall$ & 标点 & \EL{$\supset$} & 3 \\ \tabucline-
-\multirow{4}{*}{2}
-  & $a$ & $\sim$ & $\langle$ & \EL{$\cdot$} & 6 \\
-  & \EL{$a$} & $\sim$ & \EL{$\langle$} & $\cdot$ & 2 \\
-  & $a$ & $\sim$ & $\rangle$ & $\cdot$ & 1 \\
-  & $a$ & \EL{$\sim$} & \EL{$\rangle$} & $\cdot$ & 3 \\ \tabucline-
-\multirow{4}{*}{1}
-  & $\lor$ & $S$ & $+$ & $\forall$ & 6 \\
-  & $\lor$ & $S$ & \EL{$+$} & $\forall$ & 2 \\
-  & \EL{$\lor$} & $S$ & \EL{$=$} & $\cdot$ & 1 \\
-  & \EL{$'$} & \EL{$S$} & $=$ & $\cdot$ & 3 \\ \tabucline-
-\multirow{4}{*}{3}
-  & $($ & $)$ & $[$ & $\exists$ & 6 \\
-  & \EL{$($} & $)$ & \EL{$[$} & $\exists$ & 2 \\
-  & $($ & $)$ & $]$ & $\exists$ & 1 \\
-  & $($ & \EL{$)$} & \EL{$]$} & \EL{$\exists$} & 3 \\
-\tabucline[\OLW]-
+\begin{tabu}{
+  width              = .8\linewidth ,
+  colspec            = {X[.75,c]*4{X[c]}X[.5,c]} ,
+  vline{2-Y}         = { wd = \lightrulewidth } ,
+  hline{6,10,14}     = { wd = \cmidrulewidth, endpos, lr } ,
+  hborder{6,10,14}   = { abovespace = \tabrulesep/2 , belowspace = \tabrulesep/2 } ,
+  row{1}             = { font = \large } ,
+  column{1}          = { font = \large } ,
+  cells              = { mode = math } ,
+  cell{2,6,10,14}{1} = { r = 4 }{c} ,
+  cell{2}{2-Y}       = { cmd = \EL } ,
+  cell{4}{4}         = { cmd = \EL } ,
+  cell{5}{5}         = { cmd = \EL } ,
+  cell{6}{5}         = { cmd = \EL } ,
+  cell{7}{2,4}       = { cmd = \EL } ,
+  cell{9}{3,4}       = { cmd = \EL } ,
+  cell{11}{4}        = { cmd = \EL } ,
+  cell{12}{2,4}      = { cmd = \EL } ,
+  cell{13}{2,3}      = { cmd = \EL } ,
+  cell{X}{2,4}       = { cmd = \EL } ,
+  cell{Z}{3,4,5}     = { cmd = \EL } ,
+}
+  & 6     &         2 & 1     & 3       & \\
+6 & 0     & \forall & \land   & :       & 6 \\
+  & 0     & \forall & \land   & :       & 2 \\
+  & a     & \forall & \text{标点} & \text{标点} & 1 \\
+  & a     & \forall & \text{标点} & \supset    & 3 \\
+2 & a     & \sim    & \langle & \cdot   & 6 \\
+  & a     & \sim    & \langle & \cdot   & 2 \\
+  & a     & \sim    & \rangle & \cdot   & 1 \\
+  & a     & \sim    & \rangle & \cdot   & 3 \\
+1 & \lor  & S       & +       & \forall & 6 \\
+  & \lor  & S       & +       & \forall & 2 \\
+  & \lor  & S       & =       & \cdot   & 1 \\
+  & '     & S       & =       & \cdot   & 3 \\
+3 & (     & )       & [       & \exists & 6 \\
+  & (     & )       & [       & \exists & 2 \\
+  & (     & )       & ]       & \exists & 1 \\
+  & (     & )       & ]       & \exists & 3 \\
 \end{tabu}
 \caption[哥德尔编码。]
   {哥德尔编码。按照这个哥德尔配数方案，每个TNT符号有一个或几个密码子。小椭圆圈表明这个表怎样包含着第九章中的哥德尔配数表。}
@@ -990,24 +1010,26 @@ mRNA串 & $\iff$ & N的陈述\\
 
 \begin{table}
 \caption{系统2和系统3之间的映射。}\label{tab:2-3-mapping}
-\begin{tabu}[c]{@{}X[r]cX[l]@{}}
-\toprule
-《对位藏头诗》 & & 分子生物学\\
-\midrule
-唱机 & $\iff$ & 细胞\\
-“完备的”唱机 & $\iff$ & “完备的”细胞\\
-唱片 & $\iff$ & DNA串\\
-可以在一个给定的唱机上\par 播放的唱片 & $\iff$ & 可以由一个给定的细胞\par 复制的DNA串\strut\\
-不可在这台唱机上\par 播放的唱片 & $\iff$ & 不可由这个细胞\par 复制的DNA串\strut\\
-把唱片的音槽转变为\par 声音的过程 & $\iff$ & 把DNA转录到\par mRNA上的过程\strut\\
-唱机产生的声音 & $\iff$ & 信使RNA串\\
-声音翻译为唱机的震颤 & $\iff$ & mRNA翻译成蛋白质\\
-从外部音响\par 到唱机震颤的映射 & $\iff$ & 遗传密码（mRNA三元组\par 到蛋白质的氨基酸的映射）\strut\\
-唱机的毁坏 & $\iff$ & 细胞的毁灭\\
-为唱机X特制的歌，\par 标题是\par “我不能在唱机X上播放” & $\iff$ & 为细胞X特制的DNA串\par 高层解释：\par “我不能由细胞X复制”\strut\\
-“不完备”的唱机 & $\iff$ & 至少有一个DNA串复制不出来的细胞\strut\\
-“疙瘩定理”：\par “给定一台具体的唱机，\par 总有一张\par 它不能播放的唱片。” & $\iff$ & 免疫定理：\par “给定一个具体的细胞，\par 总有一个\par 它复制不了的DNA串。”\strut\\
-\bottomrule
+\begin{tabu}{
+  colspec   = {X[r]X[l]} ,
+  vline{2}  = {2-Z}{ text = \ensuremath{\iff} } ,
+  column{1} = { leftsep = 0pt, rightsep = \ccwd } ,
+  column{2} = { leftsep = \ccwd, rightsep = 0pt } ,
+}
+《对位藏头诗》 & 分子生物学\\
+唱机 & 细胞\\
+“完备的”唱机 & “完备的”细胞\\
+唱片 & DNA串\\
+{可以在一个给定的唱机上 \\ 播放的唱片} & {可以由一个给定的细胞 \\ 复制的DNA串} \\
+{不可在这台唱机上 \\ 播放的唱片} & {不可由这个细胞 \\ 复制的DNA串} \\
+{把唱片的音槽转变为 \\ 声音的过程} & {把DNA转录到 \\ mRNA上的过程} \\
+唱机产生的声音 & 信使RNA串 \\
+声音翻译为唱机的震颤 & mRNA翻译成蛋白质\\
+{从外部音响 \\ 到唱机震颤的映射} & {遗传密码（mRNA三元组 \\ 到蛋白质的氨基酸的映射）} \\
+唱机的毁坏 & 细胞的毁灭\\
+{为唱机X特制的歌， \\ 标题是 \\ “我不能在唱机X上播放”} & {为细胞X特制的DNA串 \\ 高层解释： \\ “我不能由细胞X复制”} \\
+“不完备”的唱机 & 至少有一个DNA串复制不出来的细胞 \\
+{“疙瘩定理”： \\ “给定一台具体的唱机， \\ 总有一张 \\ 它不能播放的唱片。”} & {免疫定理： \\ “给定一个具体的细胞， \\ 总有一个 \\ 它复制不了的DNA串。”} \\
 \end{tabu}
 \end{table}
 
@@ -1048,24 +1070,14 @@ mRNA串 & $\iff$ & N的陈述\\
   {T4病毒的形态发生通道有三个主分支，分别形成头、尾和尾须，然后结合起来形成完整的病毒微粒。[选自哈那瓦尔特和海凶斯，《生命的化学基础》，第237页。]}}
 \end{figure}
 
-\begin{longtabu}[c]{cX}
-\toprule
-\endfirsthead
-\multicolumn2r{\small\kaishu（续表）}\\
-\midrule
-\endhead
-\midrule
-\endfoot
-\bottomrule
-\endlastfoot
+\begin{longtabu}{cX}
 发生时刻 & 发生的行为 \\*
-\midrule
 第0分 & 注入病毒DNA。 \\
-第1分 & 破坏了主体的DNA。细胞本身的蛋白质停止生产，异己的（T4）蛋白质开始生产。最先生产出的一批蛋白质是负责指挥复制异己（T4）DNA的。\strut \\
+第1分 & 破坏了主体的DNA。细胞本身的蛋白质停止生产，异己的（T4）蛋白质开始生产。最先生产出的一批蛋白质是负责指挥复制异己（T4）DNA的。 \\
 第5分 & 开始复制病毒DNA \\
 第8分 & 开始生产将要组成新噬菌体“躯体”的结构蛋白。 \\
 第13分 & T4入侵物的第一个完整的复制品被生产出来。 \\
-第25分 & 溶菌酶（一种蛋白质）攻击寄主的细胞壁，打破细菌，“二百元组”出现。\strut\\
+第25分 & 溶菌酶（一种蛋白质）攻击寄主的细胞壁，打破细菌，“二百元组”出现。\\
 \end{longtabu}
 
 这样，当噬菌体T4侵入大肠杆菌细胞时，经过大约二十四五分钟这样一段不长的时间，这个细胞就完全被颠覆、撕裂。啪的一下，大约二百个与原先的病毒完全相同的复制品——“二百元组”——跑了出来，准备去攻击更多的细菌细胞，而原先的细胞在这个过程中被大幅度地毁坏。

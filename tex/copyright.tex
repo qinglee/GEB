@@ -48,27 +48,42 @@ All rights reserved
 \vfill
 \normalfont\small
 
-\begin{tabular}{@{}c@{}}
-\large\bfseries 哥德尔、艾舍尔、巴赫 \\[\smallskipamount]
-\hfill\sffamily ——集异璧之大成\\
-\begin{tabular}[c]{>{\kaishu}r@{\enskip}>{\footnotesize}l}
-{\footnotesize\upshape\sffamily〔美〕}侯世达 & 著 \\
-本书翻译组                      & 译 \\
-\end{tabular}\\
-\midrule[.5pt]
-\begin{CJKfilltwosides*}{0pt}
-商务印书馆出版\\
-\scriptsize（北京王府井大街36号\quad 邮政编码100710）\\
-商务印书馆发行\\
-北京中科印刷有限公司印刷\\
-ISBN 978-7-100-01323-9\\
-\end{CJKfilltwosides*}\\
-\midrule[.5pt]
-\footnotesize\begin{tabular}[c]{@{\quad}l@{\qquad}l@{\quad}}
-1997年5月第1版                & 开本 $850\times1168$\quad $1/32$ \\
-2016年3月北京第10次印制 & 印张 $34$\textonehalf
-\end{tabular}\\
-\end{tabular}
+\begin{tabu*}{
+  colspec = c ,
+  row{1} = { font = \large \bfseries, belowsep+ = \smallskipamount } ,
+  row{2} = { font = \sffamily, halign = r } ,
+  row{Z} = { font = \footnotesize } ,
+  hline{4,5}   = { wd = \lightrulewidth } ,
+  hline{4,5}   = { wd = \lightrulewidth } ,
+  hborder{4,5} = { abovespace = 5pt , belowspace = 5pt } ,
+}
+  哥德尔、艾舍尔、巴赫 \\
+  ——集异璧之大成\\
+  \begin{tabu*}{
+    colspec    = rl ,
+    columns    = { colsep = 3pt } ,
+    cell{2}{1} = { font = \normalsize } ,
+    column{1}  = { font = \kaishu } ,
+    column{2}  = { font = \footnotesize } ,
+  }
+  \mbox{〔美〕\normalsize 侯世达} & 著 \\
+  本书翻译组  & 译 \\
+  \end{tabu*} \\
+  \begin{CJKfilltwosides*}{0pt}
+    商务印书馆出版\\
+    \scriptsize（北京王府井大街36号\quad 邮政编码100710）\\
+    商务印书馆发行\\
+    北京中科印刷有限公司印刷\\
+    ISBN 978-7-100-01323-9\\
+  \end{CJKfilltwosides*}\\
+  \begin{tabu*}{
+    colspec = ll ,
+    columns = { colsep = \ccwd } ,
+  }
+  1997年5月第1版                & 开本 $850\times1168$\quad $1/32$ \\
+  2016年3月北京第10次印制 & 印张 $34$\textonehalf
+  \end{tabu*}\\
+\end{tabu*}
 
 \smallskip
 

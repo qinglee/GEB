@@ -339,15 +339,20 @@
 
 我们现在来看看"WJU"系统中的一个典型的推导，我们同时用两种记号写：
 
-\begin{longtabu}[c]{!{(\arabic{taburow})\quad}r!{——}c!{——}>{$}l<{$}}
-"WJ"      & 公理     & 31 \\
-"WJJ"     & 规则2 & 311 \\
-"WJJJ"    & 规则2 & 31111 \\
-"WUJ"     & 规则3 & 301 \\
-"WUJU"    & 规则1 & 3010 \\
-"WUJUUJU" & 规则2 & 3010010 \\
-"WUJJU"   & 规则4 & 30110
-\end{longtabu}
+\begin{longtabu*}{
+  colspec    = rcl ,
+  vline{1}   = { text = (\ROWNUM)\quad } ,
+  vline{X,Y} = { text = {——} } ,
+  column{Z}  = { mode = math } ,
+}
+"WJ"      & 公理         & 31 \\
+"WJJ"     & 规则$2$ & 311 \\
+"WJJJ"    & 规则$2$ & 31111 \\
+"WUJ"     & 规则$3$ & 301 \\
+"WUJU"    & 规则$1$ & 3010 \\
+"WUJUUJU" & 规则$2$ & 3010010 \\
+"WUJJU"   & 规则$4$ & 30110 \\
+\end{longtabu*}
 
 左边一列是使用我们已熟悉的四条印符规则而得到的。右边一列同样也可以当作是使用了一组类似的印符规则而生成的。不过右边的一列有种二重性。下面我来解释。
 
@@ -399,15 +404,19 @@
 \]
 现在，右边一列可被视为一个资格充分的算术过程了，它来自一个新的算术系统，不妨称之为$310$系统：
 
-\begin{longtabu}[c]{!{(\arabic{taburow})\quad}>{$}r<{$}>{\quad}l}
+\begin{longtabu*}{
+  colspec   = rl ,
+  vline{1}  = { text = (\ROWNUM)\quad } ,
+  column{1} = { mode = math }
+}
 31      & 给定的 \\
-311     & 规则2（$m=1$，$n=1$） \\
-31111   & 规则3 \\
-301     & 规则3 \\
-3010    & 规则1（$m=30$） \\
-3010010 & 规则2（$m=3$，$n=10$） \\
-30110   & 规则4（$m=2$，$n=10$，$k=301$）
-\end{longtabu}
+311     & 规则$2$（$m=1$，$n=1$） \\
+31111   & 规则$3$ \\
+301     & 规则$3$ \\
+3010    & 规则$1$（$m=30$） \\
+3010010 & 规则$2$（$m=3$，$n=10$） \\
+30110   & 规则$4$（$m=2$，$n=10$，$k=301$）
+\end{longtabu*}
 
 请看，加长与缩短规则还在追着我们，这个“$310$系统”也被缠上了。这个东西被传送到了数的领域，使得哥德尔数时而大时而小。如果细细观察，你会发现这些规则的设计是基于一个并不深奥的思想：整数的十进制表示中那些数码的左右移动是与乘以或除以$10$的方幂相关联的。这一简单的结论可以推广：
 
@@ -495,41 +504,43 @@ $30$是个"WJU"数。
 当然事情不是到此就结束了。我们才刚开始体会到哥德尔同构的潜力。自然而然的路子就是把TNT反映其它形式系统的能力转而用在它自己身上，就像乌龟使螃蟹的唱机转而打击其自身，以及使他的高脚杯转而破坏其自身一样。为了做到这一点，我们得对TNT像对"WJU"系统一样进行哥德尔配数，然后把其推理规则“算术化”。哥德尔配数是很容易的。比如，我们可以建立如表~\ref{tab:godel-number} 的对应。
 
 \begin{table}
-\begin{tabular}{>{$}c<{$}@{}>{$\cdot\cdot\cdot\cdot\cdot$}c@{}>{$}c<{$}l}
-\toprule
-\text{\em 密码子} & \multicolumn1c{}
-                & \text{\em 密码子} & \em 关于密码子的一些有助记忆的说法 \\
-\midrule
-0 & & 666 & 洒过农药后的昆虫数目 \\
-S & & 123 & 后继关系：$1$, $2$, $3$, \ldots \\
-= & & 111 & 视觉上的相似：横过来看 \\
-+ & & 112 & $1+1=2$ \\
-· & & 236 & $2\times 3=6$ \\
-( & & 362 &
-  \tikz[remember picture,inner sep=0pt,baseline=(a.base)]\node(a){以$2$结尾}; \\
-) & & 323 & 以$3$结尾 \\
-＜ & & 212 & 以$2$结尾 \\
-＞ & & 213 & 以$3$结尾 \\\relax
-[ & & 312 & 以$2$结尾 \\
-] & & 313 &
-  \tikz[remember picture,inner sep=0pt,baseline=(b.base)]\node(b){以$3$结尾}; \\
-a & & 262 & 与$\forall$（$626$）相反 \\
-' & & 163 & $163$是质数，而“质数”的“质”首笔是撇 \\
-∧ & & 161 & “$∧$”是序列$1$-$6$-$1$的“形象” \\
-∨ & & 616 & “$∨$”是序列$6$-$1$-$6$的“形象” \\
-→ & & 633 & $6$“蕴涵”$3$和$3$，某种意义上是这样吧 \\
-～ & & 223 & $2+2$不是$3$ \\
-\exists & & 333 & “$\exists$”看上去像个“$3$” \\
-\forall & & 626 & 与$a$相反，而且还是$6$-$2$-$6$的“形象” \\
-: & & 636 & 两个点，两个六 \\
-\text{标点} & & 611 & 序列$6$-$1$-$1$的“形象”似乎意味着结束 \\
-\bottomrule
-\end{tabular}
-\begin{tikzpicture}[remember picture, overlay]
+\def\TIKZMARK#1{\begin{tikzpicture}[overlay,baseline=1pt]
 \draw[decorate, decoration={brace,amplitude=5mm,raise=2mm}]
-  (a.north east) -- (a.north east|-b.south east)
-    node[midway, right=7mm, align=left,font=\small\kaishu]{这三对形成\\一个模式};
-\end{tikzpicture}
+  (0,\dimexpr \dimexpr \baselineskip + \abovesep + \belowsep \relax * 5 + \ccwd \relax) -- (0,0)
+    node[midway, right=7mm, align=left, font=\small\kaishu]{#1};
+\end{tikzpicture}}
+\begin{tabu}{
+  width       = \linewidth ,
+  colspec     = ccl ,
+  column{1,2} = { mode = math } ,
+  cell{Z}{1}  = { mode = text } ,
+  cell{-}{Z}  = { cmd = \hbox } ,
+  row{1}      = { mode = text, font = \em } ,
+  vline{2}    = {2-Z}{ text = \ensuremath{\cdot\cdot\cdot\cdot\cdot} } ,
+}
+密码子 & 密码子 & 关于密码子的一些有助记忆的说法 \\
+0 & 666 & 洒过农药后的昆虫数目 \\
+S & 123 & 后继关系：$1$, $2$, $3$, \ldots \\
+= & 111 & 视觉上的相似：横过来看 \\
++ & 112 & $1+1=2$ \\
+· & 236 & $2\times 3=6$ \\
+( & 362 & 以$2$结尾 \\
+) & 323 & 以$3$结尾 \\
+＜ & 212 & 以$2$结尾 \\
+＞ & 213 & 以$3$结尾 \\\relax
+[ & 312 & 以$2$结尾 \\
+] & 313 & 以$3$结尾\TIKZMARK{这三对形成\\一个模式}\\
+a & 262 & 与$\forall$（$626$）相反 \\
+' & 163 & $163$是质数，而“质数”的“质”首笔是撇 \\
+∧ & 161 & “$∧$”是序列$1$-$6$-$1$的“形象” \\
+∨ & 616 & “$∨$”是序列$6$-$1$-$6$的“形象” \\\relax
+→ & 633 & $6$“蕴涵”$3$和$3$，某种意义上是这样吧 \\
+～ & 223 & $2+2$不是$3$ \\
+{\exists} & 333 & “$\exists$”看上去像个“$3$” \\
+\forall & 626 & 与$a$相反，而且还是$6$-$2$-$6$的“形象” \\
+: & 636 & 两个点，两个六 \\
+标点 & 611 & 序列$6$-$1$-$1$的“形象”似乎意味着结束 \\
+\end{tabu}
 \caption{哥德尔配数表}\label{tab:godel-number}
 \end{table}
 

@@ -1109,7 +1109,7 @@
     labelsep   = \ccwd ,
     leftmargin = \parindent ,
     before  = \kaishu ,
-    format  = \bfseries \sffamily ,
+    format  = \bfseries \sffamily \@@_chapter_link:n ,
     topsep  = \medskipamount ,
     itemsep = \medskipamount ,
   }
@@ -1125,6 +1125,28 @@
     itemsep = \smallskipamount ,
     before  = \sloppy ,
   }
+
+\cs_new_protected:Npn \@@_chapter_link:n #1
+  {
+    \@@_key_normalization:Nn \l_tmpa_str {#1}
+    \prop_get:NoNTF \g_@@_chapter_anchor_prop
+      { \l_tmpa_str } \l_tmpa_tl
+      { \@@_hyper_link:on { \l_tmpa_tl } }
+      { \use:n }
+      {#1}
+  }
+\cs_new_protected:Npn \@@_save_chapter_anchor:nn #1
+  {
+    \@@_key_normalization:Nn \l_tmpa_str {#1}
+    \prop_gput:Non \g_@@_chapter_anchor_prop { \l_tmpa_str }
+  }
+\cs_new_protected:Npn \@@_key_normalization:Nn #1#2
+  {
+    \str_set:Nn #1 {#2}
+    \str_replace_all:Nnn #1 { ~ } { }
+    \str_set:Nx #1 { \exp_args:No \tex_mdfivesum:D {#1} }
+  }
+\prop_new:N \g_@@_chapter_anchor_prop
 
 \NewDocumentCommand \quotetext { m }
   { #1 }
@@ -1205,6 +1227,7 @@
       \skip_set:Nn \tex_rightskip:D { 6\ccwd plus 1fil minus 3\ccwd }
       \skip_sub:Nn \tex_parfillskip:D { \tex_rightskip:D }
       \int_set_eq:NN \tex_interlinepenalty:D \c_@@_nobreak_penalty_int
+      \@@_save_chapter_anchor:nn { #1 ： #2 } {#4}
       \tex_indent:D
       \@@_hyper_link:nn {#4} { \box_use:N \l_tmpa_box #2 }
       \tex_penalty:D \c_zero_int \null \@@_cdot_fill:
@@ -1221,6 +1244,7 @@
       \skip_set:Nn \tex_rightskip:D { 6\ccwd plus 1fil minus 3\ccwd }
       \skip_sub:Nn \tex_parfillskip:D { \tex_rightskip:D }
       \int_set_eq:NN \tex_interlinepenalty:D \c_@@_nobreak_penalty_int
+      \@@_save_chapter_anchor:nn {#1} {#3}
       \tex_indent:D
       \@@_hyper_link:nn {#3} {#1}
       \tex_penalty:D \c_zero_int \null \@@_cdot_fill:

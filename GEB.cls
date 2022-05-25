@@ -60,7 +60,6 @@
     picinpar ,
     hyperref ,
     bookmark ,
-    zref-base ,
     hyperxmp ,
     tikz ,
   }

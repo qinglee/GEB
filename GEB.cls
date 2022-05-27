@@ -258,24 +258,20 @@
     baseurl            = http://www.cp.com.cn/book/7-100-01323-2_41.html ,
     pdfcontacturl      = http://www.cp.com.cn/service/contact.html ,
     pdfauthortitle     = 美国印第安纳大学文理学院认知科学和计算机科学杰出教授 ,
-    pdfinfo            =
-      {
-        Title    = \c_@@_title_tl ,
-        Author   = \c_@@_author_tl ,
-        Subject  =
-          {
-            集异璧——GEB，是数学家哥德尔、版画家艾舍尔、音乐家巴赫三人名字的前缀。本书通过对
-            哥德尔的数理逻辑，艾舍尔的版画和巴赫的音乐三者的综合阐述，引人入胜地介绍了数理逻
-            辑学、可计算理论、人工智能学、语言学、遗传学、音乐、绘画的理论等方面，构思精巧、
-            含义深刻、视野广阔、富于哲学韵味。\textCR
-            本书在英语世界中有极高评价，曾获得普利策文学奖。该中译本前后费时十余年，译者都是
-            数学和哲学的专家，还得到原作者的直接参与，译文严谨通达，特别是在原作者的帮助下，
-            把西方的文化典故和说法，尽可能转换为中国文化的典故和说法，使这本译本甚至可看作是
-            一部新的创作，也是中外翻译史上的一个创举。
-          } ,
-        Keywords = { 哥德尔 , ~ 艾舍尔 , ~ 巴赫 } ,
-        Creator = XeLaTeX ~ + ~ xeCJK ~ + ~ CTeX ,
-      } ,
+    pdftitle           = \c_@@_title_tl ,
+    pdfauthor          = \c_@@_author_tl ,
+    pdfkeywords        = { 哥德尔 , ~ 艾舍尔 , ~ 巴赫 } ,
+    pdfcreator         = XeLaTeX ~ + ~ xeCJK ~ + ~ CTeX ,
+    pdfsubject         = {
+      集异璧——GEB，是数学家哥德尔、版画家艾舍尔、音乐家巴赫三人名字的前缀。本书通过对
+      哥德尔的数理逻辑，艾舍尔的版画和巴赫的音乐三者的综合阐述，引人入胜地介绍了数理逻
+      辑学、可计算理论、人工智能学、语言学、遗传学、音乐、绘画的理论等方面，构思精巧、
+      含义深刻、视野广阔、富于哲学韵味。\textCR
+      本书在英语世界中有极高评价，曾获得普利策文学奖。该中译本前后费时十余年，译者都是
+      数学和哲学的专家，还得到原作者的直接参与，译文严谨通达，特别是在原作者的帮助下，
+      把西方的文化典故和说法，尽可能转换为中国文化的典故和说法，使这本译本甚至可看作是
+      一部新的创作，也是中外翻译史上的一个创举。
+    }
   }
 
 
@@ -412,6 +408,8 @@
 %    \tl_map_function:NN \c_@@_mathsans_letter_tl \@@_set_mathcode:N
 %    \bool_set_true:N \l_@@_mathsans_bool
 %  }
+
+\cs_new_eq:NN \CSLET \cs_set_eq:Nc
 
 \setCJKmainfont
   [
@@ -844,7 +842,7 @@
 
 \NewDocumentCommand \includepartgraphics { }
   {
-    \exp_args:NNf \prop_get:NnNTF \g_@@_part_graphics_prop
+    \exp_args:NNe \prop_get:NnNTF \g_@@_part_graphics_prop
       { \arabic { part } } \l_tmpa_tl
       { \exp_after:wN \@@_part_graphics:nn \l_tmpa_tl }
       { }
@@ -1050,7 +1048,7 @@
     \group_begin:
       \circednumfont
       \makexeCJKinactive
-      \exp_args:Nf \textcircled { \int_eval:n {#1} }
+      \exp_args:Ne \textcircled { \int_eval:n {#1} }
     \group_end:
   }
 \cs_new_eq:NN \@circedctr \circednum
@@ -1068,21 +1066,6 @@
 
 \NewDocumentCommand \dlnote { m }
   { \group_begin: \kaishu #1 \group_end: }
-
-\NewDocumentEnvironment { signature } { O { c } }
-  {
-    \skip_set_eq:NN \topsep \bigskipamount
-    \int_set_eq:NN \@beginparpenalty \c_@@_nobreak_penalty_int
-    \tl_set:Nn \arraystretch { 1 }
-    \cs_set_eq:NN \extrarowheight \c_zero_dim
-    \flushright
-    \tabular { @ { } #1 @ { \qquad } }
-    \kaishu \ziju { .5 }
-  }
-  {
-    \endtabular
-    \endflushright
-  }
 
 \newlist { authorlist } { description } { 1 }
 \setlist [ authorlist ]
@@ -1504,27 +1487,56 @@
 \cs_new_eq:NN \cmidrulewidth  \l_@@_cmid_rule_dim
 \cs_new_eq:NN \tabrulesep     \l_@@_rule_sep_dim
 
+\dim_new:N \tabrowsep
 \SetTblrInner
   {
-    rows    = { rowsep = 0pt } ,
-    columns = { colsep = \tabcolsep }
+    abovesep = \tabrowsep ,
+    belowsep = \tabrowsep ,
+    leftsep  = \tabcolsep ,
+    rightsep = \tabcolsep
+  }
+\NewDocumentEnvironment { signature } { O{c} +b }
+  {
+    \skip_set_eq:NN \topsep \bigskipamount
+    \int_set_eq:NN \@beginparpenalty \c_@@_nobreak_penalty_int
+    \flushright
+    \begin { signature@inner } {#1}
+      #2
+  }
+  {
+    \end { signature@inner }
+    \endflushright
+  }
+\NewTblrEnviron { signature@inner }
+\SetTblrInner [ signature@inner ]
+  {
+    abovesep   = 0pt ,
+    belowsep   = 0pt ,
+    leftsep    = 0pt ,
+    rightsep   = 2\ccwd ,
+    row{1}     = { font = \kaishu \ziju { .5 } } ,
+    row{Z}     = { font = \small }
   }
 \NewTblrEnviron { tabu }
 \SetTblrInner [ tabu ]
   {
-    rows        = { rowsep = 0pt } ,
-    columns     = { colsep = \tabcolsep } ,
-    hline{1,Z}  = { wd = \heavyrulewidth } ,
-    hline{2}    = { wd = \lightrulewidth } ,
-    hborder{1}  = { belowspace = \tabrulesep } ,
-    hborder{2}  = { abovespace = \tabrulesep , belowspace = \tabrulesep } ,
-    hborder{Z}  = { abovespace = \tabrulesep }
+    abovesep   = \tabrowsep ,
+    belowsep   = \tabrowsep ,
+    leftsep    = \tabcolsep ,
+    rightsep   = \tabcolsep ,
+    hline{1,Z} = { wd = \heavyrulewidth } ,
+    hline{2}   = { wd = \lightrulewidth } ,
+    hborder{1} = { belowspace = \tabrulesep } ,
+    hborder{2} = { abovespace = \tabrulesep , belowspace = \tabrulesep } ,
+    hborder{Z} = { abovespace = \tabrulesep }
   }
 \NewTblrEnviron { tabu* }
 \SetTblrInner [ tabu* ]
   {
-    rows    = { rowsep = 0pt } ,
-    columns = { colsep = \tabcolsep }
+    abovesep = \tabrowsep ,
+    belowsep = \tabrowsep ,
+    leftsep  = \tabcolsep ,
+    rightsep = \tabcolsep
   }
 \NewTblrEnviron { longtabu }
 \SetTblrOuter [ longtabu ]
@@ -1537,13 +1549,15 @@
   }
 \SetTblrInner [ longtabu ]
   {
-    rows        = { rowsep = 0pt } ,
-    columns     = { colsep = \tabcolsep } ,
-    hline{1,Z}  = { wd = \heavyrulewidth } ,
-    hline{2}    = { wd = \lightrulewidth } ,
-    hborder{1}  = { belowspace = \tabrulesep } ,
-    hborder{2}  = { abovespace = \tabrulesep , belowspace = \tabrulesep } ,
-    hborder{Z}  = { abovespace = \tabrulesep }
+    abovesep   = \tabrowsep ,
+    belowsep   = \tabrowsep ,
+    leftsep    = \tabcolsep ,
+    rightsep   = \tabcolsep ,
+    hline{1,Z} = { wd = \heavyrulewidth } ,
+    hline{2}   = { wd = \lightrulewidth } ,
+    hborder{1} = { belowspace = \tabrulesep } ,
+    hborder{2} = { abovespace = \tabrulesep , belowspace = \tabrulesep } ,
+    hborder{Z} = { abovespace = \tabrulesep }
   }
 \NewTblrEnviron { longtabu* }
 \SetTblrOuter [ longtabu* ]
@@ -1552,12 +1566,14 @@
     halign  = c ,
     theme   = empty* ,
     presep  = \medskipamount ,
-    postsep = \medskipamount ,
+    postsep = \medskipamount
   }
 \SetTblrInner [ longtabu* ]
   {
-    rows    = { rowsep = 0pt } ,
-    columns = { colsep = \tabcolsep } ,
+    abovesep = \tabrowsep ,
+    belowsep = \tabrowsep ,
+    leftsep  = \tabcolsep ,
+    rightsep = \tabcolsep
   }
 \DefTblrTemplate { conthead-text } { default } { （续表） }
 \NewTblrTheme { empty }
@@ -1874,7 +1890,7 @@
       {
         \group_begin:
           \hbox_set:Nn \l_tmpa_box {#2}
-        \exp_args:NNf \group_end:
+        \exp_args:NNe \group_end:
         \@@_thm:nn { \dim_eval:n { \box_wd:N \l_tmpa_box } }
       }
       { \@@_thm:nn { \dim_eval:n {#1} } }
@@ -2276,7 +2292,7 @@
 \cs_new_protected_nopar:Npn \@@_base_cell:nn #1#2
   {
     \hcoffin_set:Nn \l_tmpa_coffin
-      { \hbox_to_wd:nn { 2em } { \tex_hss:D #1  \tex_hss:D  } }
+      { \hbox_to_wd:nn { 2em } { \tex_hss:D #1 \tex_hss:D  } }
     \hcoffin_set:Nn \l_tmpb_coffin { \ensuremath {#2} }
     \coffin_attach:NnnNnnnn
       \l_tmpa_coffin { r } { H }
@@ -2286,3 +2302,52 @@
   }
 \NewDocumentCommand \basecell { m }
   { \@@_base_cell:nn #1 }
+
+\NewDocumentCommand \authorbox { m }
+  { \@@_author_box_auxi:w #1 \q_stop }
+\NewDocumentCommand \@@_author_box_auxi:w { D〔〕{} }
+  { \@@_author_box_auxii:nw {#1} }
+\cs_new_protected:Npn \@@_author_box_auxii:nw #1#2 \q_stop
+  { \@@_author_box_auxiii:nn {#1} {#2} }
+\cs_new_protected:Npn \@@_author_box_auxiii:nn #1#2
+  {
+    \mode_leave_vertical:
+    \tl_if_blank:nF {#1}
+      { \@@_author_box_auxiv:nn {#1} }
+      { \kaishu \tl_trim_spaces:n {#2} }
+  }
+\cs_new_protected:Npn \@@_author_box_auxiv:nn #1#2
+  { \hbox:n { \textsf { \realsize { -2 } 〔#1〕 } #2 } }
+
+\NewDocumentCommand \realsize { m }
+  { \@@_relsize:n {#1} }
+\cs_new:Npn \@@_relsize:n #1
+  {
+    \seq_item:Nn \c_@@_font_size_seq
+      { #1 + \@@_relsize_num:N \@currsize }
+  }
+\seq_const_from_clist:Nn \c_@@_font_size_seq
+  {
+    \tiny ,
+    \scriptsize ,
+    \footnotesize ,
+    \small ,
+    \normalsize ,
+    \large ,
+    \Large ,
+    \LARGE ,
+    \huge ,
+    \Huge
+  }
+\cs_new:Npn \@@_relsize_num_aux:nn #1#2
+  { \exp_not:n { #2 {#1} } }
+\cs_new:Npx \@@_relsize_num:N #1
+  {
+    \exp_not:N \tl_case:NnF #1
+      {
+        \seq_map_indexed_function:NN
+          \c_@@_font_size_seq
+          \@@_relsize_num_aux:nn
+      }
+      { 0 }
+  }

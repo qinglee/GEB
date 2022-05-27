@@ -328,10 +328,7 @@ AT、CAAAGAGGA、CAAAGAGAATCCTCTTTG。
 \section{氨基酸}
 
 共有十五种类型的指令，开列如下：
-\begin{longtabu*}{
-  columns = { colsep = \ccwd } ,
-  colspec = {r!{——}l}
-}
+\begin{longtabu*}{ colsep = \ccwd , colspec = {r!{——}l} }
 cut & 切断串\\
 del & 从串里删除一个基\\
 swi & 把酶转移到另一个串上\\
@@ -405,8 +402,8 @@ ATG\quad 和\quad TAGATCCAGTCCACTCGA
 \begin{figure}
 %\includegraphics{img_087.png}
 \begin{tabu*}{
-  rows           = { rowsep = 1.5ex } ,
-  columns        = { colsep = 0pt } ,
+  rowsep         = 1.5ex ,
+  colsep         = 0pt ,
   colspec        = {cc*4{X[c]}} ,
   vline{1,Z}     = { wd = \heavyrulewidth} ,
   vline{2-Y}     = { wd = \lightrulewidth} ,
@@ -662,7 +659,7 @@ Cu\hfill Ag\hfill Au
 U & phe & ser & tyr & cys & U \\
   & phe & ser & tyr & cys & C \\
   & leu & ser & 标点  & 标点  & A \\
-  & leu & ser & 标点 & trp & G \\
+  & leu & ser & 标点  & trp & G \\
 C & leu & pro & his & arg & U \\
   & leu & pro & his & arg & C \\
   & leu & pro & gin & arg & A \\
@@ -930,22 +927,27 @@ mRNA串 & N的陈述\\
 请注意A和T组成的基对（算术化[Arithmetization]和翻译[Translation]），以及G和C的基对（哥德尔[Gödel]和克里克[Crick]）。数理逻辑居嘌呤一方，分子生物学居嘧啶一方。
 
 为了使这个映射从美学角度看更为完善，我情愿让哥德尔配数法向遗传密码绝对看齐。事实上，只要按下面的对应，遗传密码表也就变成了哥德尔编码表：
-\begin{center}
-\begin{tabular}{rr!{$\iff$}ll}
-（奇） & $1$ & A & （嘌呤）\\
-（偶） & $2$ & C & （嘧啶）\\
-（奇） & $3$ & G & （嘌呤）\\
-（偶） & $6$ & U & （嘧啶）
-\end{tabular}
-\end{center}
+
+\begin{longtabu*}{
+  colspec     = rrll ,
+  vline{3}    = { text = \ensuremath{\iff} } ,
+  column{2}   = { mode = math } ,
+  column{1,Z} = { appto = \unskip, cmd = \mbox } ,
+}
+（奇） & 1 & A & （嘌呤）\\
+（偶） & 2 & C & （嘧啶）\\
+（奇） & 3 & G & （嘌呤）\\
+（偶） & 6 & U & （嘧啶）
+\end{longtabu*}
 
 每种氨基酸（共二十种）恰好对应一个TNT符号（共二十个）。这样，我当初编造“简朴TNT”的动机也就终于明朗了——要它恰好有二十个符号！哥德尔编码如\fig{100}所示。试将它与遗传密码（\fig{94}）比较一下。
 
 \begin{figure}
 %\includegraphics[height=.8\textheight]{img_100.png}
-\def\EL#1{\tikz[baseline=(A.base)]{%
-  \useasboundingbox node[inner sep=0pt](A){\ensuremath{#1}};%
-  \draw (A) ellipse [x radius=15pt, y radius=7pt];}}
+\def\EL#1{\relax\ifmmode\let\TM\ensuremath\else\CSLET\TM{@firstofone}\fi
+  \tikz[baseline=(A.base)]{%
+    \useasboundingbox node[inner sep=0pt](A){\TM{#1}};%
+    \draw (A) ellipse [x radius=15pt, y radius=7pt];}}
 \begin{tabu}{
   width              = .8\linewidth ,
   colspec            = {X[.75,c]*4{X[c]}X[.5,c]} ,
@@ -955,6 +957,8 @@ mRNA串 & N的陈述\\
   row{1}             = { font = \large } ,
   column{1}          = { font = \large } ,
   cells              = { mode = math } ,
+  cell{4}{4,5}       = { mode = text } ,
+  cell{5}{4}         = { mode = text } ,
   cell{2,6,10,14}{1} = { r = 4 }{c} ,
   cell{2}{2-Y}       = { cmd = \EL } ,
   cell{4}{4}         = { cmd = \EL } ,
@@ -971,8 +975,8 @@ mRNA串 & N的陈述\\
   & 6     &         2 & 1     & 3       & \\
 6 & 0     & \forall & \land   & :       & 6 \\
   & 0     & \forall & \land   & :       & 2 \\
-  & a     & \forall & \text{标点} & \text{标点} & 1 \\
-  & a     & \forall & \text{标点} & \supset    & 3 \\
+  & a     & \forall & 标点           & 标点           & 1 \\
+  & a     & \forall & 标点           & \supset & 3 \\
 2 & a     & \sim    & \langle & \cdot   & 6 \\
   & a     & \sim    & \langle & \cdot   & 2 \\
   & a     & \sim    & \rangle & \cdot   & 1 \\

@@ -49,7 +49,7 @@ All rights reserved
 \normalfont\small
 
 \begin{tabu*}{
-  colspec = c ,
+  colspec  = c ,
   row{1} = { font = \large \bfseries, belowsep+ = \smallskipamount } ,
   row{2} = { font = \sffamily, halign = r } ,
   row{Z} = { font = \footnotesize } ,
@@ -61,12 +61,12 @@ All rights reserved
   ——集异璧之大成\\
   \begin{tabu*}{
     colspec    = rl ,
-    columns    = { colsep = 3pt } ,
-    cell{2}{1} = { font = \normalsize } ,
+    colsep     = 0pt,
+    cell{1}{1} = { cmd  = \authorbox } ,
     column{1}  = { font = \kaishu } ,
-    column{2}  = { font = \footnotesize } ,
+    column{2}  = { font = \footnotesize, leftsep = \ccwd/2 } ,
   }
-  \mbox{〔美〕\normalsize 侯世达} & 著 \\
+  〔美〕侯世达 & 著 \\
   本书翻译组  & 译 \\
   \end{tabu*} \\
   \begin{CJKfilltwosides*}{0pt}
@@ -77,8 +77,9 @@ All rights reserved
     ISBN 978-7-100-01323-9\\
   \end{CJKfilltwosides*}\\
   \begin{tabu*}{
-    colspec = ll ,
-    columns = { colsep = \ccwd } ,
+    colspec   = ll ,
+    colsep    = 0pt ,
+    column{1} = { rightsep = \ccwd } ,
   }
   1997年5月第1版                & 开本 $850\times1168$\quad $1/32$ \\
   2016年3月北京第10次印制 & 印张 $34$\textonehalf

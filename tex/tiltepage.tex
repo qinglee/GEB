@@ -15,10 +15,16 @@
 
 \vspace{3\baselineskip}
 
-\begin{tabular}{>{\kaishu}r@{\enskip}>{\small}l}
-{\small\upshape\sffamily〔美〕}侯世达 & 著 \\
-本书翻译组                      & 译 \\
-\end{tabular}
+\begin{tabu*}{
+  colspec    = rl ,
+  colsep     = 0pt,
+  cell{1}{1} = { cmd  = \authorbox } ,
+  column{1}  = { font = \kaishu } ,
+  column{2}  = { font = \small, leftsep = \ccwd/2 } ,
+}
+〔美〕侯世达 & 著 \\
+本书翻译组  & 译 \\
+\end{tabu*}
 
 \vfill
 

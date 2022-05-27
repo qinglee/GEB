@@ -9,14 +9,24 @@
 
 \vspace*{2pt}
 
-\noindent\begin{tabular}{@{}>{\sffamily}r<{\rlap{：}}@{\quad}l}
-书名 & \large\bfseries 哥德尔、艾舍尔、巴赫\\
-\multicolumn2r{\sffamily ——集异璧之大成\kern-2\ccwd}\\
-作者 &{\small 〔美〕}\kaishu 侯世达\\
-译者&本书翻译组\\
-出版&商务印书馆\\
-\multicolumn2{@{}l}{ISBN 978-7-100-01323-9}
-\end{tabular}
+\noindent\begin{tabu*}{
+  colspec    = rl ,
+  colsep     = 0pt ,
+  vline{2}   = {1-Y}{ text = ： } ,
+  column{1}  = { font = \sffamily } ,
+  column{2}  = { rightsep+ = 2\ccwd } ,
+  cell{1}{2} = { font = \large \bfseries } ,
+  cell{3}{2} = { cmd  = \authorbox } ,
+  cell{2}{1} = { c = 2 }{ halign = r , font = \sffamily , appto = \kern -2\ccwd , cmd = \mbox } ,
+  cell{Z}{1} = { c = 2 }{ halign = l , font = \normalfont } ,
+}
+书名 & 哥德尔、艾舍尔、巴赫\\
+——集异璧之大成 \\
+作者 & 〔美〕侯世达 \\
+译者 & 本书翻译组\\
+出版 & 商务印书馆\\
+ISBN 978-7-100-01323-9
+\end{tabu*}
 
 \vfill
 
@@ -70,7 +80,7 @@ GEB电子版制作纪事
 \hfill
 \begin{tabular}{c@{\qquad}}
 精益电子书制作组\\
-2015年3月
+\small 2015年3月
 \end{tabular}
 
 \vfill

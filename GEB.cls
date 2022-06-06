@@ -330,13 +330,12 @@
     \ctex_gadd_ltxhook:nn { file / #1 .tex / after }  { \MakeMinusBin }
   }
 
-
 \NewDocumentCommand \MakeMinusOrd { }
   { \__um_set_mathcode:nnnn { `\- } { \mathord } { operators } { "02212 } }
 \NewDocumentCommand \MakeMinusBin { }
   { \__um_set_mathcode:nnnn { `\- } { \mathbin } { operators } { "02212 } }
 
-\cs_new_protected_nopar:Npn \@@_math_alphabet:Nnnn #1#2#3#4
+\cs_new_protected:Npn \@@_math_alphabet:Nnnn #1#2#3#4
   {
     \cs_undefine:N #1
     \DeclareMathAlphabet #1 { \encodingdefault } {#2} {#3} {#4}
@@ -347,7 +346,7 @@
           { \encodingdefault } {#2} { \bfdefault } {#4}
       }
   }
-\cs_new_protected_nopar:Npn \@@_math_alphabet_aux:nnnn #1#2#3#4
+\cs_new_protected:Npn \@@_math_alphabet_aux:nnnn #1#2#3#4
   {
     \use:x
       {
@@ -360,11 +359,11 @@
   }
 \clist_map_inline:nn
   {
-    { rm } { rm } { md } { up } ,
+    { rm } { rm } { md } { shape } ,
     { it } { rm } { md } { it } ,
-    { bf } { rm } { bf } { up } ,
-    { sf } { sf } { md } { up } ,
-    { tt } { tt } { md } { up } ,
+    { bf } { rm } { bf } { shape } ,
+    { sf } { sf } { md } { shape } ,
+    { tt } { tt } { md } { shape } ,
   }
   { \@@_math_alphabet_aux:nnnn #1 }
 
@@ -382,12 +381,12 @@
 %\tl_const:Nn \c_@@_mathsans_letter_tl
 %  { W J U P Q R Z d t p q }
 %\bool_new:N \l_@@_mathsans_bool
-%\cs_new_nopar:Npn \@@_set_mathcode:N #1
+%\cs_new:Npn \@@_set_mathcode:N #1
 %  {
 %    \utex_mathcode:D \int_eval:n { `#1 } =
 %      \c_two \symmathsans ~ \int_eval:n { `#1 } ~
 %  }
-%\cs_new_nopar:Npn \@@_reset_mathcode:N #1
+%\cs_new:Npn \@@_reset_mathcode:N #1
 %  {
 %    \utex_mathcodenum:D \int_eval:n { `#1 } =
 %      \exp_not:N \tex_the:D \utex_mathcodenum:D \int_eval:n { `#1 } ~ \c_space_tl
@@ -559,7 +558,7 @@
   { \@@_endline_mark_aux: }
 \cs_new_eq:NN \@@_endline_mark_aux: \prg_do_nothing:
 
-\cs_new_protected_nopar:Npn \@@_topskip_kludge:n #1
+\cs_new_protected:Npn \@@_topskip_kludge:n #1
   {
     \skip_set:Nn \l_tmpa_skip
       { \l_@@_headsep_dim - ( \use:c { CTEX@#1@afterskip } ) }
@@ -570,16 +569,16 @@
     \@vspacer { -\l_tmpa_skip }
   }
 
-\cs_new_protected_nopar:Npn \@@_strut:n #1
+\cs_new_protected:Npn \@@_strut:n #1
   {
     \hbox_set:Nn \l_tmpa_box { }
     \box_set_ht:Nn \l_tmpa_box {#1}
     \box_use_drop:N \l_tmpa_box
   }
 
-\cs_new_nopar:Npn \shangxia #1
+\cs_new:Npn \shangxia #1
   { \@shangxia { \value {#1} } }
-\cs_new_nopar:Npn \@shangxia #1
+\cs_new:Npn \@shangxia #1
   {
     \int_to_symbols:nnn {#1} { 2 }
       {
@@ -683,7 +682,7 @@
     format  = \@@_name_colon:n
   }
 \setlist [ dialogue , 1 ] { topsep  = \bigskipamount }
-\cs_new_protected_nopar:Npn \@@_name_colon:n #1
+\cs_new_protected:Npn \@@_name_colon:n #1
   {
     \tl_if_empty:nF {#1}
       { \sffamily #1 \hbox_overlap_right:n { ： } }
@@ -694,7 +693,7 @@
     \tl_if_empty:nF {#1}
       { #1 \hbox_overlap_right:n { ： } }
   }
-\cs_new_protected_nopar:Npn \@@_speculation_item:n #1
+\cs_new_protected:Npn \@@_speculation_item:n #1
   {
     \int_gincr:N \g_@@_speculation_int
     \tl_if_empty:nF {#1}
@@ -761,13 +760,13 @@
     \pagenumbering { front }
   }
 
-\cs_new_nopar:Npn \@front #1
-  { \frontpage { \int_eval:n {#1} } }
+\cs_new:Npn \@front #1
+  { \frontpage { \int_to_arabic:n {#1} } }
 
 \NewDocumentCommand \frontpage { m }
   { \textit {#1} }
 
-\cs_new_nopar:Npn \pdf@frontpage #1
+\cs_new:Npn \pdf@frontpage #1
   { [ #1 ] }
 \pdfstringdefDisableCommands
   { \let \frontpage \pdf@frontpage }
@@ -852,7 +851,7 @@
   { { part1.jpg } { “集异璧”（GEB）三字件在三个互相垂直的方向上的投影。 } }
 \prop_gput:Nnn \g_@@_part_graphics_prop { 2 }
   { { part2.jpg } { “异集璧”（EGB）三字件在三个互相垂直方向上的投影。 } }
-\cs_new_protected_nopar:Npn \@@_part_graphics:nn #1#2
+\cs_new_protected:Npn \@@_part_graphics:nn #1#2
   {
     \tex_vfill:D
     \addtocontents { lof }
@@ -872,7 +871,7 @@
 
 \cs_new_protected_nopar:Npn \@@_hyper_link:nn
   { \hyper@link { link } }
-\cs_new_protected_nopar:Npn \@@_hyper_anchor:n #1
+\cs_new_protected:Npn \@@_hyper_anchor:n #1
   { \Hy@raisedlink { \hyper@anchor {#1} } }
 \cs_generate_variant:Nn \@@_hyper_link:nn { o }
 
@@ -965,7 +964,7 @@
       \cs_new_protected_nopar:Npn \xobeylines
         {
           \char_set_catcode_active:n { 13 }
-          \cs_set_protected_nopar:Npn #1 { \par }
+          \cs_set_protected:Npn #1 { \par }
         }
       \NewDocumentCommand \@@_verse_cr:w { o t #1 }
     }
@@ -1041,7 +1040,7 @@
       }
   }
 
-\cs_new_nopar:Npn \circedctr #1
+\cs_new:Npn \circedctr #1
   { \circednum { \int_eval:n { \value {#1} } } }
 \NewDocumentCommand \circednum { m }
   {
@@ -1234,7 +1233,7 @@
       \par
     \group_end:
   }
-\cs_new_protected_nopar:Npn \@@_toc_figure:nnn #1
+\cs_new_protected:Npn \@@_toc_figure:nnn #1
   { \@@_toc_figure:nnnn #1 }
 \cs_new_protected:Npn \@@_toc_figure:nnnn #1#2#3#4
   {
@@ -1625,7 +1624,7 @@
 \cs_new_protected_nopar:Npn \@saveanchorfalse
   { \cs_set_eq:NN \caption@anchor@n \use:n }
 \cs_new_eq:NN \caption@anchor@n \use:n
-\cs_new_protected_nopar:Npn \@_save_caption_anchor:n #1
+\cs_new_protected:Npn \@_save_caption_anchor:n #1
   {
     \box_if_empty:NTF \g_@@_caption_anchor_box
       {
@@ -1783,7 +1782,7 @@
     \hbox_set:Nn \l_tmpa_box
       {
         \Hy@localanchornametrue
-        \fontsize { .7\ccwd } { .7\ccwd } \selectfont
+        \realsize { -3 }
         \refstepcounter { endnote }
         \@@_hyper_link:nn
           { entlist . \HyperGlobalCurrentHref }
@@ -1875,9 +1874,9 @@
     wide , labelsep = 0.5em ,
     before = \cs_set_eq:NN \enitem \@@_enitem:nn
   }
-\cs_new_protected_nopar:Npn \@@_enitem:nn #1#2
+\cs_new_protected:Npn \@@_enitem:nn #1#2
   { \@item [ \@@_enitem_format:nn {#1} {#2} ] }
-\cs_new_protected_nopar:Npn \@@_enitem_format:nn #1#2
+\cs_new_protected:Npn \@@_enitem_format:nn #1#2
   {
     \@@_hyper_anchor:n { entlist . #1 }
     \@@_hyper_link:nn {#1} { \circednum {#2} }
@@ -1898,7 +1897,7 @@
   }
   { \enddescription }
 
-\cs_new_protected_nopar:Npn \@@_thm:nn #1#2
+\cs_new_protected:Npn \@@_thm:nn #1#2
   {
     \description
       [
@@ -1942,7 +1941,7 @@
   }
 \group_begin:
 \char_set_catcode_active:N \"
-\cs_new_protected_nopar:Npn " #1 "
+\cs_new_protected:Npn " #1 "
   { \system {#1} }
 \pdfstringdefDisableCommands
   { \tl_clear:N " }
@@ -2014,10 +2013,10 @@
 \NewDocumentCommand \moG { }
   { \mathrm { G } }
 \NewDocumentCommand \diff { }
-  { \mathop { } \! \mathrm { d } }
+  { \mathop { } \mskip -\thinmuskip \mathrm { d } }
 
 \NewDocumentEnvironment { dnaseq } { O { \linewidth } b }
-  { \tex_noindent:D \@@_dna_seq:nn {#1} {#2} }
+  { \@@_seq:nn {#1} {#2} }
   { }
 
 \ProvideTextCommandDefault \textlcurvearrowdown
@@ -2025,99 +2024,131 @@
 \ProvideTextCommandDefault \textrcurvearrowdown
   { \ensuremath { \acwleftarcarrow } }
 
-\cs_new_protected_nopar:Npn \@@_dna_seq:nn #1#2
+\cs_new_protected:Npn \@@_seq:nn #1#2
   {
-    \vbox:n
+    \mode_leave_vertical:
+    \dim_set:Nn \l_@@_seq_line_dim {#1}
+    \vbox_set:Nw \l_@@_seq_box
+      \tiny \ttfamily
+      \offinterlineskip
+      \skip_set:Nn \lineskip { 1pt }
+      \hbox_set:Nn \l_tmpa_box { T }
+      \dim_set:Nn \l_tmpa_dim
+        { ( \box_ht:N \l_tmpa_box + \lineskip ) / 2 }
+      \@@_seq_mark_aux:Nnnnn \l_@@_seq_lmark_box { \l_tmpa_dim }
+        { \tex_hss:D } { \textrcurvearrowdown \, } { }
+      \@@_seq_mark_aux:Nnnnn \l_@@_seq_rmark_box { \l_tmpa_dim }
+        { } { \, \textlcurvearrowdown } { \tex_hss:D }
+      \dim_set:Nn \l_tmpa_dim { \box_wd:N \l_tmpa_box }
+      \dim_sub:Nn \l_@@_seq_line_dim { \l_@@_seq_mark_dim }
+      \int_set:Nn \l_@@_seq_line_int
+        { \int_div_truncate:nn { \l_@@_seq_line_dim } { \l_tmpa_dim } }
+      \dim_set:Nn \l_@@_seq_line_dim { \l_tmpa_dim * \l_@@_seq_line_int }
+      \@@_seq:n {#2}
+    \exp_args:NNe \vbox_set_end:
+    \hbox_to_wd:nn
+      { \dim_eval:n { \l_@@_seq_line_dim + \l_@@_seq_mark_dim } }
+      { \tex_hss:D \box_use_drop:N \l_@@_seq_box \tex_hss:D }
+  }
+\box_new:N \l_@@_seq_box
+\int_new:N \l_@@_seq_int
+\int_new:N \l_@@_seq_line_int
+\dim_new:N \l_@@_seq_line_dim
+\dim_new:N \l_@@_seq_mark_dim
+\box_new:N \l_@@_seq_line_box
+\box_new:N \l_@@_seq_lmark_box
+\box_new:N \l_@@_seq_rmark_box
+\cs_new_protected:Npn \@@_seq_mark_aux:Nnnnn #1#2#3#4#5
+  {
+    \hbox_set:Nn #1 {#4}
+    \dim_add:Nn \l_@@_seq_mark_dim { \box_wd:N #1 }
+    \hbox_set:Nn #1
       {
-        \tiny \ttfamily
-        \offinterlineskip
-        \skip_set:Nn \lineskip { 1pt }
-        \hbox_set:Nn \l_tmpa_box { T }
-        \dim_set:Nn \l_tmpa_dim { \box_wd:N \l_tmpa_box }
-        \int_set:Nn \l_@@_line_int
-          { \dim_ratio:nn {#1} { \l_tmpa_dim } - 1 }
-        \dim_set:Nn \linewidth { \l_@@_line_int \l_tmpa_dim }
-        \dim_set:Nn \l_tmpa_dim
-          { ( \box_ht:N \l_tmpa_box + \lineskip ) / 2 }
-        \hbox_set:Nn \l_@@_lmark_box
-          {
-            \smash
-              {
-                \box_move_down:nn { \l_tmpa_dim }
-                  { \hbox_overlap_left:n { \textrcurvearrowdown \, } }
-              }
-          }
-        \hbox_set:Nn \l_@@_rmark_box
-          {
-            \smash
-              {
-                \box_move_down:nn { \l_tmpa_dim }
-                  { \hbox_overlap_right:n { \, \textlcurvearrowdown } }
-              }
-          }
-        \@@_dna_seq:n {#2}
+        \box_move_down:nn {#2}
+          { \hbox_to_zero:n { #3 \hbox_unpack_drop:N #1 #5 } }
       }
+    \box_set_wd:Nn #1 { \c_zero_dim }
+    \box_set_ht:Nn #1 { \c_zero_dim }
+    \box_set_dp:Nn #1 { \c_zero_dim }
   }
-\int_new:N \l_@@_line_int
-\box_new:N \l_@@_lmark_box
-\box_new:N \l_@@_rmark_box
-\cs_new_protected_nopar:Npn \@@_dna_seq:n #1
+\cs_new_protected_nopar:Npn \@@_seq_hbox_begin:w
+  { \hbox_set_to_wd:Nnw \l_@@_seq_line_box { \l_@@_seq_line_dim } }
+\cs_new_protected_nopar:Npn \@@_seq_hbox_end:
   {
-    \int_zero:N \l_tmpa_int
-    \@@_normal:w #1 \q_recursion_tail \q_recursion_stop
+    \hbox_set_end:
+    \box_use_drop:N \l_@@_seq_line_box
   }
-\cs_new_protected_nopar:Npn \@@_normal:w
+\cs_new_protected:Npn \@@_seq:n #1
   {
-    \tex_hbox:D \c_group_begin_token
-    \@@_normal_line:w
+    \int_zero:N \l_@@_seq_int
+    \@@_seq_normal:w #1 \q_recursion_tail \q_recursion_stop
   }
-\cs_new_protected_nopar:Npn \@@_normal_line:w #1
+\cs_new_protected_nopar:Npn \@@_seq_normal:w
+  {
+    \@@_seq_hbox_begin:w
+    \@@_seq_normal_line:w
+  }
+\cs_new_protected:Npn \@@_seq_normal_line:w #1
   {
     \quark_if_recursion_tail_stop_do:Nn #1
-      { \c_group_end_token }
+      { \tex_hfil:D \@@_seq_hbox_end: }
     #1
-    \int_incr:N \l_tmpa_int
-    \int_compare:nNnTF \l_tmpa_int < \l_@@_line_int
-      { \@@_normal_line:w }
-      { \@@_normal_line_stop:w }
+    \int_incr:N \l_@@_seq_int
+    \int_compare:nNnTF \l_@@_seq_int < \l_@@_seq_line_int
+      { \@@_seq_normal_line:w }
+      { \@@_seq_normal_line_stop:w }
   }
-\cs_new_protected_nopar:Npn \@@_normal_line_stop:w #1
+\cs_new_protected:Npn \@@_seq_normal_line_stop:w #1
   {
     \quark_if_recursion_tail_stop_do:Nn #1
-      { \c_group_end_token }
-    \box_use:N \l_@@_rmark_box
-    \c_group_end_token
-    \@@_reverse:w #1
+      { \@@_seq_hbox_end: }
+    \box_use:N \l_@@_seq_rmark_box
+    \@@_seq_hbox_end:
+    \@@_seq_reverse:w #1
   }
-\cs_new_protected_nopar:Npn \@@_reverse:w
+\cs_new_protected_nopar:Npn \@@_seq_reverse:w
   {
-    \tex_hbox:D \c_group_begin_token
-    \@@_reverse_line:w \q_mark
+    \@@_seq_hbox_begin:w
+    \@@_seq_reverse_line:w \q_mark
   }
-\cs_new_protected_nopar:Npn \@@_reverse_line:w #1 \q_mark #2
+\cs_new_protected:Npn \@@_seq_reverse_line:w #1 \q_mark #2
   {
-    \quark_if_recursion_tail_stop_do:Nn #2
-      { \@@_reverse_stop:n {#1} }
-    \int_incr:N \l_tmpa_int
-    \int_compare:nNnTF \l_tmpa_int < \l_@@_line_int
-      { \@@_reverse_line:w }
-      { \@@_reverse_line_stop:w }
+    \@@_seq_recursion_stop_auxi:N #2
+    \int_incr:N \l_@@_seq_int
+    \int_compare:nNnTF \l_@@_seq_int < \l_@@_seq_line_int
+      { \@@_seq_reverse_line:w }
+      { \@@_seq_reverse_line_stop:w }
     #2#1 \q_mark
   }
-\cs_new_protected_nopar:Npn \@@_reverse_line_stop:w #1 \q_mark #2
+\cs_new_protected:Npn \@@_seq_reverse_line_stop:w #1 \q_mark #2
   {
-    \quark_if_recursion_tail_stop_do:Nn #2
-      { \@@_reverse_stop:n {#1} }
-    \box_use:N \l_@@_lmark_box
+    \@@_seq_recursion_stop_auxii:N #2
+    \box_use:N \l_@@_seq_lmark_box
     #1
-    \c_group_end_token
-    \@@_normal:w #2
+    \@@_seq_hbox_end:
+    \@@_seq_normal:w #2
   }
-\cs_new_protected_nopar:Npn \@@_reverse_stop:n #1
+\cs_new_protected:Npn \@@_seq_recursion_stop_auxi:N #1
   {
-    \hbox_to_wd:nn { \linewidth } { \tex_hfil:D #1 }
-    \c_group_end_token
+    \if_meaning:w \q_recursion_tail #1
+      \exp_after:wN \@@_seq_recursion_stop_auxi:w
+    \fi:
   }
+\cs_new_protected:Npn \@@_seq_recursion_stop_auxi:w
+  #1 \q_recursion_tail #2 \q_mark #3 \q_recursion_stop
+  {
+    \tex_hfil:D #2
+    \@@_seq_hbox_end:
+  }
+\cs_new_protected:Npn \@@_seq_recursion_stop_auxii:N #1
+  {
+    \if_meaning:w \q_recursion_tail #1
+      \exp_after:wN \@@_seq_recursion_stop_auxii:w
+    \fi:
+  }
+\cs_new_protected:Npn \@@_seq_recursion_stop_auxii:w
+  #1#2#3 \@@_seq_normal:w #4 \q_recursion_stop
+  { \tex_hfil:D #3 }
 
 \cs_new_protected_nopar:Npn \tikzxtest
   {
@@ -2137,7 +2168,7 @@
     \int_gincr:N \g_@@_tabbing_line_int
     \hbox_overlap_right:n
       {
-        \hbox_to_wd:nn { 3.5\ccwd }
+        \hbox_to_wd:nn { \ccwd * 7 / 2 }
           { \tex_hfil:D ( \int_use:N \g_@@_tabbing_line_int ) }
       }
   }
@@ -2172,7 +2203,7 @@
     \scan_stop:
   }
 
-\cs_new_nopar:Npn \@@_hang_parshape:n #1
+\cs_new:Npn \@@_hang_parshape:n #1
   { ~ \dim_eval:n { #1\ccwd } ~ \dim_eval:n { \linewidth - #1\ccwd } }
 
 \NewDocumentCommand \hangparshapedb { m }
@@ -2201,7 +2232,7 @@
   }
 \pdfstringdefDisableCommands
   { \cs_set_eq:NN \textcombine \@@_combine_raw:n }
-\cs_new_nopar:Npn \@@_combine_raw:n #1
+\cs_new:Npn \@@_combine_raw:n #1
   {〔 #1 〕}
 
 \cs_new_protected_nopar:Npn \@@_ccglue:
@@ -2237,7 +2268,7 @@
   { \@@_combine_trim:nnnn { 犯 } { 累 } { .6 } { .7 } }
 \prop_gput:Nnn \g_@@_combine_prop { 犭 丝 }
   { \@@_combine_trim:nnnn { 犯 } { 丝 } { .6 } { .7 } }
-\cs_new_protected_nopar:Npn \@@_combine_stack:nnnn #1#2#3#4
+\cs_new_protected:Npn \@@_combine_stack:nnnn #1#2#3#4
   {
     \hbox_set:Nn \l_tmpa_box {#1}
     \vbox_to_ht:nn { \box_ht:N \l_tmpa_box }
@@ -2250,7 +2281,7 @@
         \box_use:N \l_tmpa_box
       }
   }
-\cs_new_protected_nopar:Npn \@@_combine_scale:nnnn #1#2#3#4
+\cs_new_protected:Npn \@@_combine_scale:nnnn #1#2#3#4
   {
     \hbox_set:Nn \l_tmpa_box {#1}
     \hbox_to_wd:nn { \box_wd:N \l_tmpa_box }
@@ -2263,7 +2294,7 @@
         \box_use:N \l_tmpa_box
       }
   }
-\cs_new_protected_nopar:Npn \@@_combine_trim:nnnn #1#2#3#4
+\cs_new_protected:Npn \@@_combine_trim:nnnn #1#2#3#4
   {
     \hbox_set:Nn \l_tmpa_box {#1}
     \hbox_to_wd:nn { \box_wd:N \l_tmpa_box }
@@ -2289,7 +2320,7 @@
                  depth .6pt \scan_stop:
   }
 
-\cs_new_protected_nopar:Npn \@@_base_cell:nn #1#2
+\cs_new_protected:Npn \@@_base_cell:nn #1#2
   {
     \hcoffin_set:Nn \l_tmpa_coffin
       { \hbox_to_wd:nn { 2em } { \tex_hss:D #1 \tex_hss:D  } }

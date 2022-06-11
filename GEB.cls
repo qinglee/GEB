@@ -315,14 +315,16 @@
     NewLineCS+              = \item \caption@textend \@@_endline_mark:
   }
 
-\setmainfont { STIX ~ Two ~ Text }
+\setmainfont { TeX ~ Gyre ~ Termes }
 \setsansfont { TeX ~ Gyre ~ Heros }
 \setmonofont { TeX ~ Gyre ~ Cursor }
-\setmathfont { STIX ~ Two ~ Math }
-\newfontfamily \Palatino  [ Ligatures = TeX ] { TeX ~ Gyre ~ Pagella }
+\setmathfont { TeX ~ Gyre ~ Termes ~ Math }
+\setmathfont { STIX ~ Two ~ Math } [ version = StixTwo ]
+\newfontfamily \Palatino { TeX ~ Gyre ~ Pagella } [ Ligatures = TeX ]
+\newfontfamily \StixTwo  { STIX ~ Two ~ Text }    [ Ligatures = TeX ]
 
-\NewDocumentCommand \textcyr { }
-  { \textrm }
+\DeclareTextFontCommand \textcyr { \StixTwo }
+
 \clist_map_inline:nn
   { chapter02, dialog03, chapter03, dialog04, chapter04 }
   {
@@ -452,21 +454,14 @@
     \sffamily \bfseries
   }
 
-\NewDocumentCommand \inst { m }
-  {
-    \mode_if_math:TF
-      { \text }
-      { \use:n }
-      { \textsf {#1} }
-  }
+\NewDocumentCommand \inst { }
+  { \textsf }
 
 \NewDocumentCommand \CELL { }
   { \inst { CELL } }
 
 \NewDocumentCommand \kaishu { }
   { \KAISHU \Palatino }
-\NewDocumentCommand \fangsong { }
-  { \FANGSONG \Chaparral }
 \NewDocumentCommand \quotefont { }
   { \kaishu }
 
@@ -1280,8 +1275,9 @@
 \int_new:N \g_@@_toc_int
 \seq_new:N \g_@@_toc_seq
 \prop_new:N \g_@@_figure_dest_prop
-\cs_new_protected:Npn \@@_toc_mark:n #1
-  { \tex_marks:D \g_@@_toc_label_mark {#1} }
+\cs_new_protected:Npn \@@_toc_mark:n
+  { \mark_insert:nn { toc_label } }
+\mark_new_class:n { toc_label }
 
 \NewDocumentCommand \fig { s m }
   {
@@ -1308,11 +1304,76 @@
         { \@@_set_toc_label_width: }
       \@starttoc { lof }
       \hook_gput_next_code:nn { shipout/before }
-        { \hook_gremove_code:nn { shipout/before } { toc_width } }
+        {
+          \hook_gremove_code:nn { shipout/before } { toc_width }
+          \@@_save_toc_label_width:
+        }
     \group_end:
   }
-\cs_new_protected:Npn \SetTocLabelWidth #1#2
-  { \seq_gput_right:Nn \g_@@_toc_width_seq { {#1} {#2} } }
+
+\cs_new_protected_nopar:Npn \@@_set_toc_label_width:
+  {
+    \mark_if_eq:nnnnF { page } { toc_label } { top } { first }
+      { \@@_set_toc_label_width_aux: }
+  }
+\cs_new_protected_nopar:Npn \@@_set_toc_label_width_aux:
+  {
+    \tl_gset:Nn \g_@@_toc_label_width_tl { 0pt }
+    \int_set:Nn \l_tmpa_int { \mark_use_last:nn { page } { toc_label } }
+    \int_step_inline:nnn
+      { \mark_use_first:nn { page } { toc_label } }
+      { \l_tmpa_int }
+      {
+        \seq_gpop_left:NNTF \g_@@_toc_seq \l_tmpa_tl
+          {
+            \tl_gset:Nx \g_@@_toc_label_width_tl
+              { \dim_max:nn { \g_@@_toc_label_width_tl } { \l_tmpa_tl } }
+          }
+          { \BOOM }
+      }
+    \seq_gput_right:Nx \g_@@_toc_label_width_seq
+      { { \int_use:N \l_tmpa_int } { \g_@@_toc_label_width_tl } }
+  }
+
+\cs_new_protected:Npn \@@_save_toc_label_width:
+  {
+    \seq_gpop_left:NNT \g_@@_toc_label_width_seq \l_tmpa_tl
+      { \exp_after:wN \@@_save_toc_label_width:nn \l_tmpa_tl }
+  }
+\cs_new_protected:Npn \@@_save_toc_label_width:nn #1#2
+  {
+    \tl_set:Nn \l_@@_toc_label_index_tl {#1}
+    \tl_set:Nn \l_@@_toc_label_width_tl {#2}
+    \seq_map_inline:Nn \g_@@_toc_label_width_seq
+      { \@@_save_toc_label_width_aux:nn ##1 }
+    \@@_save_toc_label_width_aux:
+    \iow_now:Nx \@auxout
+      {
+        \iow_char:N \\ SetTocLabelWidth
+          { \seq_use:Nn \l_@@_toc_label_width_seq { , } }
+      }
+  }
+\cs_new_protected:Npn \@@_save_toc_label_width_aux:nn #1#2
+  {
+    \str_if_eq:onF { \l_@@_toc_label_width_tl } {#2}
+      { \@@_save_toc_label_width_aux: }
+    \tl_set:Nn \l_@@_toc_label_index_tl {#1}
+    \tl_set:Nn \l_@@_toc_label_width_tl {#2}
+  }
+\cs_new_protected:Npn \@@_save_toc_label_width_aux:
+  {
+    \seq_put_right:Nx \l_@@_toc_label_width_seq
+      {
+        { \l_@@_toc_label_index_tl }
+        { \l_@@_toc_label_width_tl }
+      }
+  }
+\tl_new:N \l_@@_toc_label_index_tl
+\tl_new:N \l_@@_toc_label_width_tl
+\seq_new:N \l_@@_toc_label_width_seq
+\seq_new:N \g_@@_toc_label_width_seq
+\cs_new_protected:Npn \SetTocLabelWidth
+  { \seq_gset_from_clist:Nn \g_@@_toc_width_seq }
 \cs_new_protected:Npn \@@_extract_toc_width:
   {
     \seq_gpop_left:NNT \g_@@_toc_width_seq \l_tmpa_tl
@@ -1323,41 +1384,10 @@
     \int_gset:Nn \g_@@_toc_width_int {#1}
     \dim_gset:Nn \g_@@_toc_width_dim {#2}
   }
-
 \int_new:N \g_@@_toc_width_int
 \dim_new:N \g_@@_toc_width_dim
 \seq_new:N \g_@@_toc_width_seq
-\cs_new_protected_nopar:Npn \@@_set_toc_label_width:
-  {
-    \str_if_eq:eeF
-      { \tex_topmarks:D \g_@@_toc_label_mark }
-      { \tex_firstmarks:D \g_@@_toc_label_mark }
-      { \@@_set_toc_label_width_aux: }
-  }
-\cs_new_protected_nopar:Npn \@@_set_toc_label_width_aux:
-  {
-    \tl_gset:Nn \g_@@_toc_label_width_tl { 0pt }
-    \int_set:Nn \l_tmpa_int { \tex_botmarks:D \g_@@_toc_label_mark }
-    \int_step_inline:nnn
-      { \tex_firstmarks:D \g_@@_toc_label_mark }
-      { \l_tmpa_int }
-      {
-        \seq_gpop_left:NNTF \g_@@_toc_seq \l_tmpa_tl
-          {
-            \tl_gset:Nx \g_@@_toc_label_width_tl
-              { \dim_max:nn { \g_@@_toc_label_width_tl } { \l_tmpa_tl } }
-          }
-          { \BOOM }
-      }
-    \iow_now:Nx \@mainaux
-      {
-        \iow_char:N \\ SetTocLabelWidth
-          { \int_use:N \l_tmpa_int }
-          { \g_@@_toc_label_width_tl }
-      }
-  }
-\newmarks \g_@@_toc_label_mark
-\tl_new:N \g_@@_toc_label_width_tl
+
 \newlist { lof } { description } { 3 }
 \setlist [ lof ]
   {
@@ -2020,9 +2050,19 @@
   { }
 
 \ProvideTextCommandDefault \textlcurvearrowdown
-  { \ensuremath { \cwrightarcarrow  } }
+  {
+    \hmode@bgroup
+      \mathversion { StixTwo }
+      \ensuremath { \cwrightarcarrow  }
+    \egroup
+  }
 \ProvideTextCommandDefault \textrcurvearrowdown
-  { \ensuremath { \acwleftarcarrow } }
+  {
+    \hmode@bgroup
+      \mathversion { StixTwo }
+      \ensuremath { \acwleftarcarrow }
+    \egroup
+  }
 
 \cs_new_protected:Npn \@@_seq:nn #1#2
   {
@@ -2352,11 +2392,6 @@
 
 \NewDocumentCommand \realsize { m }
   { \@@_relsize:n {#1} }
-\cs_new:Npn \@@_relsize:n #1
-  {
-    \seq_item:Nn \c_@@_font_size_seq
-      { #1 + \@@_relsize_num:N \@currsize }
-  }
 \seq_const_from_clist:Nn \c_@@_font_size_seq
   {
     \tiny ,
@@ -2381,4 +2416,17 @@
           \@@_relsize_num_aux:nn
       }
       { 0 }
+  }
+\cs_new_protected:Npx \@@_relsize:n #1
+  {
+    \exp_not:n { \seq_item:Nn \c_@@_font_size_seq }
+      {
+        \exp_not:N \int_min:nn
+          {
+            \exp_not:N \int_max:nn
+              { 1 }
+              { #1 + \exp_not:n { \@@_relsize_num:N \@currsize } }
+          }
+          { \seq_count:N \c_@@_font_size_seq }
+      }
   }
